@@ -1,0 +1,13 @@
+#!/bin/bash
+set -x #echo on
+sudo su
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get install -y net-tools
+sudo apt-get install -y nmap
+sudo apt-get install -y terminator
+sudo apt-get install -y xfce4-goodies
+sudo apt-get install -y openssh-server
+sudo apt-get install -y git
+sudo apt-get install -y net-tools
+sudo apt-get install -y net-tools
