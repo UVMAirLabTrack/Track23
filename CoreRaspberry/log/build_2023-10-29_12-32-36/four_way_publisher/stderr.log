@@ -1,0 +1,9 @@
+[0mCMake Error: Cannot determine link language for target "four_way_publisher".[0m
+[0mCMake Error: CMake can not determine linker language for target: four_way_publisher[0m
+[33mCMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+[0m
+[0mCMake Generate step failed.  Build files cannot be regenerated correctly.[0m

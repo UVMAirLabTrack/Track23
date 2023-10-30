@@ -1,0 +1,10 @@
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/uninstall.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/four_way_light_uninstall.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/four_way_light.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/test.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/edit_cache.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/rebuild_cache.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/list_install_components.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/install.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/install/local.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_light/CMakeFiles/install/strip.dir

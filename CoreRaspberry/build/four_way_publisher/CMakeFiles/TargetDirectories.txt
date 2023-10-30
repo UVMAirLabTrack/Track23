@@ -1,0 +1,10 @@
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/uninstall.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/four_way_publisher_uninstall.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/four_way_publisher.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/test.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/edit_cache.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/rebuild_cache.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/list_install_components.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/install.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/install/local.dir
+/home/ian/RaspberryCore/CoreRaspberry/build/four_way_publisher/CMakeFiles/install/strip.dir

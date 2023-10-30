@@ -1,0 +1,4 @@
+source;share/four_way_light/local_setup.bash
+source;share/four_way_light/local_setup.dsv
+source;share/four_way_light/local_setup.sh
+source;share/four_way_light/local_setup.zsh
