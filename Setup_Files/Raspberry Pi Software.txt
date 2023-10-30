@@ -9,5 +9,13 @@ sudo apt-get install -y terminator
 sudo apt-get install -y xfce4-goodies
 sudo apt-get install -y openssh-server
 sudo apt-get install -y git
-sudo apt-get install -y net-tools
-sudo apt-get install -y net-tools
+
+systemctl stop brltty-udev.service
+sudo systemctl mask brltty-udev.service
+systemctl stop brltty.service
+systemctl disable brltty.service
+
+don't run this as superuser, it locks permissions
+git clone https://github.com/UVMAirLabTrack/Track23 RaspberryCore
+
+
