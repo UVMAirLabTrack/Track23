@@ -7,7 +7,7 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'four_way_light.serial_com',
+        'four_way_light.esp_serial',
         'four_way_light.pub',
     ],
     install_requires=['setuptools'],
@@ -19,7 +19,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'esp_serial = four_way_light.serial_com:main',
+            'esp_serial = four_way_light.esp_serial:main',
             'Light_pub = four_way_light.pub:main',
         ],
     },
