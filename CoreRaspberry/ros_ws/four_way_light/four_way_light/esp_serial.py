@@ -5,7 +5,7 @@ import serial
 
 class fourway(Node):
     def __init__(self):
-        super().__init__('four_way_light')
+        super().__init__('esp_serial')
         self.light_state_subscription = self.create_subscription(
             Int32MultiArray,
             'four_way_state',
@@ -32,7 +32,7 @@ class fourway(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = fourway()
+    node = fourway_ESP()
     rclpy.spin(node)
     rclpy.shutdown()
 

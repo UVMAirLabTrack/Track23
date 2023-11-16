@@ -4,7 +4,7 @@ from std_msgs.msg import Int32MultiArray
 
 def main(args=None):
     rclpy.init(args=args)
-    node = rclpy.create_node('four_way_publisher')
+    node = rclpy.create_node('pub')
     publisher = node.create_publisher(Int32MultiArray, 'four_way_state', 10)
 
     msg = Int32MultiArray()
