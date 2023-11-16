@@ -1,14 +1,14 @@
 from setuptools import setup
 
-package_name = 'four_way_stoplight'
+package_name = 'four_way_light'
 
 setup(
     name=package_name,
     version='0.0.0',
     packages=[],
     py_modules=[
-        'four_way_stoplight.serial_com',
-        'four_way_stoplight.pub',
+        'four_way_light.serial_com',
+        'four_way_light.pub',
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -19,8 +19,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ESP_serial = four_way_stoplight.serial_com:main',
-            'Light_pub = four_way_stoplight.pub:main',
+            'ESP_serial = four_way_light.serial_com:main',
+            'Light_pub = four_way_light.pub:main',
         ],
     },
 )
