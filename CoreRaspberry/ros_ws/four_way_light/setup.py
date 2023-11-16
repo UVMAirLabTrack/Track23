@@ -20,7 +20,7 @@ setup(
     entry_points={
         'console_scripts': [
             'esp_serial = four_way_light.esp_serial:main',
-            'Light_pub = four_way_light.pub:main',
+            'pub = four_way_light.pub:main',
         ],
     },
 )
