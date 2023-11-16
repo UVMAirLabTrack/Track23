@@ -19,7 +19,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ESP_serial = four_way_light.serial_com:main',
+            'esp_serial = four_way_light.serial_com:main',
             'Light_pub = four_way_light.pub:main',
         ],
     },
