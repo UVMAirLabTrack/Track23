@@ -8,14 +8,23 @@ def main(args=None):
     publisher = node.create_publisher(Int32MultiArray, 'four_way_state', 10)
 
     msg = Int32MultiArray()
-    msg.data = [5, 8]  # Example values in the range of 1-10
+    combinations = [(1, 2), (1, 4), (5, 6),(10,10)] 
+    time_interval = 1
+
 
     while rclpy.ok():
+        for combination in combinations:
+        msg.data = f'Combination: {combination[0]}, {combination[1]}'
         node.get_logger().info('Publishing: {}'.format(msg.data))
         publisher.publish(msg)
-        rclpy.spin_once(node)
+        serial_data = f'{combination[0]} {combination[1]}\n'
+        my_serial.write(serial_data.encode('utf-8'))
 
-    node.destroy_node()
+        print(f"Published: {msg.data}")
+        rclpy.spin_once(node)
+        rclpy.sleep(time_interval)
+
+    my_serial.close()
     rclpy.shutdown()
 
 if __name__ == '__main__':
