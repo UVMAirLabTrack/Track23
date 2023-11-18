@@ -21,11 +21,11 @@ def main(args=None):
         rclpy.spin_once(node)
         rclpy.sleep(time)
         node.get_logger().info('Publishing: {}'.format(msg.data1))
-        publisher.publish(msg1)
+        publisher.publish(msg2)
         rclpy.spin_once(node)
         rclpy.sleep(time)
         node.get_logger().info('Publishing: {}'.format(msg.data2))
-        publisher.publish(msg2)
+        publisher.publish(msg3)
         rclpy.spin_once(node)
         rclpy.sleep(time)
 
