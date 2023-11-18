@@ -10,7 +10,7 @@ def main(args=None):
     msg = Int32MultiArray()
     msg2 = Int32MultiArray()
     msg3 = Int32MultiArray()
-    msg.data = [5, 8] 
+    msg.data = [5, 7] 
     msg2.data = [1, 3]
     msg3.data = [4, 2]
     time = 1
@@ -20,10 +20,12 @@ def main(args=None):
         publisher.publish(msg)
         rclpy.spin_once(node)
         rclpy.sleep(time)
+
         node.get_logger().info('Publishing: {}'.format(msg.data1))
         publisher.publish(msg2)
         rclpy.spin_once(node)
         rclpy.sleep(time)
+
         node.get_logger().info('Publishing: {}'.format(msg.data2))
         publisher.publish(msg3)
         rclpy.spin_once(node)

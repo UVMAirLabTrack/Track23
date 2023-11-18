@@ -14,10 +14,7 @@ class fourway(Node):
         )
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
         self.serial = serial.Serial(self.serial_port, 9600)
-        if self.is_open:
-            print("Serial port to 4 way light Opened")
-        else:
-            print("Port open failure")
+        print("Node Activated")
 
     def four_way_state_callback(self, msg):
         if len(msg.data) == 2:
