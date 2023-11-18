@@ -5,7 +5,7 @@ project(four_way_light)
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 
-ament_python_install_packages(${PROJECT_NAME} SCRIPTS_DESTINATION lib/${PROJECT_NAME})
+ament_python_install_package(${PROJECT_NAME} SCRIPTS_DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY
     config
