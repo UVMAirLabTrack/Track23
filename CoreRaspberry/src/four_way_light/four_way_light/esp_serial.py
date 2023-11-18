@@ -20,7 +20,7 @@ class fourway(Node):
         if len(msg.data) == 2:
             pair1 = msg.data[0]
             pair2 = msg.data[1]
-            
+            values = bytearray([msg.data[0],msg.data[1]])
             #pair1 = int((pair1 - 1) * 25.5)
             #pair2 = int((pair2 - 1) * 25.5)
             # Send the values to Arduino via serial
@@ -28,7 +28,8 @@ class fourway(Node):
 
     def set_led_color(self, pair1, pair2):
         # Send the data over serial
-        self.serial.write(f'{pair1} {pair2}\n'.encode())
+        #self.serial.write(f'{pair1} {pair2}\n'.encode())
+        self.serial.write(values)
         self.get_logger().info(f'Sent values to 4 way light: Pair1={pair1}, Pair2={pair2}')
 
 def main(args=None):
