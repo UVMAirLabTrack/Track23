@@ -32,7 +32,7 @@ class fourway(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = fourway_ESP()
+    node = fourway()
     rclpy.spin(node)
     rclpy.shutdown()
 
