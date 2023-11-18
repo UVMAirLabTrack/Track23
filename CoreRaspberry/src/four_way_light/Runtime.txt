@@ -16,3 +16,13 @@ four_way_light
     esp_serial  This is the converter from four_way_state to serial coms for the ESP32
 
     ros2 run four_way_light pub
+
+
+Pastable command lists
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run four_way_light pub
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run four_way_light esp_serial

@@ -14,14 +14,18 @@ class fourway(Node):
         )
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
         self.serial = serial.Serial(self.serial_port, 9600)
+        if self.is_open:
+            print("Serial port to 4 way light Opened")
+        else:
+            print("Port open failure")
 
     def four_way_state_callback(self, msg):
         if len(msg.data) == 2:
             pair1 = msg.data[0]
             pair2 = msg.data[1]
-            # Convert 1-10 range to 0-255 range
-            pair1 = int((pair1 - 1) * 25.5)
-            pair2 = int((pair2 - 1) * 25.5)
+            
+            #pair1 = int((pair1 - 1) * 25.5)
+            #pair2 = int((pair2 - 1) * 25.5)
             # Send the values to Arduino via serial
             self.set_led_color(pair1, pair2)
 
