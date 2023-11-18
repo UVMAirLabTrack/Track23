@@ -15,7 +15,7 @@ class fourway(Node):
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
         self.serial = serial.Serial(self.serial_port, 9600)
 
-    def light_state_callback(self, msg):
+    def four_way_state_callback(self, msg):
         if len(msg.data) == 2:
             pair1 = msg.data[0]
             pair2 = msg.data[1]
