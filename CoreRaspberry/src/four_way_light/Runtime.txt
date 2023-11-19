@@ -2,6 +2,8 @@ git clone https://github.com/UVMAirLabTrack/Track23 RaspberryCore
 cd /home/dev/RaspberryCore/
 git pull
 
+cd /home/dev/RaspberryCore/CoreRaspberry/
+rm -r build install log
 colcon build --symlink-install
 
 
@@ -26,3 +28,6 @@ ros2 run four_way_light pub
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
 ros2 run four_way_light esp_serial
+
+monitor serial ports
+screen /dev/ttyUSB0 9600

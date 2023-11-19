@@ -2,8 +2,6 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
-from pySerialTransfer import pySerialTransfer as txfer
-import time
 
 class fourway(Node):
     def __init__(self):
@@ -30,15 +28,11 @@ class fourway(Node):
             self.set_led_color(pair1, pair2)
 
     def set_led_color(self, pair1, pair2):
-        link = txfer.SerialTransfer(self.serial)
         # Send the data over serial
-        #self.serial.write(f'{pair1} {pair2}\n'.encode())
-        data_send = [pair1, pair2]
+        serial_data = f'{pair1} {pair2}\n'
+        self.serial.write(serial_data.encode('utf-8'))
         #bytes_send = bytes([pair1,pair2])
-        link.tx_obj(data_send)
-        link.send()
         #self.serial.write(bytes_send)
-       # self.serial.write([pair1,pair2])
         self.get_logger().info(f'Sent values to 4 way light: Pair1={pair1}, Pair2={pair2}')
 
 def main(args=None):

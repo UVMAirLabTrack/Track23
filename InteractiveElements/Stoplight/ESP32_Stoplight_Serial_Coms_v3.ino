@@ -1,3 +1,11 @@
+#define redPin 21
+#define greenPin 23
+#define bluePin 18
+#define whitePin 19
+#define yellowPin 22
+#define redPin2 32
+#define greenPin2 26
+#define bluePin2 25
 #define whitePin2 33
 #define yellowPin2 27
 
