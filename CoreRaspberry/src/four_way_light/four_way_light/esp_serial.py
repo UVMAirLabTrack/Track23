@@ -28,7 +28,9 @@ class fourway(Node):
     def set_led_color(self, pair1, pair2):
         # Send the data over serial
         #self.serial.write(f'{pair1} {pair2}\n'.encode())
-        self.serial.write([pair1,pair2])
+        bytes_send = bytes([pair1,pair2])
+        self.serial.write(bytes_send)
+       # self.serial.write([pair1,pair2])
         self.get_logger().info(f'Sent values to 4 way light: Pair1={pair1}, Pair2={pair2}')
 
 def main(args=None):
