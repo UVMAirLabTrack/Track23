@@ -20,7 +20,10 @@ def main(args=None):
 
     # Get the path of the current script
     script_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_path, 'light_states.txt')  # Specify the filename
+    
+    # Navigate up three parent levels and then access the 'control' folder
+    parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
+    file_path = os.path.join(parent_folder, 'control', 'light_states.txt')  # Specify the filename
 
     lights = read_light_states_from_file(file_path)
 
