@@ -17,7 +17,7 @@ class fourway(Node):
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
         self.serial = serial.Serial(self.serial_port, 9600)
 
-        link = txfer.SerialTransfer(self.serial)
+        
         print("Node Activated")
 
     def four_way_state_callback(self, msg):
@@ -30,9 +30,10 @@ class fourway(Node):
             self.set_led_color(pair1, pair2)
 
     def set_led_color(self, pair1, pair2):
+        link = txfer.SerialTransfer(self.serial)
         # Send the data over serial
         #self.serial.write(f'{pair1} {pair2}\n'.encode())
-        data_send = [pair1,pair2]
+        data_send = [pair1, pair2]
         #bytes_send = bytes([pair1,pair2])
         link.tx_obj(data_send)
         link.send()
