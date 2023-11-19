@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import os
+import time
 
 def read_light_states_from_file(file_path):
     with open(file_path, 'r') as file:
@@ -20,7 +21,7 @@ def main(args=None):
 
     # Get the path of the current script
     script_path = os.path.dirname(os.path.abspath(__file__))
-    
+
     # Navigate up three parent levels and then access the 'control' folder
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
     file_path = os.path.join(parent_folder, 'control', 'light_states.txt')  # Specify the filename
@@ -37,7 +38,9 @@ def main(args=None):
 
                 # Use the third integer in the line as the timeout time
                 timeout_time = light_state[2]
-                rclpy.spin_until_future_complete(node, None, timeout_sec=timeout_time)
+
+                # Sleep for the specified timeout time
+                time.sleep(timeout_time)
 
     node.destroy_node()
     rclpy.shutdown()
