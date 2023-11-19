@@ -11,3 +11,4 @@ sudo apt-get install -y openssh-server
 sudo apt-get install -y git
 sudo apt-get install -y python3-pip
 pip3 install pyserial 
+pip3 install pyserialtransfer

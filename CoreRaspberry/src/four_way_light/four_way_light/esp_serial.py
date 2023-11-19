@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
-from pyserialtransfer import pyserialtransfer as txfer
+from pySerialTransfer import pySerialTransfer as txfer
 import time
 
 class fourway(Node):
