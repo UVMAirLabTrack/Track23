@@ -15,7 +15,7 @@ class fourway(Node):
             10
         )
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
-        self.serial = serial.Serial(self.serial_port, 9600)
+        self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
 
         
         print("Node Activated")
