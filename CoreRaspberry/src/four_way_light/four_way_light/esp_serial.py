@@ -2,6 +2,8 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
+from pyserialtransfer import pyserialtransfer as txfer
+import time
 
 class fourway(Node):
     def __init__(self):
@@ -14,6 +16,8 @@ class fourway(Node):
         )
         self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
         self.serial = serial.Serial(self.serial_port, 9600)
+
+        link = txfer.SerialTransfer(self.serial)
         print("Node Activated")
 
     def four_way_state_callback(self, msg):
@@ -28,8 +32,11 @@ class fourway(Node):
     def set_led_color(self, pair1, pair2):
         # Send the data over serial
         #self.serial.write(f'{pair1} {pair2}\n'.encode())
-        bytes_send = bytes([pair1,pair2])
-        self.serial.write(bytes_send)
+        data_send = [pair1,pair2]
+        #bytes_send = bytes([pair1,pair2])
+        link.tx_obj(data_send)
+        link.send()
+        #self.serial.write(bytes_send)
        # self.serial.write([pair1,pair2])
         self.get_logger().info(f'Sent values to 4 way light: Pair1={pair1}, Pair2={pair2}')
 
