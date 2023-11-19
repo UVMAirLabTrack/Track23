@@ -1,35 +1,40 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
+import os
+
+def read_light_states_from_file(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        light_states = []
+        for line in lines:
+            # Assuming the data in the file is space-separated integers
+            light_state = list(map(int, line.strip().split()))
+            light_states.append(light_state)
+    return light_states
 
 def main(args=None):
     rclpy.init(args=args)
     node = rclpy.create_node('pub')
     publisher = node.create_publisher(Int32MultiArray, 'four_way_state', 10)
 
-    msg = Int32MultiArray()
-    msg2 = Int32MultiArray()
-    msg3 = Int32MultiArray()
-    msg.data = [5, 7] 
-    msg2.data = [1, 3]
-    msg3.data = [4, 2]
-    time = 1
+    # Get the path of the current script
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_path, 'light_states.txt')  # Specify the filename
+
+    lights = read_light_states_from_file(file_path)
 
     while rclpy.ok():
-        node.get_logger().info('Publishing: {}'.format(msg.data))
-        publisher.publish(msg)
-        rclpy.spin_once(node)
-        rclpy.sleep(time)
+        for light_state in lights:
+            # Ensure each line in the file has at least 3 integers
+            if len(light_state) >= 3:
+                msg = Int32MultiArray(data=light_state[:2])
+                node.get_logger().info('Publishing: {}'.format(msg.data))
+                publisher.publish(msg)
 
-        node.get_logger().info('Publishing: {}'.format(msg.data1))
-        publisher.publish(msg2)
-        rclpy.spin_once(node)
-        rclpy.sleep(time)
-
-        node.get_logger().info('Publishing: {}'.format(msg.data2))
-        publisher.publish(msg3)
-        rclpy.spin_once(node)
-        rclpy.sleep(time)
+                # Use the third integer in the line as the timeout time
+                timeout_time = light_state[2]
+                rclpy.spin_until_future_complete(node, None, timeout_sec=timeout_time)
 
     node.destroy_node()
     rclpy.shutdown()
