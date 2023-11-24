@@ -87,6 +87,7 @@ def main():
 
     while rclpy.ok():
         node.get_logger().info(f'Publishing world from path: {world_path}')
+        node.get_logger().info(f"Pose Data File: {pose_data}")
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
         node.get_logger().info(f"Scale: {marker.scale}")
