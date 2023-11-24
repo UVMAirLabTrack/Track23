@@ -29,5 +29,10 @@ cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
 ros2 run four_way_light esp_serial
 
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run world_gen test
+
 monitor serial ports
 screen /dev/ttyUSB0 9600
