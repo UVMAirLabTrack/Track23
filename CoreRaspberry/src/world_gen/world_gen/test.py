@@ -11,7 +11,7 @@ def main():
 
     marker = Marker()
     marker.type = Marker.MESH_RESOURCE
-    world_path = "package://world_gen/worlds/test.dae"
+    world_path = "package://world_gen/test.dae"
 
     if not os.path.exists(world_path):
         node.get_logger().error(f"Error: Mesh file not found at {world_path}")
