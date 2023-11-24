@@ -26,11 +26,13 @@ def read_world_pose(file_path):
     pose_data = {}
     for line in lines:
         key, value = line.strip().split()
-        pose_data[key] = float(value)
+        try:
+            pose_data[key] = float(value)
+        except ValueError:
+            # Handle non-numeric values, for example, by keeping them as strings
+            pose_data[key] = value
 
     return pose_data
-
-# Example usage:
 
 
 
