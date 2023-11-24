@@ -26,6 +26,7 @@ def main():
     marker.lifetime.sec = 0  # Set a non-zero duration
     marker.frame_locked = False
     marker.mesh_use_embedded_materials = True
+    marker.header.frame_id = "map"
 
  #   if not os.path.exists(world_path):
   #      node.get_logger().error(f"Error: Mesh file not found at {world_path}")
