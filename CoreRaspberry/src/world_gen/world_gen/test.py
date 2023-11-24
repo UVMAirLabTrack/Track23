@@ -48,9 +48,10 @@ def main():
     world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
     world_file, world_pose = world_select(world_ctrl)
     world_path = os.path.join(parent_folder, 'worlds', f'{world_file}')
+    world_pose_path = os.path.join(parent_folder, 'worlds', f'{world_pose}')
 
 
-    pose_data = read_world_pose(world_pose)
+    pose_data = read_world_pose(world_pose_path)
 
     # Set marker properties using the extracted pose data
     marker.pose.position.x = pose_data.get('X_position', 0.0)
