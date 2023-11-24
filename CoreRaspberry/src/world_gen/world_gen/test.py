@@ -48,8 +48,7 @@ def main():
  
 
     while rclpy.ok():
-        node.get_logger().info('Publishing marker...')
-        node.get_logger().info({world_path})
+        node.get_logger().info(f'Publishing world from path: {world_path}')
         
         marker_publisher.publish(marker)
         rclpy.spin_once(node)
