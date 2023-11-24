@@ -1,6 +1,7 @@
 import rclpy
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose
+import os
 
 def main():
     rclpy.init()
