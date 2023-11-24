@@ -1,3 +1,12 @@
+/* PCB Connections
+Connector 1      Connector 2     Connector 3      Connector 4
+Red 12               15              6                21 
+Yellow 14             4            Linked 1           Linked 2
+Green 26             18            Linked 1           Linked 2
+White  25            19              8                23
+Blue 27               5              7                22
+*/
+
 #define redPin 21
 #define greenPin 23
 #define bluePin 18
