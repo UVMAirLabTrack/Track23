@@ -2,7 +2,7 @@ import rclpy
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose
 
-def publish_marker():
+def main():
     rclpy.init()
     node = rclpy.create_node('world_publisher')
 
@@ -22,4 +22,4 @@ def publish_marker():
     rclpy.shutdown()
 
 if __name__ == '__main__':
-    publish_marker()
+    main()
