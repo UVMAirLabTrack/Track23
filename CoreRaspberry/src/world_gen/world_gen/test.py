@@ -13,6 +13,7 @@ def world_select(file_path):
             parts = line.strip().split()
 
             if len(parts) > 1 and 'y' in parts[1]:
+                selected_worlds.append(f"{parts[0]}.dae")
                 world_poses.append(f"{parts[0]}.txt")
 
     return selected_worlds, world_poses
