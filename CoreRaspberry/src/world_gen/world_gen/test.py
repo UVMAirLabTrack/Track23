@@ -4,8 +4,8 @@ from geometry_msgs.msg import Pose
 import os
 
 def world_select(file_path):
-    selected_worlds = []
-    world_poses = []
+    selected_world = None
+    world_pose = None
 
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -13,10 +13,11 @@ def world_select(file_path):
             parts = line.strip().split()
 
             if len(parts) > 1 and 'y' in parts[1]:
-                selected_worlds.append(f"{parts[0]}.dae")
-                world_poses.append(f"{parts[0]}.txt")
+                selected_world = f"{parts[0]}.dae"
+                world_pose = f"{parts[0]}.txt"
+                break  # Exit the loop after the first match
 
-    return selected_worlds, world_poses
+    return selected_world, world_pose
 
 def read_world_pose(file_path):
     with open(file_path, 'r') as file:
