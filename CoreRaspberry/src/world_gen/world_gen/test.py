@@ -60,16 +60,16 @@ def main():
         node.get_logger().info(f"Pose data: {key} - {value}")
 
     # Set marker properties using the extracted pose data
-    marker.pose.position.x = pose_data.get('X_position', 0.0)
-    marker.pose.position.y = pose_data.get('Y_position', 0.0)
-    marker.pose.position.z = pose_data.get('Z_position', 0.0)
-    marker.scale.x = pose_data.get('Scale_x', 1.0)
-    marker.scale.y = pose_data.get('Scale_y', 1.0)
-    marker.scale.z = pose_data.get('Scale_z', 1.0)
-    marker.color.r = pose_data.get('Color_r', 1.0)
-    marker.color.g = pose_data.get('Color_g', 1.0)
-    marker.color.b = pose_data.get('Color_b', 1.0)
-    marker.color.a = pose_data.get('Color_a', 1.0)
+    marker.pose.position = Point(x=pose_data.get('X_position', 0.0),
+                                y=pose_data.get('Y_position', 0.0),
+                                z=pose_data.get('Z_position', 0.0))
+    marker.scale = Vector3(x=pose_data.get('Scale_x', 1.0),
+                        y=pose_data.get('Scale_y', 1.0),
+                        z=pose_data.get('Scale_z', 1.0))
+    marker.color = ColorRGBA(r=pose_data.get('Color_r', 1.0),
+                            g=pose_data.get('Color_g', 1.0),
+                            b=pose_data.get('Color_b', 1.0),
+                            a=pose_data.get('Color_a', 1.0))
     marker.lifetime.sec = int(pose_data.get('Lifetime_sec', 0))
     marker.frame_locked = bool(pose_data.get('Frame_locked', False))
     marker.mesh_use_embedded_materials = bool(pose_data.get('Mesh_use_embedded_materials', True))
@@ -90,7 +90,6 @@ def main():
 
     while rclpy.ok():
         node.get_logger().info(f'Publishing world from path: {world_path}')
-        node.get_logger().info(f"Pose Data File: {pose_data}")
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
         node.get_logger().info(f"Scale: {marker.scale}")
