@@ -11,11 +11,18 @@ def main():
 
     marker = Marker()
     marker.type = Marker.MESH_RESOURCE
-    world_path = "/home/dev/RaspberryCore/CoreRaspberry/worlds/test.dae"
+    #world_path = "/home/dev/RaspberryCore/CoreRaspberry/worlds/test.dae"
+
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
+    world_path = os.path.join(parent_folder, 'worlds', 'test.dae')
+
     marker.pose.position.x = 1.0
     marker.pose.position.y = 2.0
     marker.pose.position.z = 0.0
-    marker.pose.orientation.w = 1.0  # Assuming no rotation
+    #quaternion = rclpy.qos.qos_profile.Quaternion(x=0.0, y=0.0, z=0.7071, w=0.7071)
+    #marker.pose.orientation = quaternion
+    marker.pose.orientation = 1.0
     marker.scale.x = 1.0
     marker.scale.y = 1.0
     marker.scale.z = 1.0
@@ -28,11 +35,11 @@ def main():
     marker.mesh_use_embedded_materials = True
     marker.header.frame_id = "map"
 
- #   if not os.path.exists(world_path):
-  #      node.get_logger().error(f"Error: Mesh file not found at {world_path}")
-   #     node.destroy_node()
-    #    rclpy.shutdown()
-     #   return
+    if not os.path.exists(world_path):
+        node.get_logger().error(f"Error: Mesh file not found at {world_path}")
+        node.destroy_node()
+        rclpy.shutdown()
+        return
 
 
     marker.mesh_resource = f"file://{world_path}"
