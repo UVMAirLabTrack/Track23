@@ -11,7 +11,21 @@ def main():
 
     marker = Marker()
     marker.type = Marker.MESH_RESOURCE
-    world_path = "package://world_gen/test.dae"
+    world_path = "/home/dev/RaspberryCore/CoreRaspberry/worlds/test.dae"
+    marker.pose.position.x = 1.0
+    marker.pose.position.y = 2.0
+    marker.pose.position.z = 0.0
+    marker.pose.orientation.w = 1.0  # Assuming no rotation
+    marker.scale.x = 1.0
+    marker.scale.y = 1.0
+    marker.scale.z = 1.0
+    marker.color.r = 1.0
+    marker.color.g = 1.0
+    marker.color.b = 1.0
+    marker.color.a = 1.0
+    marker.lifetime.sec = 0  # Set a non-zero duration
+    marker.frame_locked = False
+    marker.mesh_use_embedded_materials = True
 
  #   if not os.path.exists(world_path):
   #      node.get_logger().error(f"Error: Mesh file not found at {world_path}")
@@ -20,7 +34,7 @@ def main():
      #   return
 
 
-    marker.mesh_resource = world_path
+    marker.mesh_resource = f"file://{world_path}"
     marker.pose = Pose()
 
  
