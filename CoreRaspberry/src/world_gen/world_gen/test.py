@@ -5,6 +5,7 @@ import os
 
 def world_select(file_path):
     selected_worlds = []
+    world_poses = []
 
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -12,9 +13,22 @@ def world_select(file_path):
             parts = line.strip().split()
 
             if len(parts) > 1 and 'y' in parts[1]:
-                selected_worlds.append(f"{parts[0]}.dae")
+                world_poses.append(f"{parts[0]}.txt")
 
-    return selected_worlds
+    return selected_worlds, world_poses
+
+def read_world_pose(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    pose_data = {}
+    for line in lines:
+        key, value = line.strip().split()
+        pose_data[key] = float(value)
+
+    return pose_data
+
+# Example usage:
 
 
 
@@ -31,23 +45,28 @@ def main():
     script_path = os.path.dirname(os.path.abspath(__file__))
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
     world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
-    world_file = world_select(world_ctrl)
+    world_file, world_pose = world_select(world_ctrl)
     world_path = os.path.join(parent_folder, 'worlds', f'{world_file}')
 
-    marker.pose.position.x = 1.0
-    marker.pose.position.y = 2.0
-    marker.pose.position.z = 0.0
-    marker.scale.x = 1.0
-    marker.scale.y = 1.0
-    marker.scale.z = 1.0
-    marker.color.r = 1.0
-    marker.color.g = 1.0
-    marker.color.b = 1.0
-    marker.color.a = 1.0
-    marker.lifetime.sec = 0  
-    marker.frame_locked = False
-    marker.mesh_use_embedded_materials = True
-    marker.header.frame_id = "map"
+
+    pose_data = read_world_pose(world_pose)
+
+    # Set marker properties using the extracted pose data
+    marker.pose.position.x = pose_data.get('X_position', 0.0)
+    marker.pose.position.y = pose_data.get('Y_position', 0.0)
+    marker.pose.position.z = pose_data.get('Z_position', 0.0)
+    marker.scale.x = pose_data.get('Scale_x', 1.0)
+    marker.scale.y = pose_data.get('Scale_y', 1.0)
+    marker.scale.z = pose_data.get('Scale_z', 1.0)
+    marker.color.r = pose_data.get('Color_r', 1.0)
+    marker.color.g = pose_data.get('Color_g', 1.0)
+    marker.color.b = pose_data.get('Color_b', 1.0)
+    marker.color.a = pose_data.get('Color_a', 1.0)
+    marker.lifetime.sec = pose_data.get('Lifetime_sec', 0.0)
+    marker.frame_locked = pose_data.get('Frame_locked', False)
+    marker.mesh_use_embedded_materials = pose_data.get('Mesh_use_embedded_materials', True)
+    marker.header.frame_id = pose_data.get('Frame_id', "map")
+
 
     if not os.path.exists(world_path):
         node.get_logger().error(f"Error: Mesh file not found at {world_path}")
