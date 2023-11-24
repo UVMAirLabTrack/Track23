@@ -68,8 +68,8 @@ def main():
     marker.color.b = pose_data.get('Color_b', 1.0)
     marker.color.a = pose_data.get('Color_a', 1.0)
     marker.lifetime.sec = int(pose_data.get('Lifetime_sec', 0))
-    marker.frame_locked = pose_data.get('Frame_locked', False)
-    marker.mesh_use_embedded_materials = pose_data.get('Mesh_use_embedded_materials', True)
+    marker.frame_locked = bool(pose_data.get('Frame_locked', False))
+    marker.mesh_use_embedded_materials = bool(pose_data.get('Mesh_use_embedded_materials', True))
     marker.header.frame_id = pose_data.get('Frame_id', "map")
 
 
