@@ -20,7 +20,7 @@ def main():
     marker.pose.position.x = 1.0
     marker.pose.position.y = 2.0
     marker.pose.position.z = 0.0
-    quaternion = rclpy.qos.qos_profile.Quaternion(x=0.0, y=0.0, z=0.0, w=0.0)
+    quaternion = rclpy.Qos.Qos_profile.Quaternion(x=0.0, y=0.0, z=0.0, w=0.0)
     marker.pose.orientation = quaternion
     
     marker.scale.x = 1.0
