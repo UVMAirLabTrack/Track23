@@ -56,6 +56,9 @@ def main():
 
     pose_data = read_world_pose(world_pose_path)
 
+    for key, value in pose_data.items():
+        node.get_logger().info(f"Pose data: {key} - {value}")
+
     # Set marker properties using the extracted pose data
     marker.pose.position.x = pose_data.get('X_position', 0.0)
     marker.pose.position.y = pose_data.get('Y_position', 0.0)
