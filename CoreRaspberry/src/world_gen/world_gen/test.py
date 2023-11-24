@@ -27,7 +27,7 @@ def main():
 
     while rclpy.ok():
         node.get_logger().info('Publishing marker...')
-        node.get_logger().info(marker.meshresr)
+        
         marker_publisher.publish(marker)
         rclpy.spin_once(node)
 
