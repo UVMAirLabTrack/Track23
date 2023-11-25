@@ -19,7 +19,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test = world_gen.gen:main',
+            'gen = world_gen.gen:main',
 
         ],
     },
