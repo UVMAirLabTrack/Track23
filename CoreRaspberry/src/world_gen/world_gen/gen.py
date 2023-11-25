@@ -90,6 +90,7 @@ def main():
         node.get_logger().info(f'Publishing world from path: {world_path}')
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
+        node.get_logger().info(f"Pose y: {marker.pose.position.y}")
         node.get_logger().info(f"Scale: {marker.scale}")
         node.get_logger().info(f"Color: {marker.color}")
         node.get_logger().info(f"Lifetime_sec: {marker.lifetime.sec}")
