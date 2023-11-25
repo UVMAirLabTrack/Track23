@@ -59,8 +59,8 @@ def main():
 
     # Set marker properties using the extracted pose data
     marker.pose.position.x = pose_data.get('X_position', 0.0)
-    marker.pose.position.y = 5.0 #pose_data.get('Y_position', 1.0)
-    marker.pose.position.z = 5.0 #pose_data.get('Z_position', 1.0)
+    marker.pose.position.y = pose_data.get('Y_position', 1.0)
+    marker.pose.position.z = pose_data.get('Z_position', 1.0)
     marker.scale.x = pose_data.get('Scale_x', 1.0)
     marker.scale.y = pose_data.get('Scale_y', 1.0)
     marker.scale.z = pose_data.get('Scale_z', 1.0)
@@ -82,7 +82,7 @@ def main():
 
 
     marker.mesh_resource = f"file://{world_path}"
-    marker.pose = Pose()
+
 
  
 
@@ -90,7 +90,6 @@ def main():
         node.get_logger().info(f'Publishing world from path: {world_path}')
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
-        node.get_logger().info(f"Pose y: {marker.pose.position.y}")
         node.get_logger().info(f"Scale: {marker.scale}")
         node.get_logger().info(f"Color: {marker.color}")
         node.get_logger().info(f"Lifetime_sec: {marker.lifetime.sec}")
