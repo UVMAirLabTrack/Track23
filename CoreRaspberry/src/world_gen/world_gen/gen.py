@@ -1,6 +1,6 @@
 import rclpy
 from visualization_msgs.msg import Marker
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, Quaternion
 import os
 
 def world_select(file_path):
@@ -68,6 +68,12 @@ def main():
     marker.color.g = pose_data.get('Color_g', 1.0)
     marker.color.b = pose_data.get('Color_b', 1.0)
     marker.color.a = pose_data.get('Color_a', 1.0)
+    quaternion = Quaternion()
+    quaternion.x = pose_data.get('Quaternion_x', 0.0)
+    quaternion.y = pose_data.get('Quaternion_y', 0.0)
+    quaternion.z = pose_data.get('Quaternion_z', 0.0)
+    quaternion.w = pose_data.get('Quaternion_w', 1.0)
+    marker.pose.orientation = quaternion
     marker.lifetime.sec = int(pose_data.get('Lifetime_sec', 1))
     marker.frame_locked = bool(pose_data.get('Frame_locked', False))
     marker.mesh_use_embedded_materials = bool(pose_data.get('Mesh_use_embedded_materials', False))
