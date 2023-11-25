@@ -99,6 +99,7 @@ def main():
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
         node.get_logger().info(f"Scale: {marker.scale}")
+        node.get_logger().info(f"Change Color?: {change_color}")
         node.get_logger().info(f"Color: {marker.color}")
         node.get_logger().info(f"Lifetime_sec: {marker.lifetime.sec}")
         node.get_logger().info(f"Frame_locked: {marker.frame_locked}")
