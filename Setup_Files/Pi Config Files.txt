@@ -4,3 +4,10 @@ sudo systemctl stop brltty-udev.service
 sudo systemctl mask brltty-udev.service
 sudo systemctl stop brltty.service
 sudo systemctl disable brltty.service
+
+note: by defualy access to the ttyubs is denied.
+To rectify this
+
+sudo usermod -a -G tty yourname
+sudo usermod -a -G dialout yourname
+where yourname is dev

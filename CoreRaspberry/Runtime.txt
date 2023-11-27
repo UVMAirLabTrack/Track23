@@ -1,0 +1,38 @@
+git clone https://github.com/UVMAirLabTrack/Track23 RaspberryCore
+cd /home/dev/RaspberryCore/
+git pull
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+rm -r build install log
+colcon build --symlink-install
+
+
+To Run the nodes properly
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+
+Current list of packages and nodes
+four_way_light
+    pub  This is a publisher node to publish to four_way_state
+    esp_serial  This is the converter from four_way_state to serial coms for the ESP32
+
+    ros2 run four_way_light pub
+
+
+Pastable command lists
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run four_way_light pub
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run four_way_light esp_serial
+
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+ros2 run world_gen gen
+
+monitor serial ports
+screen /dev/ttyUSB0 9600

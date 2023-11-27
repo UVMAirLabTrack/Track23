@@ -2,9 +2,9 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
 
-  <name>four_way_light</name>
+  <name>world_gen</name>
   <version>0.0.0</version>
-  <description>Control LEDs via ROS 2</description>
+  <description>generates world vizualizations for RVIZ</description>
   <maintainer email="iantheterror4@gmail.com">Ian M</maintainer>
   <license>TODO</license>
 
