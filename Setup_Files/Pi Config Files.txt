@@ -12,7 +12,7 @@ sudo systemctl set-default multi-user
 to boot the gui on a monitor
 sudo systemctl start gdm3
 
-note: by defualy access to the ttyubs is denied.
+note: by defualt access to the ttyusb is denied.
 To rectify this
 
 sudo usermod -a -G tty yourname
