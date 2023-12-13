@@ -7,8 +7,8 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'world_gen.test',
-        #'four_way_light.pub',
+        'world_gen.gen',
+
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -19,8 +19,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test = world_gen.test:main',
-            #'pub = four_way_light.pub:main',
+            'gen = world_gen.gen:main',
+
         ],
     },
 )
