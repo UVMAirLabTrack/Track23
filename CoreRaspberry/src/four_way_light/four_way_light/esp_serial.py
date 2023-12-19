@@ -80,9 +80,9 @@ class SerialSend(Node):
         self.get_logger().info(f'Sent values to all ports: {serial_data}')
 
 
-    def get_available_serial_ports(self):
-        available_ports = [port.device for port in list_ports.comports()]
-        return available_ports
+def get_available_serial_ports(self):
+    available_ports = [port.device for port in list_ports.comports() if "USB" in port.device]
+    return available_ports
 
 def main(args=None):
     rclpy.init(args=args)
