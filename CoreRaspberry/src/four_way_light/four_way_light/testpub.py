@@ -23,14 +23,8 @@ class StatePublisher(Node):
         # Publish the current state to each topic
         self.publish_state('four_way_state', self.state_alternator[self.current_state_index][:2])
         self.publish_state('three_way_state', self.state_alternator[self.current_state_index][2:])
-        
-        # For train_state, alternate between [0, 0] and [100, 150]
-        train_state_values = [0, 0] if self.current_state_index % 2 == 0 else [100, 150]
-        self.publish_state('train_state', train_state_values)
-        
-        # For aux_state, alternate between [0, 0] and [45, 90]
-        aux_state_values = [0, 0] if self.current_state_index % 2 == 0 else [45, 90]
-        self.publish_state('aux_state', aux_state_values)
+        self.publish_state('train_state', self.state_alternator[self.current_state_index])  # [100, 150]
+        self.publish_state('aux_state', self.state_alternator[self.current_state_index + 1])  # [45, 90]
 
         # Update the current state index
         self.current_state_index = (self.current_state_index + 1) % len(self.state_alternator)
