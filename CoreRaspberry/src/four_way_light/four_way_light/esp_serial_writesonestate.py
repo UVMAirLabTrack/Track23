@@ -52,19 +52,18 @@ class SerialSend(Node):
             last_state[0] = msg.data[0]
             last_state[1] = msg.data[1]
 
-            # Concatenate all last states into a single array
-            all_last_states = [
-                self.last_four_way_state[0], self.last_four_way_state[1],
-                self.last_three_way_state[0], self.last_three_way_state[1],
-                self.last_train_state[0], self.last_train_state[1],
-                self.last_aux_state[0], self.last_aux_state[1]
-            ]
+            # Create an array of 8 values
+            serial_data = [0, 0, 0, 0, 0, 0, 0, 0]
+
+            # Write the data from the last state to the specific indexed locations
+            serial_data[index * 2] = last_state[0]
+            serial_data[index * 2 + 1] = last_state[1]
 
             # Log the received data for debugging
-            self.get_logger().info(f'Received data: {all_last_states}')
+            self.get_logger().info(f'Received data: {serial_data}')
 
-            # Send the concatenated 8-integer message to all serial ports
-            self.send_to_all_serial_ports(all_last_states)
+            # Send the same 8-integer message to all serial ports
+            self.send_to_all_serial_ports(serial_data)
 
             # Publish the received data on the appropriate serial state topic
             publisher.publish(Int32MultiArray(data=last_state))
@@ -78,6 +77,7 @@ class SerialSend(Node):
             
         # Log the sent values
         self.get_logger().info(f'Sent values to all ports: {serial_data}')
+
 
     def get_available_serial_ports(self):
         available_ports = [port.device for port in list_ports.comports() if "USB" in port.device]
@@ -98,3 +98,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
