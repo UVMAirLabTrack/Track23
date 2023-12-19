@@ -36,7 +36,7 @@ class SerialSend(Node):
         # Get a list of available serial ports
         self.serial_ports = self.get_available_serial_ports()
         
-        self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
+        
 
         # Check if any serial ports are available
         if not self.serial_ports:
