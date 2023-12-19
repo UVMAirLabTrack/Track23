@@ -18,7 +18,7 @@ bool active = 0;
 void setup() {
   Serial.begin(9600);
   Servo1.attach(5);
-  Servo2.attach(6);  // attaches the servo on pin 9 to the servo object
+  //Servo2.attach(6);  // attaches the servo on pin 9 to the servo object
 
 }
 
