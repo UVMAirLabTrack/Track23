@@ -35,8 +35,6 @@ class SerialSend(Node):
 
         # Get a list of available serial ports
         self.serial_ports = self.get_available_serial_ports()
-        
-        
 
         # Check if any serial ports are available
         if not self.serial_ports:
@@ -80,6 +78,11 @@ class SerialSend(Node):
         
         # Log the sent values
         self.get_logger().info(f'Sent values to all ports: {serial_data}')
+
+    def get_available_serial_ports(self):
+        # Get a list of available serial ports
+        available_ports = [port.device for port in list_ports.comports()]
+        return available_ports
 
 def main(args=None):
     rclpy.init(args=args)
