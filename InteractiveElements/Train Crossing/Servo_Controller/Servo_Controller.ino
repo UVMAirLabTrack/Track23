@@ -16,10 +16,9 @@ Servo servo1, servo2;
 
 int angle1 = 0;
 int angle2 = 0;
-int Pair1 = 0;
-int Pair2 = 0;
-int Pair3 = 0;
-int Pair4 = 0;
+
+int Pair5 = 0;
+int Pair6 = 0;
 
 
 void setup() {
@@ -35,13 +34,15 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() >= 3) {
-    Pair1 = Serial.parseInt();
-    Pair2 = Serial.parseInt();
-    Pair3 = Serial.parseInt();
-    Pair4 = Serial.parseInt();
+  if (Serial.available() >= 6) {
+    int Pair1 = Serial.parseInt();
+    int Pair2 = Serial.parseInt();
+    int Pair3 = Serial.parseInt();
+    int Pair4 = Serial.parseInt();
+    Pair5 = Serial.parseInt();
+    Pair6 = Serial.parseInt();
 
-    angle1 = servoangle(Pair1,servo1,servo2,angle1,led1,led2);
+    angle1 = servoangle(Pair5,servo1,servo2,angle1,led1,led2);
     //Serial.print("Servo pair 1 to Angle: ");
     //Serial.println(Pair1);
     //angle2 = servoangle(Pair2,servo2,angle2,led3,led4);
