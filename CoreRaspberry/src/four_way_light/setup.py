@@ -9,6 +9,7 @@ setup(
     py_modules=[
         'four_way_light.esp_serial',
         'four_way_light.pub',
+        'four_way_light.testpub',
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,6 +22,7 @@ setup(
         'console_scripts': [
             'esp_serial = four_way_light.esp_serial:main',
             'pub = four_way_light.pub:main',
+            'testpub = four_way_light.testpub:main',
         ],
     },
 )

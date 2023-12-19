@@ -3,41 +3,75 @@ from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
 
-class fourway(Node):
+class SerialSend(Node):
     def __init__(self):
-        super().__init__('esp_serial')
-        self.light_state_subscription = self.create_subscription(
+        super().__init__('serial_send')
+        
+        self.four_way_subscription = self.create_subscription(
             Int32MultiArray,
             'four_way_state',
-            self.four_way_state_callback,
+            self.callback_four_way,
             10
         )
-        self.serial_port = '/dev/ttyUSB0'  # Adjust this based on your serial port
-        self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+        self.three_way_subscription = self.create_subscription(
+            Int32MultiArray,
+            'three_way_state',
+            self.callback_three_way,
+            10
+        )
+        self.train_subscription = self.create_subscription(
+            Int32MultiArray,
+            'train_state',
+            self.callback_train,
+            10
+        )
+        self.aux_subscription = self.create_subscription(
+            Int32MultiArray,
+            'aux_state',
+            self.callback_aux,
+            10
+        )
 
-        
+        self.serial_ports = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3']
+        self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
+
         print("Node Activated")
 
-    def four_way_state_callback(self, msg):
-        if len(msg.data) == 2:
-            pair1 = msg.data[0]
-            pair2 = msg.data[1]
-            #pair1 = int((pair1 - 1) * 25.5)
-            #pair2 = int((pair2 - 1) * 25.5)
-            # Send the values to Arduino via serial
-            self.set_led_color(pair1, pair2)
+    def callback_four_way(self, msg):
+        self.process_state_callback(msg, 0)
 
-    def set_led_color(self, pair1, pair2):
-        # Send the data over serial
-        serial_data = f'{pair1} {pair2}\n'
-        self.serial.write(serial_data.encode('utf-8'))
-        #bytes_send = bytes([pair1,pair2])
-        #self.serial.write(bytes_send)
-        self.get_logger().info(f'Sent values to 4 way light: Pair1={pair1}, Pair2={pair2}')
+    def callback_three_way(self, msg):
+        self.process_state_callback(msg, 1)
+
+    def callback_train(self, msg):
+        self.process_state_callback(msg, 2)
+
+    def callback_aux(self, msg):
+        self.process_state_callback(msg, 3)
+
+    def process_state_callback(self, msg, serial_port_index):
+        # Ensure the received message has at least 2 integers
+        if len(msg.data) >= 2:
+            # Create an array of 8 values
+            serial_data = [0, 0, 0, 0, 0, 0, 0, 0]
+            
+            # Copy the first 2 integers from the message into the serial_data array
+            serial_data[0] = msg.data[0]
+            serial_data[1] = msg.data[1]
+            
+            # Send the same 8-integer message to all serial ports
+            self.send_to_all_serial_ports(serial_data)
+
+    def send_to_all_serial_ports(self, serial_data):
+        # Send the data over all specified serial ports
+        for serial_object in self.serial_objects:
+            serial_object.write(bytearray(serial_data))
+        
+        self.get_logger().info(f'Sent values to all ports: {serial_data}')
 
 def main(args=None):
     rclpy.init(args=args)
-    node = fourway()
+    node = SerialSend()
     rclpy.spin(node)
     rclpy.shutdown()
 
