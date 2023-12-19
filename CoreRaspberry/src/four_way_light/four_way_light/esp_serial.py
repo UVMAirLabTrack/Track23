@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 from serial.tools import list_ports
 import serial
+from rclpy.executors import MultiThreadedExecutor
 
 class SerialSend(Node):
     def __init__(self):
@@ -91,12 +92,18 @@ def main(args=None):
     node = SerialSend()
 
     # Create subscriptions to the original topics
-    node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
-    node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
-    node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
-    node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
+    four_way_subscription = node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
+    three_way_subscription = node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
+    train_subscription = node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
+    aux_subscription = node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
 
-    rclpy.spin(node)
+    # Use executor to manage multiple subscriptions
+    executor = rclpy.executors.MultiThreadedExecutor(num_threads=4)
+    executor.add_node(node)
+
+    # Spin with the executor
+    executor.spin()
+
     rclpy.shutdown()
 
 if __name__ == '__main__':
