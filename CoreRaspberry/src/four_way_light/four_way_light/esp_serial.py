@@ -62,11 +62,11 @@ class SerialSend(Node):
             last_state[0] = serial_data[0]
             last_state[1] = serial_data[1]
 
-            # Send the same 8-integer message to all serial ports
-            self.send_to_all_serial_ports(serial_data)
-
             # Publish the received data on the appropriate serial state topic
             publisher.publish(Int32MultiArray(data=last_state))
+
+            # Send the same 8-integer message to all serial ports
+            self.send_to_all_serial_ports(serial_data)
 
     def send_to_all_serial_ports(self, serial_data):
         try:
@@ -79,6 +79,7 @@ class SerialSend(Node):
             self.get_logger().info(f'Sent values to all ports: {serial_data}')
         except Exception as e:
             self.get_logger().error(f'Error sending values to all ports: {e}')
+
 
 
     def get_available_serial_ports(self):
