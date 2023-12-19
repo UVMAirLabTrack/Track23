@@ -3,7 +3,6 @@ from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 from serial.tools import list_ports
 import serial
-from rclpy.executors import MultiThreadedExecutor
 
 class SerialSend(Node):
     def __init__(self):
@@ -35,39 +34,32 @@ class SerialSend(Node):
         print("Node Activated")
 
     def callback_four_way(self, msg):
-        self.process_state_callback(msg, self.four_way_publisher, self.last_four_way_state)
+        self.process_state_callback(msg, self.last_four_way_state)
 
     def callback_three_way(self, msg):
-        self.process_state_callback(msg, self.three_way_publisher, self.last_three_way_state)
+        self.process_state_callback(msg, self.last_three_way_state)
 
     def callback_train(self, msg):
-        self.process_state_callback(msg, self.train_publisher, self.last_train_state)
+        self.process_state_callback(msg, self.last_train_state)
 
     def callback_aux(self, msg):
-        self.process_state_callback(msg, self.aux_publisher, self.last_aux_state)
+        self.process_state_callback(msg, self.last_aux_state)
 
-    def process_state_callback(self, msg, publisher, last_state):
+    def process_state_callback(self, msg, last_state):
         # Ensure the received message has at least 2 integers
         if len(msg.data) >= 2:
-            # Create an array of 8 values
-            serial_data = [0, 0, 0, 0, 0, 0, 0, 0]
+            # Update the last state directly with the received values
+            last_state[0] = msg.data[0]
+            last_state[1] = msg.data[1]
 
-            # Copy the first 2 integers from the message into the serial_data array
-            serial_data[0] = msg.data[0]
-            serial_data[1] = msg.data[1]
-
-            # Log the received data for debugging
-            self.get_logger().info(f'Received data: {serial_data}')
-
-            # Update the last state with the received values
-            last_state[0] = serial_data[0]
-            last_state[1] = serial_data[1]
-
-            # Publish the received data on the appropriate serial state topic
-            publisher.publish(Int32MultiArray(data=last_state))
+            # Concatenate the last state arrays to form the 8-integer array
+            concatenated_data = last_state + [0, 0, 0, 0]
 
             # Send the same 8-integer message to all serial ports
-            self.send_to_all_serial_ports(serial_data)
+            self.send_to_all_serial_ports(concatenated_data)
+
+            # Publish the concatenated data on the appropriate serial state topic
+            self.publish_concatenated_data(last_state)
 
     def send_to_all_serial_ports(self, serial_data):
         try:
@@ -81,7 +73,19 @@ class SerialSend(Node):
         except Exception as e:
             self.get_logger().error(f'Error sending values to all ports: {e}')
 
+    def publish_concatenated_data(self, last_state):
+        # Concatenate the last state arrays to form the 8-integer array
+        concatenated_data = last_state + [0, 0, 0, 0]
 
+        # Publish the concatenated data on the appropriate serial state topic
+        if last_state is self.last_four_way_state:
+            self.four_way_publisher.publish(Int32MultiArray(data=concatenated_data))
+        elif last_state is self.last_three_way_state:
+            self.three_way_publisher.publish(Int32MultiArray(data=concatenated_data))
+        elif last_state is self.last_train_state:
+            self.train_publisher.publish(Int32MultiArray(data=concatenated_data))
+        elif last_state is self.last_aux_state:
+            self.aux_publisher.publish(Int32MultiArray(data=concatenated_data))
 
     def get_available_serial_ports(self):
         available_ports = [port.device for port in list_ports.comports()]
@@ -92,19 +96,12 @@ def main(args=None):
     node = SerialSend()
 
     # Create subscriptions to the original topics
-    four_way_subscription = node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
-    three_way_subscription = node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
-    train_subscription = node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
-    aux_subscription = node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
+    node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
+    node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
+    node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
+    node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
 
-    # Use executor to manage multiple subscriptions
-    executor = rclpy.executors.MultiThreadedExecutor(num_threads=4)
-    executor.add_node(node)
-
-    # Spin with the executor
-    executor.spin()
-
+    rclpy.spin(node)
     rclpy.shutdown()
 
-if __name__ == '__main__':
-    main()
+if __name__
