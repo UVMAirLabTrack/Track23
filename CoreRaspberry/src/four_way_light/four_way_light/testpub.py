@@ -17,6 +17,9 @@ class StatePublisher(Node):
         self.current_state_index = 0
 
     def timer_callback(self):
+        # Log information about the current state index
+        self.get_logger().info(f'Publishing data for state index: {self.current_state_index}')
+
         # Publish the current state to each topic
         self.publish_state('four_way_state', self.state_alternator[self.current_state_index][:2])
         self.publish_state('three_way_state', self.state_alternator[self.current_state_index][2:])
@@ -33,6 +36,9 @@ class StatePublisher(Node):
         self.current_state_index = (self.current_state_index + 1) % len(self.state_alternator)
 
     def publish_state(self, topic, values):
+        # Log information about the data being published
+        self.get_logger().info(f'Publishing data to topic {topic}: {values}')
+
         # Create a message with the current state
         msg = Int32MultiArray()
         msg.data = values
@@ -55,3 +61,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
