@@ -34,21 +34,16 @@ class SerialSend(Node):
         )
 
         # Get a list of available serial ports
-        self.serial_ports = self.get_available_serial_ports()
+        self.serial_ports = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3']
+        self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
 
         # Check if any serial ports are available
         if not self.serial_ports:
             self.get_logger().error('No serial devices found')
         else:
-            self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
         print("Node Activated")
-
-    def get_available_serial_ports(self):
-        # Get a list of available serial ports
-        available_ports = [port.device for port in list_ports.comports()]
-        return available_ports
 
     def callback_four_way(self, msg):
         self.process_state_callback(msg, 0)
@@ -76,10 +71,12 @@ class SerialSend(Node):
             self.send_to_all_serial_ports(serial_data)
 
     def send_to_all_serial_ports(self, serial_data):
-        # Send the data over all specified serial ports
+        # Convert the list of integers to a string and send it over all specified serial ports
+        serial_str = f'{serial_data[0]} {serial_data[1]} {serial_data[2]} {serial_data[3]} {serial_data[4]} {serial_data[5]} {serial_data[6]} {serial_data[7]}\n'
         for serial_object in self.serial_objects:
-            serial_object.write(bytearray(serial_data))
+            serial_object.write(serial_str.encode('utf-8'))
         
+        # Log the sent values
         self.get_logger().info(f'Sent values to all ports: {serial_data}')
 
 def main(args=None):
