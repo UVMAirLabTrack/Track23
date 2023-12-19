@@ -66,19 +66,10 @@ class SerialSend(Node):
             self.send_to_all_serial_ports(serial_data)
 
             # Publish the received data on the appropriate serial state topic
-            self.publish_data(publisher, serial_data)
-
-    def publish_data(self, publisher, serial_data):
-        # Create a new Int32MultiArray message
-        msg = Int32MultiArray()
-
-        # Populate the message with the entire serial_data array
-        msg.data = serial_data
-
-        # Publish the message
-        publisher.publish(msg)
+            publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
+        self.get_logger().info(f'Attempting Serial Send')
         try:
             # Convert the list of integers to a string and send it over all specified serial ports
             serial_str = f'{serial_data[0]} {serial_data[1]} {serial_data[2]} {serial_data[3]} {serial_data[4]} {serial_data[5]} {serial_data[6]} {serial_data[7]}\n'
@@ -89,7 +80,6 @@ class SerialSend(Node):
             self.get_logger().info(f'Sent values to all ports: {serial_data}')
         except Exception as e:
             self.get_logger().error(f'Error sending values to all ports: {e}')
-
 
     def get_available_serial_ports(self):
         available_ports = [port.device for port in list_ports.comports()]
