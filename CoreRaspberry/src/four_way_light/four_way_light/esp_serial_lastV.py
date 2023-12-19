@@ -1,12 +1,37 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
-from serial.tools import list_ports
 import serial
+from serial.tools import list_ports
 
 class SerialSend(Node):
     def __init__(self):
         super().__init__('serial_send')
+        
+        self.four_way_subscription = self.create_subscription(
+            Int32MultiArray,
+            'four_way_state',
+            self.callback_four_way,
+            10
+        )
+        self.three_way_subscription = self.create_subscription(
+            Int32MultiArray,
+            'three_way_state',
+            self.callback_three_way,
+            10
+        )
+        self.train_subscription = self.create_subscription(
+            Int32MultiArray,
+            'train_state',
+            self.callback_train,
+            10
+        )
+        self.aux_subscription = self.create_subscription(
+            Int32MultiArray,
+            'aux_state',
+            self.callback_aux,
+            10
+        )
 
         # Get a list of available serial ports
         self.serial_ports = self.get_available_serial_ports()
@@ -15,58 +40,38 @@ class SerialSend(Node):
         if not self.serial_ports:
             self.get_logger().error('No serial devices found')
         else:
-            # Create serial objects for all available serial ports
             self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
-
-        # Create publishers for individual topics
-        self.four_way_publisher = self.create_publisher(Int32MultiArray, 'four_way_serial_state', 10)
-        self.three_way_publisher = self.create_publisher(Int32MultiArray, 'three_way_serial_state', 10)
-        self.train_publisher = self.create_publisher(Int32MultiArray, 'train_serial_state', 10)
-        self.aux_publisher = self.create_publisher(Int32MultiArray, 'aux_serial_state', 10)
-
-        # Initialize last values for each state
-        self.last_four_way_state = [0, 0]
-        self.last_three_way_state = [0, 0]
-        self.last_train_state = [0, 0]
-        self.last_aux_state = [0, 0]
 
         print("Node Activated")
 
     def callback_four_way(self, msg):
-        self.process_state_callback(msg, self.four_way_publisher, self.last_four_way_state)
+        self.process_state_callback(msg, 0)
 
     def callback_three_way(self, msg):
-        self.process_state_callback(msg, self.three_way_publisher, self.last_three_way_state)
+        self.process_state_callback(msg, 1)
 
     def callback_train(self, msg):
-        self.process_state_callback(msg, self.train_publisher, self.last_train_state)
+        self.process_state_callback(msg, 2)
 
     def callback_aux(self, msg):
-        self.process_state_callback(msg, self.aux_publisher, self.last_aux_state)
+        self.process_state_callback(msg, 3)
 
-    def process_state_callback(self, msg, publisher, last_state):
+    def process_state_callback(self, msg, serial_port_index):
         # Ensure the received message has at least 2 integers
         if len(msg.data) >= 2:
             # Create an array of 8 values
             serial_data = [0, 0, 0, 0, 0, 0, 0, 0]
-
+            
             # Copy the first 2 integers from the message into the serial_data array
             serial_data[0] = msg.data[0]
             serial_data[1] = msg.data[1]
 
             # Log the received data for debugging
-            self.get_logger().info(f'Received data: {serial_data}')
-
-            # Update the last state with the received values
-            last_state[0] = serial_data[0]
-            last_state[1] = serial_data[1]
+            self.get_logger().info(f'Received data for port {serial_port_index}: {serial_data}')
 
             # Send the same 8-integer message to all serial ports
             self.send_to_all_serial_ports(serial_data)
-
-            # Publish the received data on the appropriate serial state topic
-            publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
         # Convert the list of integers to a string and send it over all specified serial ports
@@ -78,19 +83,13 @@ class SerialSend(Node):
         self.get_logger().info(f'Sent values to all ports: {serial_data}')
 
     def get_available_serial_ports(self):
+        # Get a list of available serial ports
         available_ports = [port.device for port in list_ports.comports()]
         return available_ports
 
 def main(args=None):
     rclpy.init(args=args)
     node = SerialSend()
-
-    # Create subscriptions to the original topics
-    node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
-    node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
-    node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
-    node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
-
     rclpy.spin(node)
     rclpy.shutdown()
 
