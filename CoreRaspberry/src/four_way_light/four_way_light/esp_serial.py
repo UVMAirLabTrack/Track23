@@ -34,32 +34,39 @@ class SerialSend(Node):
         print("Node Activated")
 
     def callback_four_way(self, msg):
-        self.process_state_callback(msg, self.last_four_way_state)
+        self.process_state_callback(msg, self.four_way_publisher, self.last_four_way_state, 0)
 
     def callback_three_way(self, msg):
-        self.process_state_callback(msg, self.last_three_way_state)
+        self.process_state_callback(msg, self.three_way_publisher, self.last_three_way_state, 1)
 
     def callback_train(self, msg):
-        self.process_state_callback(msg, self.last_train_state)
+        self.process_state_callback(msg, self.train_publisher, self.last_train_state, 2)
 
     def callback_aux(self, msg):
-        self.process_state_callback(msg, self.last_aux_state)
+        self.process_state_callback(msg, self.aux_publisher, self.last_aux_state, 3)
 
-    def process_state_callback(self, msg, last_state):
+    def process_state_callback(self, msg, publisher, last_state, index):
         # Ensure the received message has at least 2 integers
         if len(msg.data) >= 2:
-            # Update the last state directly with the received values
+            # Update the last state with the received values
             last_state[0] = msg.data[0]
             last_state[1] = msg.data[1]
 
-            # Concatenate the last state arrays to form the 8-integer array
-            concatenated_data = last_state + [0, 0, 0, 0]
+            # Create an array of 8 values
+            serial_data = [0, 0, 0, 0, 0, 0, 0, 0]
+
+            # Write the data from the last state to the specific indexed locations
+            serial_data[index * 2] = last_state[0]
+            serial_data[index * 2 + 1] = last_state[1]
+
+            # Log the received data for debugging
+            self.get_logger().info(f'Received data: {serial_data}')
 
             # Send the same 8-integer message to all serial ports
-            self.send_to_all_serial_ports(concatenated_data)
+            self.send_to_all_serial_ports(serial_data)
 
-            # Publish the concatenated data on the appropriate serial state topic
-            self.publish_concatenated_data(last_state)
+            # Publish the received data on the appropriate serial state topic
+            publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
         try:
@@ -72,20 +79,6 @@ class SerialSend(Node):
             self.get_logger().info(f'Sent values to all ports: {serial_data}')
         except Exception as e:
             self.get_logger().error(f'Error sending values to all ports: {e}')
-
-    def publish_concatenated_data(self, last_state):
-        # Concatenate the last state arrays to form the 8-integer array
-        concatenated_data = last_state + [0, 0, 0, 0]
-
-        # Publish the concatenated data on the appropriate serial state topic
-        if last_state is self.last_four_way_state:
-            self.four_way_publisher.publish(Int32MultiArray(data=concatenated_data))
-        elif last_state is self.last_three_way_state:
-            self.three_way_publisher.publish(Int32MultiArray(data=concatenated_data))
-        elif last_state is self.last_train_state:
-            self.train_publisher.publish(Int32MultiArray(data=concatenated_data))
-        elif last_state is self.last_aux_state:
-            self.aux_publisher.publish(Int32MultiArray(data=concatenated_data))
 
     def get_available_serial_ports(self):
         available_ports = [port.device for port in list_ports.comports()]
@@ -106,3 +99,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
