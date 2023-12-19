@@ -34,13 +34,15 @@ class SerialSend(Node):
         )
 
         # Get a list of available serial ports
-        self.serial_ports = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3']
+        self.serial_ports = self.get_available_serial_ports()
+        
         self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
 
         # Check if any serial ports are available
         if not self.serial_ports:
             self.get_logger().error('No serial devices found')
         else:
+            self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
         print("Node Activated")
