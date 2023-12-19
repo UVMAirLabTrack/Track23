@@ -73,6 +73,7 @@ class SerialSend(Node):
         
         # Convert the list of integers to a string and send it over all specified serial ports
         serial_str = f'{serial_data[0]} {serial_data[1]} {serial_data[2]} {serial_data[3]} {serial_data[4]} {serial_data[5]} {serial_data[6]} {serial_data[7]}\n'
+        self.get_logger().info(f'Attempting Serial Send {serial_str}')
         for serial_object in self.serial_objects:
             serial_object.write(serial_str.encode('utf-8'))
             
