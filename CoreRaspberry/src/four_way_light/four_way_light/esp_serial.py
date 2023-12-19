@@ -66,7 +66,10 @@ class SerialSend(Node):
             # Copy the first 2 integers from the message into the serial_data array
             serial_data[0] = msg.data[0]
             serial_data[1] = msg.data[1]
-            
+
+            # Log the received data for debugging
+            self.get_logger().info(f'Received data for port {serial_port_index}: {serial_data}')
+
             # Send the same 8-integer message to all serial ports
             self.send_to_all_serial_ports(serial_data)
 
