@@ -13,7 +13,7 @@ class StatePublisher(Node):
         self.aux_publisher = self.create_publisher(Int32MultiArray, 'aux_state', 10)
 
         self.timer = self.create_timer(5.0, self.timer_callback)
-        self.state_alternator = [[1, 11], [3, 4], [100, 150], [45, 90]]
+        self.state_alternator = [[1, 11], [3, 4], [30, 60], [45, 90]]
         self.current_state_index = 0
 
     def timer_callback(self):
