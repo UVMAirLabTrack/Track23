@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
+from serial.tools import list_ports
 
 class SerialSend(Node):
     def __init__(self):
@@ -32,10 +33,22 @@ class SerialSend(Node):
             10
         )
 
-        self.serial_ports = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3']
-        self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
+        # Get a list of available serial ports
+        self.serial_ports = self.get_available_serial_ports()
+
+        # Check if any serial ports are available
+        if not self.serial_ports:
+            self.get_logger().error('No serial devices found')
+        else:
+            self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
+            self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
         print("Node Activated")
+
+    def get_available_serial_ports(self):
+        # Get a list of available serial ports
+        available_ports = [port.device for port in list_ports.comports()]
+        return available_ports
 
     def callback_four_way(self, msg):
         self.process_state_callback(msg, 0)
