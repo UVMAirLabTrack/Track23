@@ -45,7 +45,7 @@ ros2 run direct_io direct_light
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
-ros2 run direct_io direct_
+ros2 run direct_io direct_master
 
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
