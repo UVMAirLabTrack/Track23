@@ -14,6 +14,10 @@ class StatePublisher(Node):
 
         self.timer = self.create_timer(5.0, self.timer_callback)
         self.state_alternator = [[1, 11], [3, 4], [30, 60], [45, 90]]
+        self.four=[[0,0],[1,1],[6,3],[11,11]]
+        self.three=[[0,0],[2,2],[5,4],[10,10]]
+        self.train=[[0,0],[45,50],[90,95],[140,150]]
+        self.aux=[[0,0],[30,40],[150,140],[90,80]]
         self.current_state_index = 0
 
     def timer_callback(self):
@@ -21,13 +25,13 @@ class StatePublisher(Node):
         self.get_logger().info(f'Publishing data for state index: {self.current_state_index}')
 
         # Publish the current state to each topic
-        self.publish_state('four_way_state', self.state_alternator[self.current_state_index][:2])
-        self.publish_state('three_way_state', self.state_alternator[self.current_state_index][:2])
-        self.publish_state('train_state', self.state_alternator[self.current_state_index][:2])  # [100, 150]
-        self.publish_state('aux_state', self.state_alternator[self.current_state_index ][:2])  # [45, 90]
+        self.publish_state('four_way_state', self.four[self.current_state_index][:2])
+        self.publish_state('three_way_state', self.three[self.current_state_index][:2])
+        self.publish_state('train_state', self.train[self.current_state_index][:2])  # [100, 150]
+        self.publish_state('aux_state', self.aux[self.current_state_index ][:2])  # [45, 90]
 
         # Update the current state index
-        self.current_state_index = (self.current_state_index + 1) % len(self.state_alternator)
+        self.current_state_index = (self.current_state_index + 1) % len(self.four)
 
     def publish_state(self, topic, values):
         # Log information about the data being published
