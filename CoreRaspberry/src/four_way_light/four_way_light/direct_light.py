@@ -8,7 +8,7 @@ def map_state_to_integer(state):
         "Green": 3,
         "Right": 4,
         "Left": 5,
-        "All": 11
+        "All": 10
     }
     return state_mapping.get(state, 0)
 
