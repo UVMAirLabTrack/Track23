@@ -1,5 +1,5 @@
 import rclpy
-from std_msgs.msg import Int32
+from std_msgs.msg import Int32MultiArray
 
 def map_state_to_integer(state):
     state_mapping = {
@@ -29,10 +29,10 @@ def main():
             # If it's not a valid integer, map the input to an integer state
             state_integer = map_state_to_integer(user_input)
 
-        msg = Int32()
-        msg.data = state_integer
+        msg = Int32MultiArray()
+        msg.data = [state_integer, state_integer]  # For simplicity, setting the second element to 0
 
-        node.get_logger().info(f'Publishing: {state_integer}')
+        node.get_logger().info(f'Publishing: {msg.data}')
         publisher.publish(msg)
 
     node.destroy_node()
