@@ -10,6 +10,8 @@ setup(
         'four_way_light.esp_serial',
         'four_way_light.pub',
         'four_way_light.testpub',
+        'four_way_light.direct_light',
+
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,6 +25,7 @@ setup(
             'esp_serial = four_way_light.esp_serial:main',
             'pub = four_way_light.pub:main',
             'testpub = four_way_light.testpub:main',
+            'direct_light = four_way_light.direct_light:main',
         ],
     },
 )
