@@ -17,7 +17,7 @@ def main():
 
     node = rclpy.create_node('four_way_state_publisher')
 
-    publisher = node.create_publisher(Int32, 'four_way_state', 10)
+    publisher = node.create_publisher(Int32MultiArray, 'four_way_state', 10)
 
     while rclpy.ok():
         user_input = input("Enter state (Red, Yellow, Green, Right, Left, All) or an integer: ")
@@ -29,8 +29,9 @@ def main():
             # If it's not a valid integer, map the input to an integer state
             state_integer = map_state_to_integer(user_input)
 
+        # Create an array message with two integers
         msg = Int32MultiArray()
-        msg.data = [state_integer, state_integer]  # For simplicity, setting the second element to 0
+        msg.data = [state_integer, 0]  # For simplicity, setting the second element to 0
 
         node.get_logger().info(f'Publishing: {msg.data}')
         publisher.publish(msg)
