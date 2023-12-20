@@ -41,6 +41,8 @@ void loop() {
     int Pair4 = Serial.parseInt();
     Pair5 = Serial.parseInt();
     Pair6 = Serial.parseInt();
+    int Pair7 = Serial.parseInt();
+    int Pair8 = Serial.parseInt();   
 
     angle1 = servoangle(Pair5,servo1,servo2,angle1,led1,led2);
     //Serial.print("Servo pair 1 to Angle: ");
