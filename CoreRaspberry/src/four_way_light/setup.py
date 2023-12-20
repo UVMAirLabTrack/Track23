@@ -11,6 +11,7 @@ setup(
         'four_way_light.pub',
         'four_way_light.testpub',
         'four_way_light.direct_light',
+        'four_way_light.direct_servo',
 
     ],
     install_requires=['setuptools'],
@@ -26,6 +27,7 @@ setup(
             'pub = four_way_light.pub:main',
             'testpub = four_way_light.testpub:main',
             'direct_light = four_way_light.direct_light:main',
+            'direct_servo = four_way_light.direct_servo:main',
         ],
     },
 )
