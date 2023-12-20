@@ -15,9 +15,15 @@ source install/local_setup.bash
 Current list of packages and nodes
 four_way_light
     pub  This is a publisher node to publish to four_way_state
-    esp_serial  This is the converter from four_way_state to serial coms for the ESP32
+direct_io
+    testpub sends out an 8 integer message to test 4 possible nodes
+    direct_light sends along the four_way_state topic
+    direct_servo sends along the train_state topic
+    direct_master sends along any list of states, better for sending individual commands to all nodes
+    esp_serial  This is the converter from state to serial coms for the ESP32
 
-    ros2 run four_way_light pub
+world_gen
+    gen generates a vizualiztion file for RVIZ
 
 
 Pastable command lists
@@ -27,19 +33,19 @@ ros2 run four_way_light pub
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
-ros2 run four_way_light esp_serial
+ros2 run direct_io esp_serial
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
-ros2 run four_way_light testpub
+ros2 run direct_io testpub
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
-ros2 run four_way_light direct_light
+ros2 run direct_io direct_light
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
-ros2 run four_way_light direct_servo
+ros2 run direct_io direct_
 
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
