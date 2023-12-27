@@ -54,3 +54,5 @@ ros2 run world_gen gen
 
 monitor serial ports
 screen /dev/ttyUSB0 9600
+
+Test Note
