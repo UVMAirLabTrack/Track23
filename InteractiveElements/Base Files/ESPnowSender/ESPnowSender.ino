@@ -47,7 +47,9 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
 
 void setup() {
+  //Serial.begin(115200);
   Serial.begin(9600);
+  Serial.setTimeout(50);
  
   WiFi.mode(WIFI_STA);
  
@@ -84,7 +86,7 @@ void loop() {
     Data.Pair7 = Serial.parseInt();
     Data.Pair8 = Serial.parseInt();
     BufferClear = Serial.parseInt();
-
+/*
         Serial.print("String: ");
         Serial.print(Data.Pair1);
     Serial.print(" ");
@@ -100,7 +102,7 @@ void loop() {
     Serial.print(" ");
         Serial.print(Data.Pair7);
     Serial.print(" ");
-        Serial.println(Data.Pair8);   
+        Serial.println(Data.Pair8);   */
 
 
 esp_err_t result = esp_now_send(0, (uint8_t *) &Data, sizeof(DataStruct));
