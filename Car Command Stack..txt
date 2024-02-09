@@ -1,0 +1,49 @@
+Car Command Stack.
+
+Start Docker from existing image
+./docker_start.sh
+new terminal
+./docker_term.sh
+build brand new docker container
+./run_docker.sh
+commit docker image
+docker commit main_image ros-foxy:4.0.5.(change increment if needed)
+
+Run keyboard controls
+ros2 run yahboomcar_bringup Ackman_driver_R2
+ros2 run yahboomcar_ctrl yahboom_keyboard
+
+joystick controls. Still figuring this out
+ros2 run yahboomcar_ctrl yahboom_joy_R2
+ros2 run joy joy_node
+
+boot lidar, note the one with launch visualizer is not functioning.
+ros2 launch ydlidar_ros2_driver ydlidar_launch.py
+
+use this to find the ports the camera is attached to
+ll /dev/astra*
+
+ros2 launch astra_camera astro_pro_plus.launch.xml
+ros2 run rqt_image_view rqt_image_view
+
+color tracking
+ros2 run yahboomcar_astra colorHSV
+ros2 run yahboomcar_astra colorTracker
+use r key, select the area of color to track, then hit spacebar to activate (apparently
+
+line follower
+ros2 run yahboomcar_linefollow follow_line_4ROS_R2
+use r key to select area to scan for color.
+
+object tracker, remains untested
+ros2 run yahboomcar_KCFTracker KCF_Tracker_Node
+
+RGBD Slam
+ros2 launch yahboomcar_slam orbslam_ros_launch.py orb_slam_type:=rgbd
+
+ros2 launch yahboomcar_slam orbslam_base_launch.py
+ros2 launch yahboomcar_slam orbslam_pcl_map_launch.py
+ros2 launch yahboomcar_slam display_pcl_launch.py
+
+need to install:
+sudo apt-get install pcl-tools
