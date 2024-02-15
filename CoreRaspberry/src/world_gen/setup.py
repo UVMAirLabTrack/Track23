@@ -22,8 +22,8 @@ setup(
     package_dir={package_name: 'src/' + package_name},
     data_files=[
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'config'), glob('src/' + package_name + '/config/*')),
-        (os.path.join('share', package_name, 'launch'), glob('src/' + package_name + '/launch/*')),
+       # (os.path.join('share', package_name, 'config'), glob('src/' + package_name + '/config/*')),
+       # (os.path.join('share', package_name, 'launch'), glob('src/' + package_name + '/launch/*')),
         (os.path.join('share', package_name, 'worlds'), glob('src/' + package_name + '/worlds/*')),
     ],
     tests_require=['pytest'],
