@@ -32,7 +32,7 @@ class FourWayVisualizer(Node):
         poses = {}
         
         for light, pose_file in pose_files.items():
-            pose_file_path = os.path.join(share_path, os.pardir, os.pardir, 'coreraspberry', 'worlds', 'markers', pose_file)
+            pose_file_path = os.path.join(get_package_share_directory(self.package_name), os.pardir, os.pardir, 'coreraspberry', 'worlds', 'markers', pose_file)
 
             with open(pose_file_path, 'r') as file:
                 poses[light] = self.read_pose_from_file(file)
