@@ -6,7 +6,7 @@ import time
 class ColorPublisher(Node):
     def __init__(self):
         super().__init__('color_publisher')
-        self.publisher_ = self.create_publisher(String, '4_way_state', 10)
+        self.publisher_ = self.create_publisher(String, 'four_way_state', 10)
         self.timer_ = self.create_timer(3.0, self.timer_callback)
         self.colors = ['red', 'yellow', 'green', 'white', 'blue']
         self.current_color_index = 0

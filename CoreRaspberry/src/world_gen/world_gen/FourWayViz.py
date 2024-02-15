@@ -22,7 +22,7 @@ class FourWayVisualizer(Node):
         self.publisher = self.create_publisher(Marker, 'marker_topic_' + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
-        self.subscription = self.create_subscription(String, '4_way_state', self.color_callback, 10)
+        self.subscription = self.create_subscription(String, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
         self.timer = self.create_timer(0.1, self.publish_marker)
