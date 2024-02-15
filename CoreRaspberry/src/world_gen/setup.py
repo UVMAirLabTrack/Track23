@@ -21,7 +21,7 @@ setup(
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
 
-    package_dir={package_name: 'src/' + package_name},
+    package_dir={package_name: 'src/' + package_name + '/' + package_name},
     data_files=[
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'worlds'), glob('src/' + package_name + '/worlds/*')),
