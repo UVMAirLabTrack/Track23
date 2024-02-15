@@ -8,11 +8,11 @@ setup(
     name=package_name,
     version='0.0.0',
     packages=[package_name],
-    package_dir={package_name: 'src/' + package_name + '/world_gen'},  # Adjust this line
+    package_dir={package_name: 'src/' + package_name + '/world_gen'},
     py_modules=[
-        'gen',
-        'FourWayViz',
-        'color_publisher',
+        'world_gen.gen',
+        'world_gen.FourWayViz',
+        'world_gen.color_publisher',
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -27,7 +27,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'gen = world_gen.world_gen.gen:main',  # Adjust these lines
+            'gen = world_gen.world_gen.gen:main',
             'fourwayviz = world_gen.world_gen.FourWayViz:main',
             'ct = world_gen.world_gen.color_publisher:main',
         ],
