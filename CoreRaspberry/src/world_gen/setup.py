@@ -8,7 +8,7 @@ setup(
     name=package_name,
     version='0.0.0',
     packages=[package_name],
-    package_dir={package_name: 'src/' + package_name},
+    #package_dir={package_name: 'src/' + package_name},
     py_modules=[
     'world_gen.gen',
     'world_gen.FourWayViz',
