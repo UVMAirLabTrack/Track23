@@ -22,7 +22,7 @@ setup(
     license='TODO',
     data_files=[
         (os.path.join('share', package_name, 'worlds'), glob(os.path.join('src', package_name, 'worlds', '*')))
-        (os.path.join('share', package_name, 'markers'), glob(os.path.join('src', package_name, 'markers', '*')))
+        #(os.path.join('share', package_name, 'markers'), glob(os.path.join('src', package_name, 'markers', '*')))
     ],
     tests_require=['pytest'],
     entry_points={
