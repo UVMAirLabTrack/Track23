@@ -22,7 +22,7 @@ setup(
     license='TODO',
     data_files=[
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'worlds'), glob(os.path.join('src', package_name, 'worlds', '*'))),
+        (os.path.join('share', package_name, 'worlds'), [os.path.join(dp, f) for dp, dn, filenames in os.walk(os.path.join('src', package_name, 'worlds')) for f in filenames]),
     ],
     tests_require=['pytest'],
     entry_points={
