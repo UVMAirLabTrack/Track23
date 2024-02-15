@@ -8,6 +8,8 @@ setup(
     packages=[],
     py_modules=[
         'world_gen.gen',
+        'world_gen.FourWayViz',
+        'world_gen.color_publisher',
 
     ],
     install_requires=['setuptools'],
@@ -20,6 +22,8 @@ setup(
     entry_points={
         'console_scripts': [
             'gen = world_gen.gen:main',
+            'fourwayviz = world_gen.FourWayViz:main',
+            'ct = world_gen.color_publisher:main',
 
         ],
     },
