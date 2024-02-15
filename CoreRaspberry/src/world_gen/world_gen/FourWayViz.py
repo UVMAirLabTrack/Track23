@@ -30,9 +30,9 @@ class FourWayVisualizer(Node):
 
     def read_poses_from_files(self, pose_files):
         poses = {}
-        share_path = get_package_share_directory(self.package_name)
+        
         for light, pose_file in pose_files.items():
-            pose_file_path = os.path.join(share_path, '..', '..', 'coreraspberry', 'worlds', 'markers', pose_file)
+            pose_file_path = os.path.join(share_path, os.pardir, os.pardir, 'coreraspberry', 'worlds', 'markers', pose_file)
 
             with open(pose_file_path, 'r') as file:
                 poses[light] = self.read_pose_from_file(file)
@@ -84,7 +84,7 @@ class FourWayVisualizer(Node):
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
 
-        marker_msg.mesh_resource = os.path.join(get_package_share_directory(self.package_name), '..', '..', 'CoreRaspberry', 'worlds', 'light.stl')#os.path.join(worlds_folder_path,'worlds' 'markers', 'light.stl')  # Update with your mesh file
+        marker_msg.mesh_resource = os.path.join(get_package_share_directory(self.package_name), os.pardir, os.pardir, 'coreraspberry', 'worlds', 'markers', 'light.stl')#os.path.join(worlds_folder_path,'worlds' 'markers', 'light.stl')  # Update with your mesh file
 
         self.publisher.publish(marker_msg)
 
