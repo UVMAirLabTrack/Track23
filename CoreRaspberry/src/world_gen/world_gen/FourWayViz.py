@@ -16,6 +16,7 @@ class FourWayVisualizer(Node):
         self.possible_poses = self.read_poses_from_files(pose_files)
         self.current_pose = self.possible_poses[0]
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
+        self.package_name = 'world_gen'
 
         # Create publisher for the marker
         self.publisher = self.create_publisher(Marker, 'marker_topic_' + marker_name, 10)
@@ -29,15 +30,8 @@ class FourWayVisualizer(Node):
     def read_poses_from_files(self, pose_files):
         poses = {}
         for light, pose_file in pose_files.items():
-            # If the pose_file starts with 'package://', resolve it to an absolute file path
-            if pose_file.startswith('package://'):
-                package_name, _, relative_path = pose_file[len('package://'):].partition('/')
-                package_path = get_package_share_directory(package_name)
-                pose_file = os.path.join(package_path, relative_path)
-            else:
-                script_path = os.path.dirname(os.path.abspath(__file__))
-                parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
-                pose_file = os.path.join(parent_folder, 'worlds', 'markers', pose_file)
+            
+            pose_file = os.path.join(get_package_share_directory(self.package_name), pose_file)
 
             poses[light] = self.read_pose_from_file(pose_file)
 
@@ -76,7 +70,7 @@ class FourWayVisualizer(Node):
 
     def publish_marker(self):
         marker_msg = Marker()
-        marker_msg.header.frame_id = 'base_link'  # Set the frame ID as needed
+        marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
         marker_msg.header.stamp = self.get_clock().now().to_msg()
         marker_msg.id = 0
         marker_msg.type = Marker.MESH_RESOURCE
@@ -86,7 +80,7 @@ class FourWayVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
-        marker_msg.mesh_resource = 'package://my_marker_package/meshes/your_mesh_file.stl'  # Update with your mesh file
+        marker_msg.mesh_resource = os.path.join(get_package_share_directory(self.package_name),'worlds' 'markers', 'light.stl')  # Update with your mesh file
 
         self.publisher.publish(marker_msg)
 
