@@ -10,9 +10,9 @@ setup(
     packages=[package_name],
     package_dir={package_name: 'src/' + package_name},
     py_modules=[
-    'world_gen.world_gen.gen',
-    'world_gen.world_gen.FourWayViz',
-    'world_gen.world_gen.color_publisher',
+    'world_gen.gen',
+    'world_gen.FourWayViz',
+    'world_gen.color_publisher',
     ],
     install_requires=['setuptools'],
     zip_safe=True,
