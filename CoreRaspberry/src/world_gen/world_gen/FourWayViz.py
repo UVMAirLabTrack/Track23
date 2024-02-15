@@ -10,13 +10,14 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 class FourWayVisualizer(Node):
+    self.package_name = 'world_gen'
     def __init__(self, marker_name, pose_files):
         super().__init__('four_way_visualizer_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_files(pose_files)
         self.current_pose = self.possible_poses[0]
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
-        self.package_name = 'world_gen'
+        
 
         # Create publisher for the marker
         self.publisher = self.create_publisher(Marker, 'marker_topic_' + marker_name, 10)
