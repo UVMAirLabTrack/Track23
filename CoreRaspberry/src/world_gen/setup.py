@@ -1,5 +1,4 @@
-from setuptools import setup
-from glob import glob
+from setuptools import setup, find_packages
 import os
 
 package_name = 'world_gen'
@@ -7,23 +6,17 @@ package_name = 'world_gen'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name],
-    #package_dir={package_name: 'src/' + package_name},
-    py_modules=[
-    'world_gen.gen',
-    'world_gen.FourWayViz',
-    'world_gen.color_publisher',
-    ],
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='Ian M',
     maintainer_email='iantheterror4@gmail.com',
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
-    data_files=[
-        ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'worlds'), [os.path.join(dp, f) for dp, dn, filenames in os.walk(os.path.join('src', package_name, 'worlds')) for f in filenames]),
-    ],
+    package_data={
+        'world_gen': ['worlds/*'],
+    },
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
