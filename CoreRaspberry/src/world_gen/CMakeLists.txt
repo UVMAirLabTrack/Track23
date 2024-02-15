@@ -11,6 +11,8 @@ install(DIRECTORY
     config
     data
     launch
+    worlds
     DESTINATION share/${PROJECT_NAME}/)
+
 
 ament_package()
