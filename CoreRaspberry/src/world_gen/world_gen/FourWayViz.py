@@ -32,7 +32,7 @@ class FourWayVisualizer(Node):
         poses = {}
         for light, pose_file in pose_files.items():
             
-            pose_file = os.path.join(get_package_share_directory(package_name), pose_file)
+            pose_file = os.path.join(get_package_share_directory(self.package_name), pose_file)
 
             poses[light] = self.read_pose_from_file(pose_file)
 
@@ -81,7 +81,7 @@ class FourWayVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
-        marker_msg.mesh_resource = os.path.join(get_package_share_directory(package_name),'worlds' 'markers', 'light.stl')  # Update with your mesh file
+        marker_msg.mesh_resource = os.path.join(get_package_share_directory(self.package_name),'worlds' 'markers', 'light.stl')  # Update with your mesh file
 
         self.publisher.publish(marker_msg)
 
