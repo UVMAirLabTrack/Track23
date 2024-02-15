@@ -1,5 +1,5 @@
 from setuptools import setup
-
+from glob import glob
 package_name = 'world_gen'
 
 setup(
@@ -18,6 +18,14 @@ setup(
     maintainer_email='iantheterror4@gmail.com',
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
+
+    package_dir={package_name: 'src/' + package_name},
+    data_files=[
+        ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'config'), glob('src/' + package_name + '/config/*')),
+        (os.path.join('share', package_name, 'launch'), glob('src/' + package_name + '/launch/*')),
+        (os.path.join('share', package_name, 'worlds'), glob('src/' + package_name + '/worlds/*')),
+    ],
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
