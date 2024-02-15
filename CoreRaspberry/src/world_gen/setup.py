@@ -22,6 +22,7 @@ setup(
     license='TODO',
     data_files=[
     ('share/' + package_name + '/worlds', glob(os.path.join('world_gen', 'worlds', '*.*'))),
+    ('share/' + package_name + '/markers', glob(os.path.join('world_gen', 'markers', '*.*'))),
     ('share/' + package_name, ['package.xml']),
     ],
     tests_require=['pytest'],
