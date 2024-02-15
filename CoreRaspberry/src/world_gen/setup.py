@@ -20,10 +20,9 @@ setup(
     maintainer_email='iantheterror4@gmail.com',
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
-    data_files=[
+        data_files=[
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'worlds'), glob('src/' + package_name + '/worlds/*')),
-    ],
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
