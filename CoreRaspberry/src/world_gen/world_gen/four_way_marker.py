@@ -92,41 +92,10 @@ class FourWayVisualizer(Node):
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
 
-        marker_msg.mesh_resource = 'package://world_gen/markers/light.dae'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
-"""
-def main(args=None):
-    rclpy.init(args=args)
 
-    # Read ROS parameters for the pose files and set default values
-    pose_files = {
-        'light_a': '4_way_poses_light_a.txt',
-        'light_b': '4_way_poses_light_b.txt',
-        'light_c': '4_way_poses_light_c.txt',
-        'light_d': '4_way_poses_light_d.txt',
-    }
-
-
-    # Create instances of FourWayVisualizer for each light
-    marker_a = FourWayVisualizer('light_a', pose_files['light_a'])
-    marker_b = FourWayVisualizer('light_b', pose_files['light_b'])
-    marker_c = FourWayVisualizer('light_c', pose_files['light_c'])
-    marker_d = FourWayVisualizer('light_d', pose_files['light_d'])
-
-    # Spin the nodes
-    rclpy.spin(marker_a)
-    rclpy.spin(marker_b)
-    rclpy.spin(marker_c)
-    rclpy.spin(marker_d)
-
-
-    # Shutdown
-    marker_a.destroy_node()
-    marker_b.destroy_node()
-    marker_c.destroy_node()
-    marker_d.destroy_node()
-    rclpy.shutdown()"""
 
 def run_marker(marker_name, pose_file):
     #rclpy.init()
@@ -157,7 +126,7 @@ def main(args=None):
     process_c.start()
     process_d.start()
 
-    # Wait for processes to finish (you may want to remove this if your application requires continuous running)
+    
     process_a.join()
     process_b.join()
     process_c.join()
