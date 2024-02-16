@@ -64,17 +64,17 @@ class FourWayVisualizer(Node):
 
                 pose = Pose()
                 pose.position.x, pose.position.y, pose.position.z = x, y, z
-                quaternion = tf2_py.Quaternion()
-                quaternion.setRPY(roll, pitch, yaw)
+
+                # Set orientation using Euler angles directly
                 pose.orientation = tf2_geometry_msgs.msg.Quaternion()
-                pose.orientation.x = quaternion[0]
-                pose.orientation.y = quaternion[1]
-                pose.orientation.z = quaternion[2]
-                pose.orientation.w = quaternion[3]
+                pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w = tf2_py.transformations.quaternion_from_euler(roll, pitch, yaw)
+
                 poses.append(pose)
         except Exception as e:
             self.get_logger().error(f"Failed to read pose from file: {e}")
+
         return poses
+
 
     def color_callback(self, msg):
         # Set the marker color based on the received string
