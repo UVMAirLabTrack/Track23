@@ -104,10 +104,10 @@ def main(args=None):
     }
 
     # Create instances of FourWayVisualizer for each light
-    marker_a = FourWayVisualizer('light_a', pose_files)
-    marker_b = FourWayVisualizer('light_b', pose_files)
-    marker_c = FourWayVisualizer('light_c', pose_files)
-    marker_d = FourWayVisualizer('light_d', pose_files)
+    marker_a = FourWayVisualizer('light_a', pose_files['light_a'])
+    marker_b = FourWayVisualizer('light_b', pose_files['light_b'])
+    marker_c = FourWayVisualizer('light_c', pose_files['light_c'])
+    marker_d = FourWayVisualizer('light_d', pose_files['light_d'])
 
     # Spin the nodes
     rclpy.spin(marker_a)
