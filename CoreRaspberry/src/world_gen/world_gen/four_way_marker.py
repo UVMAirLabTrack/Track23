@@ -88,7 +88,7 @@ class FourWayVisualizer(Node):
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
 
-        marker_msg.mesh_resource = os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+        marker_msg.mesh_resource = 'package://world_gen/markers/light.dae'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
 
