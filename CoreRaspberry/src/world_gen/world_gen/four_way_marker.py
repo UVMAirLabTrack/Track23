@@ -15,12 +15,13 @@ class FourWayVisualizer(Node):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_files(pose_files)
+        self.read_poses_from_files(pose_files)
         self.current_pose = self.possible_poses[0]
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
 
         # Create publisher for the marker
-        self.publisher = self.create_publisher(Marker, 'marker_topic_' + marker_name, 10)
+        self.publisher = self.create_publisher(Marker, 'four_way_marker' + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
         self.subscription = self.create_subscription(String, 'four_way_state', self.color_callback, 10)
