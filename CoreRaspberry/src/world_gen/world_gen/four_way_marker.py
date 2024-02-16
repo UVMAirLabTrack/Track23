@@ -8,6 +8,8 @@ import tf2_geometry_msgs
 import tf2_py
 import os
 from ament_index_python.packages import get_package_share_directory
+import threading
+
 
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
@@ -92,7 +94,7 @@ class FourWayVisualizer(Node):
 
         self.publisher.publish(marker_msg)
 
-def main(args=None):
+""" def main(args=None):
     rclpy.init(args=args)
 
     # Read ROS parameters for the pose files and set default values
@@ -104,7 +106,6 @@ def main(args=None):
     }
 
 
-    node = rclpy.create_node('four_way_marker')
     # Create instances of FourWayVisualizer for each light
     marker_a = FourWayVisualizer('light_a', pose_files['light_a'])
     marker_b = FourWayVisualizer('light_b', pose_files['light_b'])
@@ -112,18 +113,47 @@ def main(args=None):
     marker_d = FourWayVisualizer('light_d', pose_files['light_d'])
 
     # Spin the nodes
-    #rclpy.spin(marker_a)
-    #rclpy.spin(marker_b)
-    #rclpy.spin(marker_c)
-    #rclpy.spin(marker_d)
-    rclpy.spin(node)
+    rclpy.spin(marker_a)
+    rclpy.spin(marker_b)
+    rclpy.spin(marker_c)
+    rclpy.spin(marker_d)
+
 
     # Shutdown
     marker_a.destroy_node()
     marker_b.destroy_node()
     marker_c.destroy_node()
     marker_d.destroy_node()
+    rclpy.shutdown() """
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    # Read ROS parameters for the pose files and set default values
+    pose_files = {
+        'light_a': '4_way_poses_light_a.txt',
+        'light_b': '4_way_poses_light_b.txt',
+        'light_c': '4_way_poses_light_c.txt',
+        'light_d': '4_way_poses_light_d.txt',
+    }
+
+    threads = []
+    for marker_name, pose_file in pose_files.items():
+        thread = threading.Thread(target=run_marker, args=(marker_name, pose_file))
+        threads.append(thread)
+        thread.start()
+
+    # Wait for all threads to finish
+    for thread in threads:
+        thread.join()
+
     rclpy.shutdown()
+
+def run_marker(marker_name, pose_file):
+    rclpy.init()
+    node = FourWayVisualizer(marker_name, pose_file)
+    rclpy.spin(node)
+    node.destroy_node()
 
 if __name__ == '__main__':
     main()
