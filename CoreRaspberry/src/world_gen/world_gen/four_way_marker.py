@@ -54,19 +54,24 @@ class FourWayVisualizer(Node):
     def read_pose_from_file(self, pose_file):
         poses = []
         try:
-            with open(pose_file, 'r') as file:
-                for line in file:
+            for line in file:
+                print("Reading line:", line)
+                try:
                     x, y, z, roll, pitch, yaw = map(float, line.split())
-                    pose = Pose()
-                    pose.position.x, pose.position.y, pose.position.z = x, y, z
-                    quaternion = tf2_py.Quaternion()
-                    quaternion.setRPY(roll, pitch, yaw)
-                    pose.orientation = tf2_geometry_msgs.msg.Quaternion()
-                    pose.orientation.x = quaternion[0]
-                    pose.orientation.y = quaternion[1]
-                    pose.orientation.z = quaternion[2]
-                    pose.orientation.w = quaternion[3]
-                    poses.append(pose)
+                except ValueError as ve:
+                    print(f"Error converting values on line '{line}': {ve}")
+                    continue
+
+                pose = Pose()
+                pose.position.x, pose.position.y, pose.position.z = x, y, z
+                quaternion = tf2_py.Quaternion()
+                quaternion.setRPY(roll, pitch, yaw)
+                pose.orientation = tf2_geometry_msgs.msg.Quaternion()
+                pose.orientation.x = quaternion[0]
+                pose.orientation.y = quaternion[1]
+                pose.orientation.z = quaternion[2]
+                pose.orientation.w = quaternion[3]
+                poses.append(pose)
         except Exception as e:
             self.get_logger().error(f"Failed to read pose from file: {e}")
         return poses
