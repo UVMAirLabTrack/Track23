@@ -65,7 +65,7 @@ class FourWayVisualizer(Node):
                 pose = Pose()
                 pose.position.x, pose.position.y, pose.position.z = x, y, z
                 quaternion = Quaternion()
-                quaternion.setRPY(roll, pitch, yaw)
+                #quaternion.setRPY(roll, pitch, yaw)
                 
                 quaternion.x = quaternion[0]
                 quaternion.y = quaternion[1]
