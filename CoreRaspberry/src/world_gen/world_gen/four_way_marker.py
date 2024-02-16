@@ -9,6 +9,7 @@ import tf2_py
 import os
 from ament_index_python.packages import get_package_share_directory
 import threading
+import time
 
 
 class FourWayVisualizer(Node):
@@ -93,12 +94,7 @@ class FourWayVisualizer(Node):
         marker_msg.mesh_resource = 'package://world_gen/markers/light.dae'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
-def run_node(marker_name, pose_file):
-    #rclpy.init()
-    node = FourWayVisualizer(marker_name, pose_file)
-    rclpy.spin(node)
-    rclpy.shutdown()
-
+"""
 def main(args=None):
     rclpy.init(args=args)
 
@@ -111,23 +107,7 @@ def main(args=None):
     }
 
 
-
-
-    threads = []
-    for marker_name, pose_file in pose_files.items():
-        thread = threading.Thread(target=run_node, args=(marker_name, pose_file))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
-
-    rclpy.shutdown()
-if __name__ == '__main__':
-    main()
-
-""" 
-   # Create instances of FourWayVisualizer for each light
+    # Create instances of FourWayVisualizer for each light
     marker_a = FourWayVisualizer('light_a', pose_files['light_a'])
     marker_b = FourWayVisualizer('light_b', pose_files['light_b'])
     marker_c = FourWayVisualizer('light_c', pose_files['light_c'])
@@ -146,3 +126,44 @@ if __name__ == '__main__':
     marker_c.destroy_node()
     marker_d.destroy_node()
     rclpy.shutdown()"""
+
+def run_marker(marker_name, pose_file):
+    #rclpy.init()
+    node = FourWayVisualizer(marker_name, pose_file)
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    # Read ROS parameters for the pose files and set default values
+    pose_files = {
+        'light_a': '4_way_poses_light_a.txt',
+        'light_b': '4_way_poses_light_b.txt',
+        'light_c': '4_way_poses_light_c.txt',
+        'light_d': '4_way_poses_light_d.txt',
+    }
+
+    # Create threads for each marker
+    thread_a = threading.Thread(target=run_marker, args=('light_a', pose_files['light_a']))
+    thread_b = threading.Thread(target=run_marker, args=('light_b', pose_files['light_b']))
+    thread_c = threading.Thread(target=run_marker, args=('light_c', pose_files['light_c']))
+    thread_d = threading.Thread(target=run_marker, args=('light_d', pose_files['light_d']))
+
+    # Start the threads
+    thread_a.start()
+    thread_b.start()
+    thread_c.start()
+    thread_d.start()
+
+    # Wait for threads to finish (you may want to remove this if your application requires continuous running)
+    thread_a.join()
+    thread_b.join()
+    thread_c.join()
+    thread_d.join()
+
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+
