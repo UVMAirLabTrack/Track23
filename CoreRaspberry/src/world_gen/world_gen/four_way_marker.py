@@ -51,7 +51,7 @@ class FourWayVisualizer(Node):
 
         return poses
 
-    def read_pose_from_file(self, pose_file):
+    def read_pose_from_file(self, file):
         poses = []
         try:
             for line in file:
