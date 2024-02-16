@@ -12,7 +12,7 @@ from ament_index_python.packages import get_package_share_directory
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
     def __init__(self, marker_name, pose_files):
-        super().__init__('four_way_visualizer_' + marker_name)
+        super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_files(pose_files)
         self.current_pose = self.possible_poses[0]

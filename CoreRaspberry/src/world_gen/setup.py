@@ -11,7 +11,7 @@ setup(
     #package_dir={package_name: 'src/' + package_name},
     py_modules=[
     'world_gen.gen',
-    'world_gen.FourWayViz',
+    'world_gen.four_way_marker',
     'world_gen.color_publisher',
     ],
     install_requires=['setuptools'],
@@ -29,8 +29,8 @@ setup(
     entry_points={
         'console_scripts': [
             'gen = world_gen.gen:main',
-            'fourwayviz = world_gen.FourWayViz:main',
-            'ct = world_gen.color_publisher:main',
+            'four_way_marker = world_gen.four_way_marker:main',
+            'color_test = world_gen.color_publisher:main',
         ],
     },
 )
