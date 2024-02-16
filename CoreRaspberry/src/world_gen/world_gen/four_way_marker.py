@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
+from std_msgs.msg import Header
 import tf2_ros
 import tf2_geometry_msgs
 import tf2_py
@@ -64,18 +65,17 @@ class FourWayVisualizer(Node):
 
                 pose = Pose()
                 pose.position.x, pose.position.y, pose.position.z = x, y, z
-                quaternion = tf2_py.Quaternion()
-                quaternion.setRPY(roll, pitch, yaw)
-                pose.orientation = tf2_geometry_msgs.msg.Quaternion()
-                pose.orientation.x = quaternion[0]
-                pose.orientation.y = quaternion[1]
-                pose.orientation.z = quaternion[2]
-                pose.orientation.w = quaternion[3]
+
+                # Compute quaternion from Euler angles
+                q = tf2_ros.transformations.quaternion_from_euler(roll, pitch, yaw)
+
+                pose.orientation = Quaternion(*q)
+
                 poses.append(pose)
         except Exception as e:
             self.get_logger().error(f"Failed to read pose from file: {e}")
-        return poses
 
+        return poses
     def color_callback(self, msg):
         # Set the marker color based on the received string
         color_mapping = {
