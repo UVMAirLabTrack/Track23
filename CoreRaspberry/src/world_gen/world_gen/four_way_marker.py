@@ -41,6 +41,7 @@ class FourWayVisualizer(Node):
     def read_poses_from_file(self, pose_file):
         poses = []
         pose_file_path = os.path.join(get_package_share_directory(self.package_name), 'markers', pose_file)
+        print(pose_file_path)
 
         try:
             with open(pose_file_path, 'r') as file:
