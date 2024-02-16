@@ -9,6 +9,7 @@ import tf2_py
 import os
 from ament_index_python.packages import get_package_share_directory
 import threading
+import multiprocessing
 import time
 
 
@@ -144,23 +145,23 @@ def main(args=None):
         'light_d': '4_way_poses_light_d.txt',
     }
 
-    # Create threads for each marker
-    thread_a = threading.Thread(target=run_marker, args=('light_a', pose_files['light_a']))
-    thread_b = threading.Thread(target=run_marker, args=('light_b', pose_files['light_b']))
-    thread_c = threading.Thread(target=run_marker, args=('light_c', pose_files['light_c']))
-    thread_d = threading.Thread(target=run_marker, args=('light_d', pose_files['light_d']))
+    # Create processes for each marker
+    process_a = multiprocessing.Process(target=run_marker, args=('light_a', pose_files['light_a']))
+    process_b = multiprocessing.Process(target=run_marker, args=('light_b', pose_files['light_b']))
+    process_c = multiprocessing.Process(target=run_marker, args=('light_c', pose_files['light_c']))
+    process_d = multiprocessing.Process(target=run_marker, args=('light_d', pose_files['light_d']))
 
-    # Start the threads
-    thread_a.start()
-    thread_b.start()
-    thread_c.start()
-    thread_d.start()
+    # Start the processes
+    process_a.start()
+    process_b.start()
+    process_c.start()
+    process_d.start()
 
-    # Wait for threads to finish (you may want to remove this if your application requires continuous running)
-    thread_a.join()
-    thread_b.join()
-    thread_c.join()
-    thread_d.join()
+    # Wait for processes to finish (you may want to remove this if your application requires continuous running)
+    process_a.join()
+    process_b.join()
+    process_c.join()
+    process_d.join()
 
     rclpy.shutdown()
 
