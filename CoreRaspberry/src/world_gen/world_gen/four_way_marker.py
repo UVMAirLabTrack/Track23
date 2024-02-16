@@ -103,6 +103,8 @@ def main(args=None):
         'light_d': '4_way_poses_light_d.txt',
     }
 
+
+    node = rclpy.create_node('four_way_marker')
     # Create instances of FourWayVisualizer for each light
     marker_a = FourWayVisualizer('light_a', pose_files['light_a'])
     marker_b = FourWayVisualizer('light_b', pose_files['light_b'])
@@ -110,10 +112,11 @@ def main(args=None):
     marker_d = FourWayVisualizer('light_d', pose_files['light_d'])
 
     # Spin the nodes
-    rclpy.spin(marker_a)
-    rclpy.spin(marker_b)
-    rclpy.spin(marker_c)
-    rclpy.spin(marker_d)
+    #rclpy.spin(marker_a)
+    #rclpy.spin(marker_b)
+    #rclpy.spin(marker_c)
+    #rclpy.spin(marker_d)
+    rclpy.spin(node)
 
     # Shutdown
     marker_a.destroy_node()
