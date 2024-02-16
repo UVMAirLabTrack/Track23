@@ -11,19 +11,16 @@ from ament_index_python.packages import get_package_share_directory
 
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
-    def __init__(self, marker_name, pose_files):
+    def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
-        self.possible_poses = self.read_poses_from_files(pose_files)
+        self.possible_poses = self.read_poses_from_file(pose_file)
 
         if not self.possible_poses:
             # Handle the case where there are no poses
-            self.current_pose = [0.0, 0.0,0.0,0.0,0.0,0.0,0.0]
-            self.get_logger().error(f'Pose is empty, defaulting to 0')
-            #raise ValueError("No poses found in the pose files")
-            
+            self.current_pose = Pose()  # Default empty Pose
+            self.get_logger().error(f'Pose is empty, defaulting to empty Pose')
         else:
-
             self.current_pose = self.possible_poses[0]
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
@@ -37,14 +34,12 @@ class FourWayVisualizer(Node):
         # Set a timer to publish the marker periodically
         self.timer = self.create_timer(0.1, self.publish_marker)
 
-    def read_poses_from_files(self, pose_files):
-        poses = {}
-        
-        for light, pose_file in pose_files.items():
-            pose_file_path = os.path.join(get_package_share_directory(self.package_name), 'markers', pose_file)
+    def read_poses_from_file(self, pose_file):
+        poses = []
+        pose_file_path = os.path.join(get_package_share_directory(self.package_name), 'markers', pose_file)
 
-            with open(pose_file_path, 'r') as file:
-                poses[light] = self.read_pose_from_file(file)
+        with open(pose_file_path, 'r') as file:
+            poses = self.read_pose_from_file(file)
 
         return poses
 
