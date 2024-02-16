@@ -246,11 +246,9 @@ def main(args=None):
     rclpy.shutdown()
 
 def run_marker(marker_name, pose_file):
+    #rclpy.init()
     node = FourWayVisualizer(marker_name, pose_file)
-    
-    while rclpy.ok():
-        rclpy.spin_once(node)
-    
+    rclpy.spin(node)
     node.destroy_node()
 
 if __name__ == '__main__':
