@@ -32,7 +32,7 @@ class FourWayVisualizer(Node):
         self.subscription = self.create_subscription(String, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
-        self.timer = self.create_timer(0.1, self.publish_marker)
+        self.timer = self.create_timer(1.0, self.publish_marker)
 
     def read_poses_from_file(self, pose_file):
         poses = []
