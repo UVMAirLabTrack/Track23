@@ -66,11 +66,12 @@ class FourWayVisualizer(Node):
                 pose.position.x, pose.position.y, pose.position.z = x, y, z
                 quaternion = Quaternion()
                 quaternion.setRPY(roll, pitch, yaw)
-                pose.orientation = tf2_geometry_msgs.msg.Quaternion()
+                
                 quaternion.x = quaternion[0]
                 quaternion.y = quaternion[1]
                 quaternion.z = quaternion[2]
                 quaternion.w = quaternion[3]
+                pose.orientation = quaternion
                 poses.append(pose)
         except Exception as e:
             self.get_logger().error(f"Failed to read pose from file: {e}")
