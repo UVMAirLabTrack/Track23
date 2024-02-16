@@ -15,8 +15,16 @@ class FourWayVisualizer(Node):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_files(pose_files)
-        print(self.read_poses_from_files(pose_files))
-        self.current_pose = self.possible_poses[0]
+
+        if not self.possible_poses:
+            # Handle the case where there are no poses
+            self.current_pose = [0.0, 0.0,0.0,0.0,0.0,0.0,0.0]
+            self.get_logger().error(f'Pose is empty, defaulting to 0')
+            #raise ValueError("No poses found in the pose files")
+            
+        else:
+
+            self.current_pose = self.possible_poses[0]
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
 
