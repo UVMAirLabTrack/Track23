@@ -139,6 +139,8 @@ import tf2_py
 import os
 from ament_index_python.packages import get_package_share_directory
 import threading
+import time
+
 
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
@@ -246,9 +248,13 @@ def main(args=None):
     rclpy.shutdown()
 
 def run_marker(marker_name, pose_file):
-    #rclpy.init()
     node = FourWayVisualizer(marker_name, pose_file)
-    rclpy.spin(node)
+    rate = node.create_rate(10)  # Adjust the rate as needed
+
+    while rclpy.ok():
+        rclpy.spin_once(node)
+        rate.sleep()
+
     node.destroy_node()
 
 if __name__ == '__main__':
