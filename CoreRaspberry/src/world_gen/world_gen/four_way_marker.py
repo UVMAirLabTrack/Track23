@@ -22,6 +22,7 @@ class FourWayVisualizer(Node):
         'white': [1.0, 1.0, 1.0, 1.0],
         'blue': [0.0, 0.0, 1.0, 1.0],
         'off': [0.0, 0.0, 0.0, 0.0],
+             0:[0.0, 0.0, 0.0, 0.0],
         'left_stop': [0.5, 0.0, 0.5, 1.0],
         'right_stop': [1.0, 0.0, 0.5, 1.0],
         'left_go': [0.0, 0.5, 0.5, 1.0],
@@ -32,7 +33,7 @@ class FourWayVisualizer(Node):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.light_colors = {
-        'four_way_marker_' + marker_name: 'white',
+        'four_way_marker_' + marker_name: 0,
         }
         self.possible_poses = self.read_poses_from_file(pose_file)
 
@@ -109,7 +110,7 @@ class FourWayVisualizer(Node):
                # print(f'{light_name} color: {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to 
-                self.light_colors[light_name] = 'off'
+                self.light_colors[light_name] = 0
                 print("length failure")
   
     def publish_marker(self):
