@@ -115,24 +115,30 @@ class FourWayVisualizer(Node):
         print(colors)
 
         # Update colors for each light based on the received list
+        color_index = 0
         for light_name in [f'four_way_marker_{self.marker_name}']:
             # Set the color for the current light
-            if light_name in self.light_colors and colors:
-                self.light_colors[light_name] = colors.pop(0)
+            if light_name in self.light_colors and color_index < len(colors):
+                self.light_colors[light_name] = colors[color_index]
+                color_index += 1
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
-            print(f"Current light: {light_name}, Color: {self.light_colors[light_name]}")
 
         # Add the following loop to update other markers
         for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
             other_light_name = f'four_way_marker_{other_marker}'
-            if other_light_name in self.light_colors and colors:
-                self.light_colors[other_light_name] = colors.pop(0)
+            if other_light_name in self.light_colors and color_index < len(colors):
+                self.light_colors[other_light_name] = colors[color_index]
+                color_index += 1
             else:
                 self.light_colors[other_light_name] = 'white'
+
+        print(f"Current light: {self.marker_name}, Color: {self.light_colors[f'four_way_marker_{self.marker_name}']}")
+        for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
+            other_light_name = f'four_way_marker_{other_marker}'
             print(f"Other light: {other_light_name}, Color: {self.light_colors[other_light_name]}, Available colors: {colors}")
-                
+                    
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
