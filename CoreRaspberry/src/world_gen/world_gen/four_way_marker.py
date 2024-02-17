@@ -96,7 +96,6 @@ class FourWayVisualizer(Node):
             # Set the color for the current light
             if light_name in self.light_colors and colors:
                 self.light_colors[light_name] = colors.pop(0)
-                print(f'{light_name} color {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
@@ -108,7 +107,7 @@ class FourWayVisualizer(Node):
                 self.light_colors[other_light_name] = colors.pop(0)
             else:
                 self.light_colors[other_light_name] = 'white'
-
+                
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
@@ -122,14 +121,14 @@ class FourWayVisualizer(Node):
         marker_msg.scale.z = 1.0
 
         color_name = self.light_colors['four_way_marker_' + self.marker_name]
-        print(f'{self.marker_name} color: {color_name}')
 
     # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
 
     # Assign RGBA values to the marker message
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
-        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
+       # marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
+        print(rgba_values)
 
 
         marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
@@ -176,5 +175,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
-#force a commit
