@@ -5,6 +5,7 @@ from geometry_msgs.msg import TransformStamped, Quaternion, Pose, Point, Vector3
 from visualization_msgs.msg import Marker
 import tf2_ros
 import math
+import subprocess
 
 class OdomTransformer(Node):
     def __init__(self):
