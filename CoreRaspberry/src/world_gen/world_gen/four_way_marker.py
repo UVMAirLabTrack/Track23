@@ -25,7 +25,8 @@ class FourWayVisualizer(Node):
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
-        self.light_colors = "white"
+        self.light_colors = {
+            f'four_way_marker_{self.marker_name}': 'white',}
         self.possible_poses = self.read_poses_from_file(pose_file)
 
         if not self.possible_poses:
