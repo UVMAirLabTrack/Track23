@@ -13,36 +13,36 @@ class OdomPublisher(Node):
         self.linear_speed = 0.1  # Adjust linear speed as needed
         self.distance_limit = 2.0  # Adjust distance limit as needed
         self.forward = True
-def publish_odom(self):
-    self.time_sec += 0.2
+    def publish_odom(self):
+        self.time_sec += 0.2
 
-    odom = Odometry()
-    odom.header.stamp = self.get_clock().now().to_msg()
-    odom.header.frame_id = 'map'
-    odom.child_frame_id = 'base_link'
+        odom = Odometry()
+        odom.header.stamp = self.get_clock().now().to_msg()
+        odom.header.frame_id = 'map'
+        odom.child_frame_id = 'base_link'
 
-    # Set linear velocity
-    odom.twist.twist.linear.x = self.linear_speed if self.forward else -self.linear_speed
-    odom.twist.twist.linear.y = 0.0
-    odom.twist.twist.linear.z = 0.0
+        # Set linear velocity
+        odom.twist.twist.linear.x = self.linear_speed if self.forward else -self.linear_speed
+        odom.twist.twist.linear.y = 0.0
+        odom.twist.twist.linear.z = 0.0
 
-    # Update position
-    elapsed_time = self.time_sec % (2 * self.distance_limit / self.linear_speed)
-    if elapsed_time < self.distance_limit / self.linear_speed:
-        # Moving forward
-        odom.pose.pose.position.x = elapsed_time * self.linear_speed
-    else:
-        # Turning around
-        odom.pose.pose.position.x = (2 * self.distance_limit - elapsed_time * self.linear_speed)
+        # Update position
+        elapsed_time = self.time_sec % (2 * self.distance_limit / self.linear_speed)
+        if elapsed_time < self.distance_limit / self.linear_speed:
+            # Moving forward
+            odom.pose.pose.position.x = elapsed_time * self.linear_speed
+        else:
+            # Turning around
+            odom.pose.pose.position.x = (2 * self.distance_limit - elapsed_time * self.linear_speed)
 
-    # Set orientation (quaternion)
-    odom.pose.pose.orientation = self.angle_to_quaternion(math.pi) if not self.forward else self.angle_to_quaternion(0.0)
+        # Set orientation (quaternion)
+        odom.pose.pose.orientation = self.angle_to_quaternion(math.pi) if not self.forward else self.angle_to_quaternion(0.0)
 
-    self.odom_publisher.publish(odom)
+        self.odom_publisher.publish(odom)
 
-    # Check if the robot has reached the distance limit
-    if elapsed_time >= 2 * self.distance_limit / self.linear_speed:
-        self.forward = not self.forward
+        # Check if the robot has reached the distance limit
+        if elapsed_time >= 2 * self.distance_limit / self.linear_speed:
+            self.forward = not self.forward
 
 def main(args=None):
     rclpy.init(args=args)
