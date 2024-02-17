@@ -21,6 +21,7 @@ class FourWayVisualizer(Node):
         'green': [0.0, 1.0, 0.0, 1.0],
         'white': [1.0, 1.0, 1.0, 1.0],
         'blue': [0.0, 0.0, 1.0, 1.0],
+        'black': [0.0, 0.0, 0.0, 0.0],
     }
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
@@ -100,7 +101,7 @@ class FourWayVisualizer(Node):
                # print(f'{light_name} color: {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to white
-                self.light_colors[light_name] = 'white'
+                self.light_colors[light_name] = 'black'
                 
         # Add the following loop to update other markers
         for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
@@ -108,7 +109,7 @@ class FourWayVisualizer(Node):
             if other_light_name in self.light_colors and colors:
                 self.light_colors[other_light_name] = colors.pop(0)
             else:
-                self.light_colors[other_light_name] = 'white'
+                self.light_colors[other_light_name] = 'black'
                 
     def publish_marker(self):
         marker_msg = Marker()
