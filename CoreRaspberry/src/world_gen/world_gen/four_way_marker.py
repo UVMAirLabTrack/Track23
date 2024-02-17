@@ -96,6 +96,7 @@ class FourWayVisualizer(Node):
             # Set the color for the current light
             if light_name in self.light_colors and colors:
                 self.light_colors[light_name] = colors.pop(0)
+                print(f'{light_name} color {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
@@ -181,3 +182,4 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
+#force a commit
