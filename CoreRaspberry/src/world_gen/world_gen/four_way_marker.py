@@ -99,7 +99,15 @@ class FourWayVisualizer(Node):
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
-                print(f'{light_name} not receiving color update')
+                print(f'{light_name} not receiving updated color')
+                
+        # Add the following loop to update other markers
+        for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
+            other_light_name = f'four_way_marker_{other_marker}'
+            if other_light_name in self.light_colors and colors:
+                self.light_colors[other_light_name] = colors.pop(0)
+            else:
+                self.light_colors[other_light_name] = 'white'
 
     def publish_marker(self):
         marker_msg = Marker()
@@ -120,8 +128,7 @@ class FourWayVisualizer(Node):
 
     # Assign RGBA values to the marker message
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
-       # marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
-
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
 
         marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
