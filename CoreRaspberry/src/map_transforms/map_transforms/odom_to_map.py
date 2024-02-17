@@ -68,7 +68,7 @@ class OdomTransformer(Node):
         return transformed_odom
 
     def publish_car_mesh(self, odom_msg):
-        # Publish the car model mesh in the transformed frame
+    # Publish the car model mesh in the transformed frame
         car_mesh = Marker()
         car_mesh.header.frame_id = 'base_link'  # Set to the transformed frame
         car_mesh.header.stamp = self.get_clock().now().to_msg()
@@ -76,18 +76,25 @@ class OdomTransformer(Node):
         car_mesh.id = 0
         car_mesh.type = Marker.MESH_RESOURCE
         car_mesh.action = Marker.ADD
-        car_mesh.pose.position = Point(0.0, 0.0, 0.0)  # Set the position as needed
-        car_mesh.pose.orientation = Quaternion(0.0, 0.0, 0.0, 1.0)  # Set the orientation as needed
-        car_mesh.scale = Vector3(1.0, 1.0, 1.0)  # Set the scale as needed
+
+        # Set the position as needed
+        car_mesh.pose.position.x = 0.0
+        car_mesh.pose.position.y = 0.0
+        car_mesh.pose.position.z = 0.0
+
+        # Set the orientation as needed
+        car_mesh.pose.orientation = Quaternion(0.0, 0.0, 0.0, 1.0)
+
+        # Set the scale as needed
+        car_mesh.scale = Vector3(1.0, 1.0, 1.0)
+
         car_mesh.color.a = 1.0
         car_mesh.color.r = 1.0
         car_mesh.color.g = 0.0
         car_mesh.color.b = 0.0
 
         # Set the mesh resource file path
-        car_mesh.mesh_resource = 'package://map_transforms/markers/car.stl'  # Update with your mesh file path
-
-        self.car_mesh_publisher.publish(car_mesh)
+        car_mesh.mesh_resource = 'package://your_package_name/meshes/car_mesh.stl'  # Update with your mesh file path
 
     def angle_to_quaternion(self, angle):
         # Convert angle to quaternion
