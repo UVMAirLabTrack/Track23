@@ -12,6 +12,7 @@ from pynput import keyboard
 class OdomTransformer(Node):
     def __init__(self):
         super().__init__('odom_transformer')
+        self.calibration_data = None
 
         # Create a subscriber to listen to the "odom" topic
         self.odom_subscriber = self.create_subscription(
@@ -48,30 +49,56 @@ class OdomTransformer(Node):
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
         # In this example, we simply copy the original odometry message
-        transformed_odom = Odometry()
-        transformed_odom.header = odom_msg.header
-        transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
+        if self.calibration_data is None:
+            transformed_odom = Odometry()
+            transformed_odom.header = odom_msg.header
+            transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
 
-        # Perform the transformation from "base_link" to "map"
-        transform = TransformStamped()
-        transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = 'map'
-        transform.child_frame_id = 'base_link'
+            # Perform the transformation from "base_link" to "map"
+            transform = TransformStamped()
+            transform.header.stamp = self.get_clock().now().to_msg()
+            transform.header.frame_id = 'map'
+            transform.child_frame_id = 'base_link'
 
-        # Set the translation
-        transform.transform.translation.x = odom_msg.pose.pose.position.x
-        transform.transform.translation.y = odom_msg.pose.pose.position.y
-        transform.transform.translation.z = odom_msg.pose.pose.position.z
+            # Set the translation
+            transform.transform.translation.x = odom_msg.pose.pose.position.x
+            transform.transform.translation.y = odom_msg.pose.pose.position.y
+            transform.transform.translation.z = odom_msg.pose.pose.position.z
 
-        # Set the orientation (quaternion)
-        transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
+            # Set the orientation (quaternion)
+            transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
 
-        # Publish the transform
-        self.transform_broadcaster.sendTransform(transform)
+            # Publish the transform
+            self.transform_broadcaster.sendTransform(transform)
 
-        # Transform the odometry data
-        transformed_odom.pose.pose.position = odom_msg.pose.pose.position
-        transformed_odom.pose.pose.orientation = transform.transform.rotation
+            # Transform the odometry data
+            transformed_odom.pose.pose.position = odom_msg.pose.pose.position
+            transformed_odom.pose.pose.orientation = transform.transform.rotation
+        else:
+            transformed_odom = Odometry()
+            transformed_odom.header = odom_msg.header
+            transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
+
+            # Perform the transformation from "base_link" to "map"
+            transform = TransformStamped()
+            transform.header.stamp = self.get_clock().now().to_msg()
+            transform.header.frame_id = 'map'
+            transform.child_frame_id = 'base_link'
+
+            # Set the translation
+            transform.transform.translation.x = odom_msg.pose.pose.position.x-self.calibration_data.pose.pose.position.x
+            transform.transform.translation.y = odom_msg.pose.pose.position.y-self.calibration_data.pose.pose.position.y
+            transform.transform.translation.z = odom_msg.pose.pose.position.z-self.calibration_data.pose.pose.position.z
+
+            # Set the orientation (quaternion)
+            transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
+
+            # Publish the transform
+            self.transform_broadcaster.sendTransform(transform)
+
+            # Transform the odometry data
+            transformed_odom.pose.pose.position = odom_msg.pose.pose.position-self.calibration_data.pose.pose.position
+            transformed_odom.pose.pose.orientation = transform.transform.rotation
 
         return transformed_odom
 
@@ -123,8 +150,8 @@ class OdomTransformer(Node):
             # Check if the pressed key is the desired key (e.g., 'c')
             if hasattr(key, 'char') and key.char == 'c':
                 # Capture and calibrate the current odometry for a zero pose
-                captured_odom = self.capture_current_odometry()
-                calibrated_odom = self.calibrate_odometry(captured_odom)
+                self.calibration_data = self.capture_current_odometry()
+                
 
                 # Do something with the calibrated odometry if needed
                 print("Calibrated Odometry:", calibrated_odom)
@@ -133,9 +160,10 @@ class OdomTransformer(Node):
             listener.join()
 
     def capture_current_odometry(self):
+        captured_odom = Odometry()
         # Implement the logic to capture the current odometry
         # For simplicity, return a placeholder value
-        return Odometry()
+        return captured_odom
 
     def calibrate_odometry(self, captured_odom):
         # Implement the logic to calibrate the captured odometry
