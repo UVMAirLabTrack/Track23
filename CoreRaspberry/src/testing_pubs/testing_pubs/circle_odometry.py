@@ -71,10 +71,11 @@ class OdomPublisher(Node):
         marker.color.g = 0.0
         marker.color.b = 0.0
         full_file_path = f'file:///{subprocess.check_output(["ros2", "pkg", "prefix", "testing_pubs"]).decode("utf-8").strip()}/share/testing_pubs/markers/car.stl'
-        marker.mesh_resource = 'package://testing_pubs/markers/car.stl'
+        #marker.mesh_resource = 'package://testing_pubs/markers/car.stl'
+        marker.mesh_resource = full_file_path
 
-    # Print the full file path for debugging
-        print(f"Full file path for 'package://testing_pubs/markers/car.stl': {full_file_path}")
+  
+        #print(f"Full file path for 'package://testing_pubs/markers/car.stl': {full_file_path}")
 
         self.marker_publisher.publish(marker)
 
