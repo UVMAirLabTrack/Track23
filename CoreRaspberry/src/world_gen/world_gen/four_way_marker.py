@@ -57,7 +57,7 @@ class FourWayVisualizer(Node):
             for line in file:
                 print("Reading line:", line)
                 try:
-                    x, y, z, roll, pitch, yaw = map(float, line.split())
+                    x, y, z, roll, pitch, yaw, w = map(float, line.split())
                 except ValueError as ve:
                     print(f"Error converting values on line '{line}': {ve}")
                     continue
@@ -67,10 +67,10 @@ class FourWayVisualizer(Node):
                 quaternion = Quaternion()
                 #quaternion.setRPY(roll, pitch, yaw)
                 
-                quaternion.x = quaternion[0]
-                quaternion.y = quaternion[1]
-                quaternion.z = quaternion[2]
-                quaternion.w = quaternion[3]
+                quaternion.x = roll
+                quaternion.y = pitch
+                quaternion.z = yaw
+                quaternion.w = w
                 pose.orientation = quaternion
                 poses.append(pose)
         except Exception as e:
