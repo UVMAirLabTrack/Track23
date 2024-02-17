@@ -1,20 +1,25 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+import time
 
 class ColorPublisher(Node):
     def __init__(self):
         super().__init__('color_publisher')
         self.publisher_ = self.create_publisher(String, 'four_way_state', 10)
         self.timer_ = self.create_timer(3.0, self.timer_callback)
-        self.colors = ['red', 'yellow', 'green', 'white']
+        self.colors = [['red', 'yellow', 'green', 'white'],
+                       ['blue', 'red', 'white', 'green'],['green','blue', 'red', 'white']]  # Add more color sequences if needed
         self.num_lights = 4
+        self.current_color_index = 0
 
     def timer_callback(self):
-        for light_index in range(self.num_lights):
-            msg = String()
-            msg.data = self.colors[light_index]
-            self.publisher_.publish(msg)
+        msg = String()
+        msg.data = ','.join(self.colors[self.current_color_index])
+        self.publisher_.publish(msg)
+
+        # Update the color index for the next iteration
+        self.current_color_index = (self.current_color_index + 1) % len(self.colors)
 
 def main(args=None):
     rclpy.init(args=args)
