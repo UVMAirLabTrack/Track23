@@ -98,11 +98,11 @@ class OdomTransformer(Node):
         car_mesh.color.b = 0.0
 
         # Set the mesh resource file path
-        full_file_path = f'file:///{subprocess.check_output(["ros2", "pkg", "prefix", "map_transforms"]).decode("utf-8").strip()}/share/testing_pubs/map_transforms/car.stl'
+        #full_file_path = f'file:///{subprocess.check_output(["ros2", "pkg", "prefix", "map_transforms"]).decode("utf-8").strip()}/share/map_transforms/markers/car.stl'
         #marker.mesh_resource = 'package://testing_pubs/markers/car.stl'
-        car_mesh.mesh_resource = full_file_path
+        #car_mesh.mesh_resource = full_file_path
 
-        #car_mesh.mesh_resource = 'package://map_transforms/markers/car.stl.stl'  # Update with your mesh file path
+        car_mesh.mesh_resource = 'package://map_transforms/markers/car.stl'  # Update with your mesh file path
 
         self.car_mesh_publisher.publish(car_mesh)
 
