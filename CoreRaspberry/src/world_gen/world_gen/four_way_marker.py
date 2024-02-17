@@ -99,8 +99,12 @@ class FourWayVisualizer(Node):
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
+<<<<<<< HEAD
                 print(f'{light_name} not receiving updated color')
                 
+=======
+
+>>>>>>> parent of 6018b27 (debug)
         # Add the following loop to update other markers
         for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
             other_light_name = f'four_way_marker_{other_marker}'
@@ -122,6 +126,7 @@ class FourWayVisualizer(Node):
         marker_msg.scale.z = 1.0
 
         color_name = self.light_colors['four_way_marker_' + self.marker_name]
+        print(f'{self.marker_name} color: {color_name}')
 
     # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
