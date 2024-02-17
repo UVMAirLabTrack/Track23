@@ -21,7 +21,12 @@ class FourWayVisualizer(Node):
         'green': [0.0, 1.0, 0.0, 1.0],
         'white': [1.0, 1.0, 1.0, 1.0],
         'blue': [0.0, 0.0, 1.0, 1.0],
-        'black': [0.0, 0.0, 0.0, 0.0],
+        'off': [0.0, 0.0, 0.0, 0.0],
+        'left_stop': [0.5, 0.0, 0.5, 1.0],
+        'right_stop': [1.0, 0.0, 0.5, 1.0],
+        'left_go': [0.0, 0.5, 0.5, 1.0],
+        'right_go': [0.0, 1.0, 1.0, 1.0],
+
     }
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
@@ -101,18 +106,10 @@ class FourWayVisualizer(Node):
                 self.light_colors[light_name] = colors[i]
                # print(f'{light_name} color: {colors.pop(0)}')
             else:
-                # If there are not enough colors in the received list, default to white
-                self.light_colors[light_name] = 'black'
+                # If there are not enough colors in the received list, default to 
+                self.light_colors[light_name] = 'off'
                 print("length failure")
-        # Add the following loop to update other markers
-        """ for i, other_marker in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
-            other_light_name = f'four_way_marker_{other_marker}'
-            if other_light_name in self.light_colors and colors and i < len(colors):
-                self.light_colors[other_light_name] = colors[i]
-            else:
-                self.light_colors[other_light_name] = 'black'
-                print("other Length failure")"""
-                
+  
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
