@@ -99,7 +99,7 @@ class FourWayVisualizer(Node):
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
-                
+
         # Add the following loop to update other markers
         for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
             other_light_name = f'four_way_marker_{other_marker}'
@@ -107,7 +107,7 @@ class FourWayVisualizer(Node):
                 self.light_colors[other_light_name] = colors.pop(0)
             else:
                 self.light_colors[other_light_name] = 'white'
-                
+
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
