@@ -11,6 +11,7 @@ setup(
     #package_dir={package_name: 'src/' + package_name},
     py_modules=[
     'map_transforms.odom_to_map',
+    'map_transforms.odom_to_map_key',
     #'map_transforms.four_way_marker',
     #'map_transforms.color_publisher',
     
@@ -30,6 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'odom_to_map = map_transforms.odom_to_map:main',
+            'odom_to_map_key = map_transforms.odom_to_map_key:main',
             #'four_way_marker = map_transforms.four_way_marker:main',
             #'color_test = map_transforms.color_publisher:main',
         ],

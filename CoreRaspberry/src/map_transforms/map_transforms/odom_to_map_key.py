@@ -6,6 +6,7 @@ from visualization_msgs.msg import Marker
 import tf2_ros
 import math
 import subprocess
+import keyboard
 
 class OdomTransformer(Node):
     def __init__(self):
@@ -28,15 +29,11 @@ class OdomTransformer(Node):
         # Create a tf2_ros.TransformBroadcaster for publishing the transform
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
-    def odom_callback(self, msg):
-        # Perform the transformation from "base_link" to "map"
-        transformed_odom = self.transform_odom(msg)
+        # Add a flag to check if the offset has been set
+        self.offset_set = False
 
-        # Publish the transformed odometry data to "odom_map"
-        self.odom_map_publisher.publish(transformed_odom)
-
-        # Publish the car model mesh in the transformed frame
-        self.publish_car_mesh(transformed_odom)
+        # Start a loop to listen for keypress events
+        keyboard.on_press_key('space', self.on_space_key_press)
 
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
@@ -114,7 +111,35 @@ class OdomTransformer(Node):
             z=math.sin(angle / 2.0),
             w=math.cos(angle / 2.0)
         )
+    def odom_callback(self, msg):
+        # Check if the offset has been set
+        if not self.offset_set:
+            # Set the car's start position and pose as zeros
+            self.set_offset(msg)
+            print("Car's start position and pose set to zeros.")
 
+        # Perform the transformation from "base_link" to "map"
+        transformed_odom = self.transform_odom(msg)
+
+        # Publish the transformed odometry data to "odom_map"
+        self.odom_map_publisher.publish(transformed_odom)
+
+        # Publish the car model mesh in the transformed frame
+        self.publish_car_mesh(transformed_odom)
+
+    def set_offset(self, odom_msg):
+        # Set the car's start position and pose as zeros based on odom topic data
+        self.car_position = [0.0, 0.0, 0.0]  # Update with the appropriate odom_msg fields
+        self.car_pose = [0.0, 0.0, 0.0]  # Update with the appropriate odom_msg fields
+
+        # Set the offset_set flag to True to avoid resetting again
+        self.offset_set = True
+
+    def on_space_key_press(self, event):
+        # Reset the offset when the space key is pressed
+        self.offset_set = False
+        print("Offset reset.")
+        
 def main(args=None):
     rclpy.init(args=args)
     odom_transformer = OdomTransformer()
