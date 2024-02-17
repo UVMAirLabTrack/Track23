@@ -3,14 +3,12 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
-import tf2_ros
-import tf2_geometry_msgs
-import tf2_py
+
 import os
 from ament_index_python.packages import get_package_share_directory
-import threading
+
 import multiprocessing
-import time
+
 
 
 class FourWayVisualizer(Node):
