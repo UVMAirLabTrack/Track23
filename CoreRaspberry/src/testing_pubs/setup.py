@@ -12,7 +12,7 @@ setup(
     py_modules=[
     'testing_pubs.circle_odometry',
     'testing_pubs.circle_odometry_mesh',
-    'testing_pubs.linear_x_odometry'
+    'testing_pubs.linear_x_odometry',
     'testing_pubs.color_publisher',
     
     ],
