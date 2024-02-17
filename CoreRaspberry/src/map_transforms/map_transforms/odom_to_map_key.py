@@ -6,6 +6,7 @@ from visualization_msgs.msg import Marker
 import tf2_ros
 import math
 import subprocess
+import threading
 from pynput import keyboard
 
 class OdomTransformer(Node):
@@ -32,9 +33,9 @@ class OdomTransformer(Node):
         # Add a flag to check if the offset has been set
         self.offset_set = False
 
-        # Start a loop to listen for keypress events
-        with keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release) as listener:
-            listener.join()
+        key_listener_thread = threading.Thread(target=self.key_listener_thread)
+        key_listener_thread.daemon = True  # Terminate thread when the main program exits
+        key_listener_thread.start()
 
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
@@ -144,6 +145,10 @@ class OdomTransformer(Node):
 
     def on_key_release(self, key):
         pass 
+
+    def key_listener_thread(self):
+        with keyboard.Listener(on_press=self.on_key_press) as listener:
+            listener.join()
         
 def main(args=None):
     rclpy.init(args=args)
