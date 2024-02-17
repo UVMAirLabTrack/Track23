@@ -96,6 +96,7 @@ class FourWayVisualizer(Node):
             # Set the color for the current light
             if light_name in self.light_colors and colors:
                 self.light_colors[light_name] = colors.pop(0)
+                print(f'{light_name} color: {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'white'
@@ -128,7 +129,7 @@ class FourWayVisualizer(Node):
     # Assign RGBA values to the marker message
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
        # marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
-        print(rgba_values)
+       # print(rgba_values)
 
 
         marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
