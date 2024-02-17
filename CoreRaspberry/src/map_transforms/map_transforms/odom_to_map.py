@@ -87,7 +87,9 @@ class OdomTransformer(Node):
         car_mesh.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
 
         # Set the scale as needed
-        car_mesh.scale = Vector3(1.0, 1.0, 1.0)
+        car_mesh.scale.x = 1.0
+        car_mesh.scale.y = 1.0
+        car_mesh.scale.z = 1.0
 
         car_mesh.color.a = 1.0
         car_mesh.color.r = 1.0
