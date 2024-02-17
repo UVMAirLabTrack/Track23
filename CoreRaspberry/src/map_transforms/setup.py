@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'world_gen'
+package_name = 'map_transforms'
 
 setup(
     name=package_name,
@@ -10,9 +10,9 @@ setup(
     packages=[package_name],
     #package_dir={package_name: 'src/' + package_name},
     py_modules=[
-    'world_gen.gen',
-    'world_gen.four_way_marker',
-    #'world_gen.color_publisher',
+    'map_transforms.odom_to_map',
+    #'map_transforms.four_way_marker',
+    #'map_transforms.color_publisher',
     
     ],
     install_requires=['setuptools'],
@@ -22,16 +22,16 @@ setup(
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
     data_files=[
-    ('share/' + package_name + '/worlds', glob(os.path.join('world_gen', 'worlds', '*.*'))),
-    ('share/' + package_name + '/markers', glob(os.path.join('world_gen', 'markers', '*.*'))),
+    #('share/' + package_name + '/worlds', glob(os.path.join('map_transforms', 'worlds', '*.*'))),
+    ('share/' + package_name + '/markers', glob(os.path.join('map_transforms', 'markers', '*.*'))),
     ('share/' + package_name, ['package.xml']),
     ],
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'gen = world_gen.gen:main',
-            'four_way_marker = world_gen.four_way_marker:main',
-            #'color_test = world_gen.color_publisher:main',
+            'odom_to_map = map_transforms.odom_to_map:main',
+            #'four_way_marker = map_transforms.four_way_marker:main',
+            #'color_test = map_transforms.color_publisher:main',
         ],
     },
 )
