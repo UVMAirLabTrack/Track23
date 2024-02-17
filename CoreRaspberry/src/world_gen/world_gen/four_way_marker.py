@@ -19,6 +19,12 @@ class FourWayVisualizer(Node):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_file(pose_file)
+        self.light_colors = {
+            'light_a': [0.0, 0.0, 0.0, 1.0],
+            'light_b': [0.0, 0.0, 0.0, 1.0],
+            'light_c': [0.0, 0.0, 0.0, 1.0],
+            'light_d': [0.0, 0.0, 0.0, 1.0],
+        }
 
         if not self.possible_poses:
             # Handle the case where there are no poses
@@ -86,7 +92,10 @@ class FourWayVisualizer(Node):
             'white': [1.0, 1.0, 1.0, 1.0],
             'blue': [0.0, 0.0, 1.0, 1.0],
         }
-        self.current_color = color_mapping.get(msg.data, [1.0, 1.0, 1.0, 1.0])
+        #self.current_color = color_mapping.get(msg.data, [1.0, 1.0, 1.0, 1.0])
+        light_name = 'light_' + self.marker_name
+        self.light_colors[light_name] = color_mapping.get(light_name, [1.0, 1.0, 1.0, 1.0])
+
 
     def publish_marker(self):
         marker_msg = Marker()
@@ -99,9 +108,10 @@ class FourWayVisualizer(Node):
         marker_msg.scale.x = 1.0
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
-        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
+        #marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
-
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.light_colors['light_' + self.marker_name]
+        
         marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
