@@ -20,6 +20,8 @@ class OdomTransformer(Node):
             self.odom_callback,
             10
         )
+        self.offset_position = [0.0, 0.0, 0.0]
+        self.offset_orientation = Quaternion()
 
         # Create a publisher to publish the transformed odometry data to "odom_map"
         self.odom_map_publisher = self.create_publisher(Odometry, 'odom_map', 10)
@@ -40,6 +42,12 @@ class OdomTransformer(Node):
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
         # In this example, we simply copy the original odometry message
+
+        if not self.offset_set:
+            # Set the car's start position and pose as zeros
+            self.capture_offset(odom_msg)
+            print("Car's start position and pose set to zeros.")
+
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
         transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
@@ -129,22 +137,25 @@ class OdomTransformer(Node):
         # Publish the car model mesh in the transformed frame
         self.publish_car_mesh(transformed_odom)
 
-    def set_offset(self, odom_msg):
-        # Set the car's start position and pose as zeros based on odom topic data
-        self.car_position = [0.0, 0.0, 0.0]  # Update with the appropriate odom_msg fields
-        self.car_pose = [0.0, 0.0, 0.0]  # Update with the appropriate odom_msg fields
+    def capture_offset(self, odom_msg):
+        # Capture the car's current pose as the offset
+        self.offset_position = [
+            odom_msg.pose.pose.position.x,
+            odom_msg.pose.pose.position.y,
+            odom_msg.pose.pose.position.z
+        ]
+        self.offset_orientation = odom_msg.pose.pose.orientation
 
-        # Set the offset_set flag to True to avoid resetting again
+        # Set the offset_set flag to True
         self.offset_set = True
 
-    def on_key_press(self, key):
-        # Check for the space key and reset the offset
-        if key == keyboard.Key.space:
-            self.offset_set = False
-            print("Offset reset.")
-
-    def on_key_release(self, key):
-        pass 
+    def odom_callback(self, msg):
+        # Check if the offset has been set
+        if not self.offset_set:
+            # Capture the car's current pose as the offset
+            self.capture_offset(msg)
+            print("Offset captured.")
+        transformed_odom = self.transform_odom(msg)
 
     def key_listener_thread(self):
         with keyboard.Listener(on_press=self.on_key_press) as listener:
