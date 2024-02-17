@@ -116,8 +116,8 @@ class FourWayVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
 
-        # Corrected line: use 'light_' + self.marker_name as the key
-        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.light_colors['light_' + self.marker_name]
+        # Corrected line: use self.marker_name as the key
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.light_colors[self.marker_name]
 
         marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'
 
