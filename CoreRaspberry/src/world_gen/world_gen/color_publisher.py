@@ -38,7 +38,7 @@ class ColorPublisher(Node):
 
         # Publish colors as Int8MultiArray
         msg_int = Int8MultiArray()
-        msg_int.data = [item for sublist in self.colors_int[self.current_color_index] for item in sublist]
+        msg_int.data = self.colors_int[self.current_color_index]
         self.publisher_2.publish(msg_int)
 
         # Update the color index for the next iteration
