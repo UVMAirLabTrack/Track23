@@ -87,7 +87,7 @@ class FourWayVisualizer(Node):
             self.get_logger().error(f"Failed to read pose from file: {e}")
         return poses
 
-    """    def color_callback(self, msg):
+    def color_callback(self, msg):
         # Split the received string into a list of colors
         colors = msg.data.split(',')
         print(colors)
@@ -108,41 +108,8 @@ class FourWayVisualizer(Node):
             if other_light_name in self.light_colors and colors:
                 self.light_colors[other_light_name] = colors.pop(0)
             else:
-                self.light_colors[other_light_name] = 'white' """
-    def color_callback(self, msg):
-        # Split the received string into a list of colors
-        colors = msg.data.split(',')
-        print(f"Received colors: {colors}")
-
-        # Update colors for each light based on the received list
-        color_index = 0
-        for light_name in [f'four_way_marker_{self.marker_name}']:
-            # Set the color for the current light
-            if light_name in self.light_colors and color_index < len(colors):
-                self.light_colors[light_name] = colors[color_index]
-                color_index += 1
-            else:
-                # If there are not enough colors in the received list, default to white
-                self.light_colors[light_name] = 'white'
-
-        # Add the following loop to update other markers
-        for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
-            other_light_name = f'four_way_marker_{other_marker}'
-            if other_light_name in self.light_colors and color_index < len(colors):
-                self.light_colors[other_light_name] = colors[color_index]
-                color_index += 1
-            else:
                 self.light_colors[other_light_name] = 'white'
-
-        current_light = f'four_way_marker_{self.marker_name}'
-        print(f"Current light: {current_light}, Color: {self.light_colors[current_light]}")
-        for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
-            other_light_name = f'four_way_marker_{other_marker}'
-            print(f"Other light: {other_light_name}, Color: {self.light_colors[other_light_name]}")
-
-        if color_index != len(colors):
-            print("Warning: Colors not fully consumed.")
-                    
+                
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
