@@ -91,11 +91,11 @@ class FourWayVisualizer(Node):
         # Update colors for each light based on the received list
         for light_name in [f'four_way_marker_{self.marker_name}']:
             # Set the color for the current light
-            if light_name in self.light_colors and colors:
-                self.light_colors[light_name] = colors.pop(0)
+            if colors in self.color_mapping:
+                self.current_color[light_name] = colors.pop(0)
             else:
                 # If there are not enough colors in the received list, default to white
-                self.light_colors[light_name] = 'white'
+                self.current_color[light_name] = 'white'
 
     def publish_marker(self):
         marker_msg = Marker()
