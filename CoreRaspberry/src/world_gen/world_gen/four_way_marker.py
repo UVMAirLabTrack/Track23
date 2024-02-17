@@ -96,10 +96,12 @@ class FourWayVisualizer(Node):
     def color_callback(self, msg):
         # Split the received string into a list of colors
         colors = msg.data.split(',')
-        print(colors)
+        
 
         # Update colors for each light based on the received list
         for i, light in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
+            if i == 0:
+                print(colors)
             # Set the color for the current light
             light_name = f'four_way_marker_{light}'
             if light_name in self.light_colors and colors:
