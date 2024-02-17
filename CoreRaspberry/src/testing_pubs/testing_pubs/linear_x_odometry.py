@@ -44,6 +44,13 @@ class OdomPublisher(Node):
         if elapsed_time >= 2 * self.distance_limit / self.linear_speed:
             self.forward = not self.forward
 
+    def angle_to_quaternion(self, angle):
+        return Quaternion(
+            x=0.0,
+            y=0.0,
+            z=math.sin(angle / 2.0),
+            w=math.cos(angle / 2.0))
+
 def main(args=None):
     rclpy.init(args=args)
     odom_publisher = OdomPublisher()
