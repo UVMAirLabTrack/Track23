@@ -6,7 +6,7 @@ from visualization_msgs.msg import Marker
 import tf2_ros
 import math
 import subprocess
-import keyboard
+from pynput import keyboard
 
 class OdomTransformer(Node):
     def __init__(self):
@@ -33,7 +33,8 @@ class OdomTransformer(Node):
         self.offset_set = False
 
         # Start a loop to listen for keypress events
-        keyboard.on_press_key('space', self.on_space_key_press)
+        with keyboard.Listener(on_press=self.on_key_press) as listener:
+            listener.join()
 
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
@@ -135,10 +136,11 @@ class OdomTransformer(Node):
         # Set the offset_set flag to True to avoid resetting again
         self.offset_set = True
 
-    def on_space_key_press(self, event):
-        # Reset the offset when the space key is pressed
-        self.offset_set = False
-        print("Offset reset.")
+    def on_key_press(self, key):
+        # Check for the space key and reset the offset
+        if key == keyboard.Key.space:
+            self.offset_set = False
+            print("Offset reset.")
         
 def main(args=None):
     rclpy.init(args=args)
