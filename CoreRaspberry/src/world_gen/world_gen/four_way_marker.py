@@ -112,7 +112,7 @@ class FourWayVisualizer(Node):
     def color_callback(self, msg):
         # Split the received string into a list of colors
         colors = msg.data.split(',')
-        print(colors)
+        print(f"Received colors: {colors}")
 
         # Update colors for each light based on the received list
         color_index = 0
@@ -134,10 +134,14 @@ class FourWayVisualizer(Node):
             else:
                 self.light_colors[other_light_name] = 'white'
 
-        print(f"Current light: {self.marker_name}, Color: {self.light_colors[f'four_way_marker_{self.marker_name}']}")
+        current_light = f'four_way_marker_{self.marker_name}'
+        print(f"Current light: {current_light}, Color: {self.light_colors[current_light]}")
         for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
             other_light_name = f'four_way_marker_{other_marker}'
-            print(f"Other light: {other_light_name}, Color: {self.light_colors[other_light_name]}, Available colors: {colors}")
+            print(f"Other light: {other_light_name}, Color: {self.light_colors[other_light_name]}")
+
+        if color_index != len(colors):
+            print("Warning: Colors not fully consumed.")
                     
     def publish_marker(self):
         marker_msg = Marker()
