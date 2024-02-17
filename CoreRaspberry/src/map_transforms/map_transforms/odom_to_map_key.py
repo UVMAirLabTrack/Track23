@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import TransformStamped, Quaternion, Pose, Point, Vector3
+from geometry_msgs.msg import TransformStamped, Quaternion
 from visualization_msgs.msg import Marker
 import tf2_ros
 import math
@@ -20,8 +20,6 @@ class OdomTransformer(Node):
             self.odom_callback,
             10
         )
-        self.offset_position = [0.0, 0.0, 0.0]
-        self.offset_orientation = Quaternion()
 
         # Create a publisher to publish the transformed odometry data to "odom_map"
         self.odom_map_publisher = self.create_publisher(Odometry, 'odom_map', 10)
@@ -32,22 +30,24 @@ class OdomTransformer(Node):
         # Create a tf2_ros.TransformBroadcaster for publishing the transform
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
-        # Add a flag to check if the offset has been set
-        self.offset_set = False
+        # Initialize the thread for keypress event
+        self.keypress_thread = threading.Thread(target=self.keypress_listener)
+        self.keypress_thread.daemon = True
+        self.keypress_thread.start()
 
-        key_listener_thread = threading.Thread(target=self.key_listener_thread)
-        key_listener_thread.daemon = True  # Terminate thread when the main program exits
-        key_listener_thread.start()
+    def odom_callback(self, msg):
+        # Perform the transformation from "base_link" to "map"
+        transformed_odom = self.transform_odom(msg)
+
+        # Publish the transformed odometry data to "odom_map"
+        self.odom_map_publisher.publish(transformed_odom)
+
+        # Publish the car model mesh in the transformed frame
+        self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
         # Assuming you have the transformation logic here
         # In this example, we simply copy the original odometry message
-
-        if not self.offset_set:
-            # Set the car's start position and pose as zeros
-            self.capture_offset(odom_msg)
-            print("Car's start position and pose set to zeros.")
-
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
         transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
@@ -75,7 +75,6 @@ class OdomTransformer(Node):
 
         return transformed_odom
 
-    
     def publish_car_mesh(self, odom_msg):
         # Publish the car model mesh in the transformed frame
         car_mesh = Marker()
@@ -106,10 +105,7 @@ class OdomTransformer(Node):
 
         # Set the mesh resource file path
         full_file_path = f'file:///{subprocess.check_output(["ros2", "pkg", "prefix", "map_transforms"]).decode("utf-8").strip()}/share/map_transforms/markers/car.stl'
-        #marker.mesh_resource = 'package://testing_pubs/markers/car.stl'
         car_mesh.mesh_resource = full_file_path
-
-        #car_mesh.mesh_resource = 'package://map_transforms/markers/car.stl'  # Update with your mesh file path
 
         self.car_mesh_publisher.publish(car_mesh)
 
@@ -121,54 +117,31 @@ class OdomTransformer(Node):
             z=math.sin(angle / 2.0),
             w=math.cos(angle / 2.0)
         )
-    def odom_callback(self, msg):
-        # Check if the offset has been set
-        if not self.offset_set:
-            # Set the car's start position and pose as zeros
-            self.set_offset(msg)
-            print("Car's start position and pose set to zeros.")
 
-        # Perform the transformation from "base_link" to "map"
-        transformed_odom = self.transform_odom(msg)
+    def keypress_listener(self):
+        def on_press(key):
+            # Check if the pressed key is the desired key (e.g., 'c')
+            if key == keyboard.Key.c:
+                # Capture and calibrate the current odometry for a zero pose
+                captured_odom = self.capture_current_odometry()
+                calibrated_odom = self.calibrate_odometry(captured_odom)
 
-        # Publish the transformed odometry data to "odom_map"
-        self.odom_map_publisher.publish(transformed_odom)
+                # Do something with the calibrated odometry if needed
+                print("Calibrated Odometry:", calibrated_odom)
 
-        # Publish the car model mesh in the transformed frame
-        self.publish_car_mesh(transformed_odom)
-
-    def capture_offset(self, odom_msg):
-        # Capture the car's current pose as the offset
-        self.offset_position = [
-            odom_msg.pose.pose.position.x,
-            odom_msg.pose.pose.position.y,
-            odom_msg.pose.pose.position.z
-        ]
-        self.offset_orientation = odom_msg.pose.pose.orientation
-
-        # Set the offset_set flag to True
-        self.offset_set = True
-
-    def odom_callback(self, msg):
-        # Check if the offset has been set
-        if not self.offset_set:
-            # Capture the car's current pose as the offset
-            self.capture_offset(msg)
-            print("Offset captured.")
-        transformed_odom = self.transform_odom(msg)
-
-    def on_key_press(self, key):
-        # Check for the space key
-        if key == keyboard.Key.space:
-            # Reset the offset in a thread-safe way
-            with self.offset_lock:
-                self.offset_set = False
-            print("Offset reset.")
-
-    def key_listener_thread(self):
-        with keyboard.Listener(on_press=self.on_key_press) as listener:
+        with keyboard.Listener(on_press=on_press) as listener:
             listener.join()
-        
+
+    def capture_current_odometry(self):
+        # Implement the logic to capture the current odometry
+        # For simplicity, return a placeholder value
+        return Odometry()
+
+    def calibrate_odometry(self, captured_odom):
+        # Implement the logic to calibrate the captured odometry
+        # For simplicity, return the captured odometry without calibration
+        return captured_odom
+
 def main(args=None):
     rclpy.init(args=args)
     odom_transformer = OdomTransformer()
