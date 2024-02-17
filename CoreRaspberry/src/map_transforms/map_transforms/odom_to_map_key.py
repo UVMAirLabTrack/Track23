@@ -157,6 +157,14 @@ class OdomTransformer(Node):
             print("Offset captured.")
         transformed_odom = self.transform_odom(msg)
 
+    def on_key_press(self, key):
+        # Check for the space key
+        if key == keyboard.Key.space:
+            # Reset the offset in a thread-safe way
+            with self.offset_lock:
+                self.offset_set = False
+            print("Offset reset.")
+
     def key_listener_thread(self):
         with keyboard.Listener(on_press=self.on_key_press) as listener:
             listener.join()
