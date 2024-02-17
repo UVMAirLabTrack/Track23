@@ -33,7 +33,7 @@ class OdomTransformer(Node):
         self.offset_set = False
 
         # Start a loop to listen for keypress events
-        with keyboard.Listener(on_press=self.on_key_press) as listener:
+        with keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release) as listener:
             listener.join()
 
     def transform_odom(self, odom_msg):
@@ -141,6 +141,9 @@ class OdomTransformer(Node):
         if key == keyboard.Key.space:
             self.offset_set = False
             print("Offset reset.")
+
+    def on_key_release(self, key):
+        pass 
         
 def main(args=None):
     rclpy.init(args=args)
