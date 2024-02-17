@@ -23,7 +23,7 @@ class OdomPublisher(Node):
 
         odom = Odometry()
         odom.header.stamp = self.get_clock().now().to_msg()
-        odom.header.frame_id = 'odom'
+        odom.header.frame_id = 'map'
         odom.child_frame_id = 'base_link'
 
         # Set position
@@ -42,7 +42,7 @@ class OdomPublisher(Node):
         # Publish transform from 'odom' to 'base_link'
         transform = TransformStamped()
         transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = 'odom'
+        transform.header.frame_id = 'map'
         transform.child_frame_id = 'base_link'
 
         transform.transform.translation.x = odom.pose.pose.position.x
