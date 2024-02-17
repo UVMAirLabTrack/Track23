@@ -117,7 +117,8 @@ class FourWayVisualizer(Node):
         marker_msg.scale.z = 1.0
 
         # Corrected line: use self.marker_name as the key
-        color_name = self.light_colors[self.marker_name]
+        light_name = self.marker_name
+        color_name = light_name[len('light_'):]  # Remove 'light_' prefix
 
         # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
