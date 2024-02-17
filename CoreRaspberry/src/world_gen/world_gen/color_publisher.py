@@ -7,8 +7,8 @@ class ColorPublisher(Node):
     
     def __init__(self):
         super().__init__('color_publisher')
-        self.publisher_ = self.create_publisher(String, 'four_way_state_str', 10)
-        self.publisher_2 = self.create_publisher(String, 'four_way_state', 10)
+        
+        self.publisher_ = self.create_publisher(String, 'four_way_state', 10)
         self.timer_ = self.create_timer(1.0, self.timer_callback)
         self.colors = [['red', 'yellow', 'off', 'white'],['white','blue', 'yellow', 'green'],['green', 'white', 'red', 'yellow'],['left_go', 'right_stop', 'right_go','left_stop'],
                        ]  # Add more color sequences if needed
