@@ -108,14 +108,13 @@ class FourWayVisualizer(Node):
         marker_msg.scale.x = 1.0
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
-        #marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
+        # Corrected line: use 'light_' + self.marker_name as the key
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.light_colors['light_' + self.marker_name]
-        
-        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+
+        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'
 
         self.publisher.publish(marker_msg)
-
 
 def run_marker(marker_name, pose_file):
     #rclpy.init()
