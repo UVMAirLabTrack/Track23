@@ -15,6 +15,13 @@ import time
 
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
+    color_mapping = {
+            'red': [1.0, 0.0, 0.0, 1.0],
+            'yellow': [1.0, 1.0, 0.0, 1.0],
+            'green': [0.0, 1.0, 0.0, 1.0],
+            'white': [1.0, 1.0, 1.0, 1.0],
+            'blue': [0.0, 0.0, 1.0, 1.0],
+    }
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
@@ -25,6 +32,7 @@ class FourWayVisualizer(Node):
             'light_c': [0.0, 0.0, 0.0, 1.0],
             'light_d': [0.0, 0.0, 0.0, 1.0],
         }
+
 
         if not self.possible_poses:
             # Handle the case where there are no poses
@@ -84,18 +92,17 @@ class FourWayVisualizer(Node):
         return poses
 
     def color_callback(self, msg):
-        # Set the marker color based on the received string
-        color_mapping = {
-            'red': [1.0, 0.0, 0.0, 1.0],
-            'yellow': [1.0, 1.0, 0.0, 1.0],
-            'green': [0.0, 1.0, 0.0, 1.0],
-            'white': [1.0, 1.0, 1.0, 1.0],
-            'blue': [0.0, 0.0, 1.0, 1.0],
-        }
-        #self.current_color = color_mapping.get(msg.data, [1.0, 1.0, 1.0, 1.0])
-        light_name = 'light_' + self.marker_name
-        self.light_colors[light_name] = color_mapping.get(light_name, [1.0, 1.0, 1.0, 1.0])
+    # Split the received string into a list of colors
+        colors = msg.data.split(',')
 
+        # Update colors for each light based on the received list
+        for light_index, light_name in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
+            if light_index < len(colors):
+                # Set the color for the current light
+                self.light_colors[light_name] = self.get_color_rgb(colors[light_index])
+            else:
+                # If there are not enough colors in the received list, default to white
+                self.light_colors[light_name] = [1.0, 1.0, 1.0, 1.0]
 
     def publish_marker(self):
         marker_msg = Marker()
