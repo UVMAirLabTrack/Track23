@@ -16,23 +16,16 @@ import time
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
     color_mapping = {
-            'red': [1.0, 0.0, 0.0, 1.0],
-            'yellow': [1.0, 1.0, 0.0, 1.0],
-            'green': [0.0, 1.0, 0.0, 1.0],
-            'white': [1.0, 1.0, 1.0, 1.0],
-            'blue': [0.0, 0.0, 1.0, 1.0],
+        'red': [1.0, 0.0, 0.0, 1.0],
+        'yellow': [1.0, 1.0, 0.0, 1.0],
+        'green': [0.0, 1.0, 0.0, 1.0],
+        'white': [1.0, 1.0, 1.0, 1.0],
+        'blue': [0.0, 0.0, 1.0, 1.0],
     }
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.possible_poses = self.read_poses_from_file(pose_file)
-        self.light_colors = {
-            'light_a': [0.0, 0.0, 0.0, 1.0],
-            'light_b': [0.0, 0.0, 0.0, 1.0],
-            'light_c': [0.0, 0.0, 0.0, 1.0],
-            'light_d': [0.0, 0.0, 0.0, 1.0],
-        }
-
 
         if not self.possible_poses:
             # Handle the case where there are no poses
@@ -92,17 +85,17 @@ class FourWayVisualizer(Node):
         return poses
 
     def color_callback(self, msg):
-    # Split the received string into a list of colors
+        # Split the received string into a list of colors
         colors = msg.data.split(',')
 
         # Update colors for each light based on the received list
-        for light_index, light_name in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
-            if light_index < len(colors):
-                # Set the color for the current light
-                self.light_colors[light_name] = colors[light_index]
+        for light_name in [f'four_way_marker_{self.marker_name}']:
+            # Set the color for the current light
+            if light_name in self.light_colors and colors:
+                self.light_colors[light_name] = colors.pop(0)
             else:
                 # If there are not enough colors in the received list, default to white
-                self.light_colors[light_name] = [1.0, 1.0, 1.0, 1.0]
+                self.light_colors[light_name] = 'white'
 
     def publish_marker(self):
         marker_msg = Marker()
@@ -116,19 +109,20 @@ class FourWayVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
 
-        # Corrected line: use self.marker_name as the key
-        light_name = self.marker_name
-        color_name = light_name[len('light_'):]  # Remove 'light_' prefix
+        color_name = self.light_colors[self.marker_name]
 
-        # Use the color_mapping dictionary to get the RGBA values
+    # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
 
-        # Assign RGBA values to the marker message
+    # Assign RGBA values to the marker message
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
 
-        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'
+
+        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
+
 
 def run_marker(marker_name, pose_file):
     #rclpy.init()
