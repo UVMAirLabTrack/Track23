@@ -40,7 +40,7 @@ def main():
     rclpy.init()
     node = rclpy.create_node('world_publisher')
 
-    marker_publisher = node.create_publisher(Marker, '/visualization_marker', 10)
+    marker_publisher = node.create_publisher(Marker, '/world_map', 10)
 
     marker = Marker()
     marker.type = Marker.MESH_RESOURCE
@@ -94,7 +94,8 @@ def main():
 
  
 
-    while rclpy.ok():
+    def publish_marker_callback():
+        nonlocal marker
         node.get_logger().info(f'Publishing world from path: {world_path}')
         node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
@@ -106,8 +107,11 @@ def main():
         node.get_logger().info(f"Mesh_use_embedded_materials: {marker.mesh_use_embedded_materials}")
         node.get_logger().info(f"Frame_id: {marker.header.frame_id}")
         marker_publisher.publish(marker)
-        rclpy.spin_once(node)
 
+    timer_period = 10.0  # seconds
+    timer = node.create_timer(timer_period, publish_marker_callback)
+
+    rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
 
