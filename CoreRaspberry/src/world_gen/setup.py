@@ -13,6 +13,7 @@ setup(
     'world_gen.gen',
     'world_gen.four_way_marker',
     'world_gen.color_publisher',
+    
     ],
     install_requires=['setuptools'],
     zip_safe=True,
