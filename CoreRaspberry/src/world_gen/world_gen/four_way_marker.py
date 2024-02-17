@@ -94,25 +94,23 @@ class FourWayVisualizer(Node):
         print(colors)
 
         # Update colors for each light based on the received list
-        for i, marker in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
+        for light_name in [f'four_way_marker_{self.marker_name}']:
             # Set the color for the current light
-            light_name = f'four_way_marker_{marker}'
             if light_name in self.light_colors and colors:
-                self.light_colors[light_name] = colors[i]
+                self.light_colors[light_name] = colors.pop(0)
                # print(f'{light_name} color: {colors.pop(0)}')
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = 'black'
                 print("length failure")
-
-        """# Add the following loop to update other markers
-        for other_marker in ['light_a', 'light_b', 'light_c', 'light_d']:
+        # Add the following loop to update other markers
+        for i, other_marker in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
             other_light_name = f'four_way_marker_{other_marker}'
-            if other_light_name in self.light_colors and colors:
-                self.light_colors[other_light_name] = colors.pop(0)
+            if other_light_name in self.light_colors and colors and i < len(colors):
+                self.light_colors[other_light_name] = colors[i]
             else:
                 self.light_colors[other_light_name] = 'black'
-                print("other Length failure")"""
+                print("other Length failure")
                 
     def publish_marker(self):
         marker_msg = Marker()
