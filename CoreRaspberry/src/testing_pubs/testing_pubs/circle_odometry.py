@@ -69,7 +69,7 @@ class OdomPublisher(Node):
         marker.color.r = 1.0
         marker.color.g = 0.0
         marker.color.b = 0.0
-        marker.mesh_resource = "package://testing_pubs/markers/car.stl"  # Update with your mesh file path
+        marker.mesh_resource = 'package://testing_pubs/markers/car.stl'  # Update with your mesh file path
 
         self.marker_publisher.publish(marker)
 
