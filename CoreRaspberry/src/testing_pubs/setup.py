@@ -12,7 +12,7 @@ setup(
     py_modules=[
     'testing_pubs.circle_odometry',
     'testing_pubs.circle_odometry_mesh',
-    #'testing_pubs.four_way_marker',
+    'testing_pubs.linear_x_odometry'
     'testing_pubs.color_publisher',
     
     ],
@@ -32,7 +32,7 @@ setup(
         'console_scripts': [
             'circle_odometry = testing_pubs.circle_odometry:main',
             'circle_odometry_mesh = testing_pubs.circle_odometry_mesh:main',
-            #'four_way_marker = testing_pubs.four_way_marker:main',
+            'linear_x_odometry = testing_pubs.linear_x_odometry:main',
             'color_test = testing_pubs.color_publisher:main',
         ],
     },
