@@ -4,7 +4,7 @@ Y_position 0.0
 Z_position 0.0
 Quaternion_x 0.0
 Quaternion_y 0.707
-Quaternion_z 0.0
+Quaternion_z 0.707
 Quaternion_w 0.707
 Scale_x 1.0
 Scale_y 1.0
