@@ -99,7 +99,7 @@ class FourWayVisualizer(Node):
         for light_index, light_name in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
             if light_index < len(colors):
                 # Set the color for the current light
-                self.light_colors[light_name] = self.get_color_rgb(colors[light_index])
+                self.light_colors[light_name] = colors[light_index]
             else:
                 # If there are not enough colors in the received list, default to white
                 self.light_colors[light_name] = [1.0, 1.0, 1.0, 1.0]
