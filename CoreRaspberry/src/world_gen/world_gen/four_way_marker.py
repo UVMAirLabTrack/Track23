@@ -26,7 +26,8 @@ class FourWayVisualizer(Node):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
         self.light_colors = {
-            f'four_way_marker_{self.marker_name}': 'white',}
+        'four_way_marker_' + marker_name: 'white',
+        }
         self.possible_poses = self.read_poses_from_file(pose_file)
 
         if not self.possible_poses:
@@ -111,7 +112,7 @@ class FourWayVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
 
-        color_name = self.light_colors[self.marker_name]
+        color_name = self.light_colors['four_way_marker_' + self.marker_name]
 
     # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
