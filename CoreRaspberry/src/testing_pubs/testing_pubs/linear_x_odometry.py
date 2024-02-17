@@ -10,7 +10,7 @@ class OdomPublisher(Node):
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
         self.timer = self.create_timer(0.2, self.publish_odom)
         self.time_sec = 0.0
-        self.linear_speed = 0.1  # Adjust linear speed as needed
+        self.linear_speed = 0.5  # Adjust linear speed as needed
         self.distance_limit = 2.0  # Adjust distance limit as needed
         self.forward = True
     def publish_odom(self):
