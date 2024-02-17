@@ -12,14 +12,14 @@ class OdomPublisher(Node):
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
         self.marker_publisher = self.create_publisher(Marker, 'car_marker', 10)
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
-        self.timer = self.create_timer(1.0, self.publish_odom)
+        self.timer = self.create_timer(0.2, self.publish_odom)
         self.time_sec = 0.0
         self.angle = 0.0
         self.radius = 1.0  # 1 meter circle
 
     def publish_odom(self):
-        self.time_sec += 1.0
-        self.angle += 0.1  # Adjust as needed for desired rotation speed
+        self.time_sec += 0.2
+        self.angle += 0.03  # Adjust as needed for desired rotation speed
 
         odom = Odometry()
         odom.header.stamp = self.get_clock().now().to_msg()
