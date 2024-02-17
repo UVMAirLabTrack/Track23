@@ -121,7 +121,7 @@ class OdomTransformer(Node):
     def keypress_listener(self):
         def on_press(key):
             # Check if the pressed key is the desired key (e.g., 'c')
-            if key == keyboard.Key.c:
+            if hasattr(key, 'char') and key.char == 'c':
                 # Capture and calibrate the current odometry for a zero pose
                 captured_odom = self.capture_current_odometry()
                 calibrated_odom = self.calibrate_odometry(captured_odom)
