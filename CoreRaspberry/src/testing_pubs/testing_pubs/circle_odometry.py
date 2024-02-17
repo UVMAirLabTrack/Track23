@@ -77,8 +77,8 @@ class OdomPublisher(Node):
         return Quaternion(
             x=0.0,
             y=0.0,
-            z=math.sin(angle / 2.0),
-            w=math.cos(angle / 2.0)
+            z=math.sin(-angle / 2.0),
+            w=math.cos(-angle / 2.0)
         )
 
 def main(args=None):
