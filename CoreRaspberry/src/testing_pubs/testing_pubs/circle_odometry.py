@@ -1,18 +1,13 @@
 import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Quaternion, Twist, Vector3, TransformStamped
-from visualization_msgs.msg import Marker
-import tf2_ros
+from geometry_msgs.msg import Quaternion, Vector3
 import math
-import subprocess
 
 class OdomPublisher(Node):
     def __init__(self):
         super().__init__('odometry_publisher')
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
-        self.marker_publisher = self.create_publisher(Marker, 'car_marker', 10)
-        self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
         self.timer = self.create_timer(0.2, self.publish_odom)
         self.time_sec = 0.0
         self.angle = 0.0
@@ -39,45 +34,6 @@ class OdomPublisher(Node):
         odom.twist.twist.linear = Vector3(x=0.1, y=0.0, z=0.0)  # Adjust as needed
 
         self.odom_publisher.publish(odom)
-
-        # Publish transform from 'odom' to 'base_link'
-        transform = TransformStamped()
-        transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = 'map'
-        transform.child_frame_id = 'base_link'
-
-        transform.transform.translation.x = odom.pose.pose.position.x
-        transform.transform.translation.y = odom.pose.pose.position.y
-        transform.transform.translation.z = odom.pose.pose.position.z
-        transform.transform.rotation = odom.pose.pose.orientation
-
-        self.transform_broadcaster.sendTransform(transform)
-
-        # Publish Marker for visualization
-        marker = Marker()
-        marker.header.frame_id = 'base_link'
-        marker.header.stamp = self.get_clock().now().to_msg()
-        marker.ns = 'car'
-        marker.id = 0
-        marker.type = Marker.MESH_RESOURCE
-        marker.action = Marker.ADD
-        marker.pose.position = odom.pose.pose.position
-        marker.pose.orientation = odom.pose.pose.orientation
-        marker.scale.x = 1.0  # Scale of the mesh
-        marker.scale.y = 1.0
-        marker.scale.z = 1.0
-        marker.color.a = 1.0
-        marker.color.r = 1.0
-        marker.color.g = 0.0
-        marker.color.b = 0.0
-        full_file_path = f'file:///{subprocess.check_output(["ros2", "pkg", "prefix", "testing_pubs"]).decode("utf-8").strip()}/share/testing_pubs/markers/car.stl'
-        #marker.mesh_resource = 'package://testing_pubs/markers/car.stl'
-        marker.mesh_resource = full_file_path
-
-  
-        #print(f"Full file path for 'package://testing_pubs/markers/car.stl': {full_file_path}")
-
-        self.marker_publisher.publish(marker)
 
     def angle_to_quaternion(self, angle):
         return Quaternion(

@@ -11,6 +11,7 @@ setup(
     #package_dir={package_name: 'src/' + package_name},
     py_modules=[
     'testing_pubs.circle_odometry',
+    'testing_pubs.circle_odometry_mesh',
     #'testing_pubs.four_way_marker',
     'testing_pubs.color_publisher',
     
@@ -30,7 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'circle_odometry = testing_pubs.circle_odometry:main',
-            
+            'circle_odometry_mesh = testing_pubs.circle_odometry_mesh:main',
             #'four_way_marker = testing_pubs.four_way_marker:main',
             'color_test = testing_pubs.color_publisher:main',
         ],
