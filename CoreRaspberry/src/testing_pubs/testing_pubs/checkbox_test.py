@@ -24,10 +24,6 @@ class ROS2CheckboxApp:
         checkbox2 = tk.Checkbutton(self.root, text="Option 2", variable=self.checkbox_var2, command=self.on_checkbox_change)
         checkbox2.pack(padx=10, pady=5)
 
-        # Run the Tkinter event loop
-        self.root.protocol("WM_DELETE_WINDOW", self.on_close)  # Handle window close event
-        self.root.mainloop()
-
     def on_checkbox_change(self):
         # Get the current state of checkboxes
         option1_state = "red" if self.checkbox_var1.get() else "green"
@@ -38,12 +34,17 @@ class ROS2CheckboxApp:
         message.data = f"{option1_state},{option2_state}"
         self.publisher.publish(message)
 
-    def on_close(self):
-        # Close the ROS 2 node when the Tkinter window is closed
-        self.node.destroy_node()
-        rclpy.shutdown()
-        self.root.destroy()
+def main(args=None):
+    rclpy.init(args=args)
+    app = ROS2CheckboxApp()
+
+    try:
+        rclpy.spin(app.node)
+    except KeyboardInterrupt:
+        pass
+
+    app.node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    rclpy.init()
-    app = ROS2CheckboxApp()
+    main()
