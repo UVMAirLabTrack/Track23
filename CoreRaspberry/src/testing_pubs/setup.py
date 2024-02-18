@@ -14,6 +14,7 @@ setup(
     'testing_pubs.circle_odometry_mesh',
     'testing_pubs.linear_x_odometry',
     'testing_pubs.color_publisher',
+    'testing_pubs.checkbox_test',
     
     ],
     install_requires=['setuptools'],
@@ -34,6 +35,7 @@ setup(
             'circle_odometry_mesh = testing_pubs.circle_odometry_mesh:main',
             'linear_x_odometry = testing_pubs.linear_x_odometry:main',
             'color_test = testing_pubs.color_publisher:main',
+            'checkbox = testing_pubs.checkbox_test:main',
         ],
     },
 )
