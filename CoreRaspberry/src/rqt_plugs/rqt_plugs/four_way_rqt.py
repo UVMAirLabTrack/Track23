@@ -1,4 +1,3 @@
-# four_way_state_rqt_plugin.py
 from python_qt_binding.QtWidgets import QWidget, QVBoxLayout, QCheckBox, QPushButton
 from std_msgs.msg import String
 import rclpy
@@ -39,7 +38,20 @@ class FourWayStateRqtPlugin(QWidget):
 
 def main():
     rclpy.init()
-    rclpy.spin()
+    context = None  # Replace this with your actual RQT context if needed
+    plugin = FourWayStateRqtPlugin(context)
+
+    try:
+        # This is a placeholder main loop for the RQT plugin
+        while not rclpy.ok():
+            rclpy.spin_once(plugin.node, timeout_sec=0.1)
+            # Add any additional logic or updates needed in the main loop
+
+    except KeyboardInterrupt:
+        pass
+
+    plugin.node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
