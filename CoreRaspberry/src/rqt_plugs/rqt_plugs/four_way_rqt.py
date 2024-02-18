@@ -4,6 +4,8 @@ import rclpy
 
 class FourWayStateRqtPlugin(QWidget):
     def __init__(self, context):
+        rclpy.init()  # Move rclpy.init() here
+
         super(FourWayStateRqtPlugin, self).__init__()
 
         self.publisher = None
@@ -37,7 +39,7 @@ class FourWayStateRqtPlugin(QWidget):
         self.publisher.publish(message)
 
 def main():
-    rclpy.init()
+    # Note: rclpy.init() is moved inside FourWayStateRqtPlugin constructor
     context = None  # Replace this with your actual RQT context if needed
     plugin = FourWayStateRqtPlugin(context)
 
