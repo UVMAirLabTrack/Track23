@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(testing_pubs)
+project(rqt_plugs)
 
 
 find_package(ament_cmake REQUIRED)
