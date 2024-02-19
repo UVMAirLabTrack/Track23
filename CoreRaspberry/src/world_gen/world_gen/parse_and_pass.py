@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from world_gen.msg import world_marker_msg
+from custom_msgs.msg import world_marker_msg
 from std_msgs.msg import Header
 import os
 
