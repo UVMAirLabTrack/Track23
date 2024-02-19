@@ -8,8 +8,13 @@ find_package(rosidl_default_generators REQUIRED)
 
 ament_python_install_package(${PROJECT_NAME} SCRIPTS_DESTINATION lib/${PROJECT_NAME})
 
+set(msg_files
+  "msg/world_marker_msg.msg"
+)
+
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/world_marker_msg.msg")
+  ${msg_files}
+)
 
 install(DIRECTORY
     ${CMAKE_CURRENT_LIST_DIR}/config
@@ -19,3 +24,4 @@ install(DIRECTORY
     DESTINATION share/${PROJECT_NAME}/
 )
 ament_package()
+ament_export_dependencies(rosidl_default_runtime)
