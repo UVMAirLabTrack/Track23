@@ -18,6 +18,7 @@ endif()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/WorldMarkers.msg"
+  DEPENDENCIES builtin_interfaces
 )
 
 install(DIRECTORY
