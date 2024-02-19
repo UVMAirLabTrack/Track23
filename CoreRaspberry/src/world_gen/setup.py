@@ -12,7 +12,7 @@ setup(
     py_modules=[
     'world_gen.gen',
     'world_gen.four_way_marker',
-    #'world_gen.color_publisher',
+    'world_gen.parse_and_pass',
     
     ],
     install_requires=['setuptools'],
@@ -22,6 +22,7 @@ setup(
     description='ROS 2 package for generating world scenarios in RVIZ',
     license='TODO',
     data_files=[
+    (f'share/{package_name}/msg', ['msg/world_marker_msg.msg']),
     ('share/' + package_name + '/worlds', glob(os.path.join('world_gen', 'worlds', '*.*'))),
     ('share/' + package_name + '/markers', glob(os.path.join('world_gen', 'markers', '*.*'))),
     ('share/' + package_name, ['package.xml']),
@@ -31,7 +32,7 @@ setup(
         'console_scripts': [
             'gen = world_gen.gen:main',
             'four_way_marker = world_gen.four_way_marker:main',
-            #'color_test = world_gen.color_publisher:main',
+            'parse_and_pass = world_gen.parse_and_pass:main',
         ],
     },
 )

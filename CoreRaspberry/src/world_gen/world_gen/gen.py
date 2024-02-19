@@ -52,8 +52,6 @@ def main():
     world_file, world_pose = world_select(world_ctrl)
     world_path = os.path.join(parent_folder, 'worlds', f'{world_file}')
     world_pose_path = os.path.join(parent_folder, 'worlds', f'{world_pose}')
-
-
     pose_data = read_world_pose(world_pose_path)
 
 
