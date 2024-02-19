@@ -1,4 +1,6 @@
-Header header
+# world_marker_msg.msg
+builtin_interfaces/Time stamp
+string frame_id
 uint32[] index
 string[] entry1
 string[] entry2
@@ -8,4 +10,3 @@ float64[] z
 float64[] qx
 float64[] qy
 float64[] qz
-#float64[] qw #do i want the quaternion, or just do conversions.
