@@ -26,7 +26,7 @@ endif()
 
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/world_marker_msg.msg"
+  "msg/WorldMarkers.msg"
   #"msg/Sphere.msg"
   #"srv/AddThreeInts.srv"
   #DEPENDENCIES geometry_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
