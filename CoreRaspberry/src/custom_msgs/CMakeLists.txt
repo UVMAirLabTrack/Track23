@@ -26,7 +26,7 @@ install(DIRECTORY
     ${CMAKE_CURRENT_LIST_DIR}/config
     ${CMAKE_CURRENT_LIST_DIR}/data
     ${CMAKE_CURRENT_LIST_DIR}/launch
-    ${CMAKE_CURRENT_LIST_DIR}/worlds
+    
     DESTINATION share/${PROJECT_NAME}/
 )
 
