@@ -1,13 +1,13 @@
 import rclpy
 from rclpy.node import Node
-from custom_msgs.msg import world_marker_msg
+from custom_msgs.msg import WorldMarkers
 from std_msgs.msg import Header
 import os
 
 class PoseParserNode(Node):
     def __init__(self):
         super().__init__('pose_parser_node')
-        self.publisher = self.create_publisher(world_marker_msg, 'custom_poses', 10)
+        self.publisher = self.create_publisher(WorldMarkers, 'custom_poses', 10)
         self.timer = self.create_timer(1.0, self.publish_poses)
         self.pose_filename = "test.txt"
 
@@ -39,7 +39,7 @@ class PoseParserNode(Node):
     def publish_poses(self):
         if self.pose_index < len(self.poses):
             pose_values = self.poses[self.pose_index]
-            pose_msg = world_marker_msg()
+            pose_msg = WorldMarkers()
             pose_msg.header = Header()
             pose_msg.header.stamp = self.get_clock().now().to_msg()
             pose_msg.index = [pose_values[0]]
