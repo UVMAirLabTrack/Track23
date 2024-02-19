@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
 
-  <name>cudstom_msgs</name>
+  <name>custom_msgs</name>
   <version>0.0.0</version>
   <description>generates world vizualizations for RVIZ</description>
   <maintainer email="iantheterror4@gmail.com">Ian M</maintainer>
