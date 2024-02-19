@@ -12,7 +12,7 @@ setup(
     py_modules=[
     'world_gen.gen',
     'world_gen.four_way_marker',
-    'world_gen.parse_and_pass',
+    #'world_gen.parse_and_pass',
     
     ],
     install_requires=['setuptools'],
@@ -32,7 +32,7 @@ setup(
         'console_scripts': [
             'gen = world_gen.gen:main',
             'four_way_marker = world_gen.four_way_marker:main',
-            'parse_and_pass = world_gen.parse_and_pass:main',
+            #'parse_and_pass = world_gen.parse_and_pass:main',
         ],
     },
 )
