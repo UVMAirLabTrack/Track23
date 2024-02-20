@@ -11,7 +11,7 @@ typedef struct {
 SlaveInfo slaves[SlaveCnt];
 
 uint8_t broadcastAddresses[][6] = {
-  {0xEC, 0x62, 0x60, 0x76, 0xD0, 0x04}, // Light Test ESP
+  //{0xEC, 0x62, 0x60, 0x76, 0xD0, 0x04}, // Light Test ESP
   {0x40, 0x22, 0xD8, 0x77, 0x15, 0xA4}, // Train Test ESP
   {0xD8, 0xBC, 0x38, 0x75, 0x13, 0x1C}, // Crossing (X)
   {0xD8, 0xBC, 0x38, 0x75, 0x22, 0x54},  // 4 Way (4W)
@@ -30,6 +30,8 @@ typedef struct DataStruct {
   int Pair6;
   int Pair7;
   int Pair8;
+  int Pair9;
+  int Pair10;
 }DataStruct;
 DataStruct Data;
 int BufferClear;
@@ -85,6 +87,8 @@ void loop() {
     Data.Pair6 = Serial.parseInt();
     Data.Pair7 = Serial.parseInt();
     Data.Pair8 = Serial.parseInt();
+    Data.Pair9 = Serial.parseInt();
+    Data.Pair10 = Serial.parseInt();
     BufferClear = Serial.parseInt();
 /*
         Serial.print("String: ");

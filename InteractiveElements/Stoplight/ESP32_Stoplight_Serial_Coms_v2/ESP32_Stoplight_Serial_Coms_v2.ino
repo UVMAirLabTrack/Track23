@@ -198,6 +198,8 @@ void loop() {
     int Pair6 = Serial.parseInt();
     int Pair7 = Serial.parseInt();
     int Pair8 = Serial.parseInt();
+    int Pair9 = Serial.parseInt();
+    int Pair10 = Serial.parseInt();
     Color_Convert_int(Pair1);
     Color_state();
     setColor(redPin, yellowPin, greenPin, whitePin, bluePin);
