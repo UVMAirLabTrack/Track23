@@ -37,7 +37,7 @@ def main(args=None):
                 publisher.publish(msg)
 
                 # Use the third integer in the line as the timeout time
-                timeout_time = light_state[2]
+                timeout_time = light_state[4]
 
                 # Sleep for the specified timeout time
                 time.sleep(timeout_time)
