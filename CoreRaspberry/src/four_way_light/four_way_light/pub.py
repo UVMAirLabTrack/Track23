@@ -32,7 +32,7 @@ def main(args=None):
         for light_state in lights:
             # Ensure each line in the file has at least 3 integers
             if len(light_state) >= 3:
-                msg = Int32MultiArray(data=light_state[:2])
+                msg = Int32MultiArray(data=light_state[:4]) # was 2
                 node.get_logger().info('Publishing: {}'.format(msg.data))
                 publisher.publish(msg)
 

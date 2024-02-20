@@ -24,23 +24,8 @@ class FourWayVisualizer(Node):
         'right_stop': [1.0, 0.0, 0.5, 1.0],
         'left_go': [0.0, 0.5, 0.5, 1.0],
         'right_go': [0.0, 1.0, 1.0, 1.0],
-        'all': [0.1,0.1,0.1,0.1]
 
     }
-
-    numeric_to_color = {
-            0: 'off',
-            1: 'red',
-            2: 'yellow',
-            3: 'green',
-            4: 'white',
-            5: 'blue',
-            6: 'left_stop',
-            7: 'right_stop',
-            8: 'left_go',
-            9: 'right_go',
-            10: 'all',
-        }
     def __init__(self, marker_name, pose_file):
         super().__init__('four_way_marker_' + marker_name)
         self.marker_name = marker_name
@@ -107,18 +92,21 @@ class FourWayVisualizer(Node):
         return poses
 
     def color_callback(self, msg):
-        # Split the received string into a list of numeric values
-        numeric_values = [int(x) for x in msg.data.split(',')]
-
-        # Map numeric values to color names
-        colors = [self.numeric_to_color.get(value, 'off') for value in numeric_values]
+        # Split the received string into a list of colors
+        colors = msg.data.split(',')
+        
 
         # Update colors for each light based on the received list
         for i, light in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
+            if i == 0:
+                print(colors)
+            # Set the color for the current light
             light_name = f'four_way_marker_{light}'
             if light_name in self.light_colors and colors:
                 self.light_colors[light_name] = colors[i]
+               # print(f'{light_name} color: {colors.pop(0)}')
             else:
+                # If there are not enough colors in the received list, default to 
                 self.light_colors[light_name] = 'off'
                 print("length failure")
   
