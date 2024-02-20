@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
+from std_msgs.msg import Int32MultiArray
 
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -62,7 +63,7 @@ class FourWayVisualizer(Node):
         self.publisher = self.create_publisher(Marker, 'four_way_marker' + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
-        self.subscription = self.create_subscription(String, 'four_way_state', self.color_callback, 10)
+        self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
         self.timer = self.create_timer(1.0, self.publish_marker)
@@ -107,8 +108,8 @@ class FourWayVisualizer(Node):
         return poses
 
     def color_callback(self, msg):
-        # Split the received string into a list of numeric values
-        numeric_values = [int(x) for x in msg.data.split(',')]
+        # Use the numeric values directly
+        numeric_values = msg.data
 
         # Map numeric values to color names
         colors = [self.numeric_to_color.get(value, 'off') for value in numeric_values]
@@ -121,7 +122,7 @@ class FourWayVisualizer(Node):
             else:
                 self.light_colors[light_name] = 'off'
                 print("length failure")
-  
+    
     def publish_marker(self):
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
