@@ -10,7 +10,13 @@ def generate_launch_description():
     package='four_way_light',
     
     executable='pub',
-    name='four_way_control')
+    name='four_way_control'),
+
+   Node(
+    package='direct_io',
+    
+    executable='esp_serial',
+    name='serial_converter')
 
 
    ])
