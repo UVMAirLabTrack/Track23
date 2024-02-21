@@ -13,17 +13,48 @@ cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
 
 Current list of packages and nodes
+launch files 
+world_gen 
+    world_viewer_launch  Loads up Rviz, with a map publisher, odom to map converter, and marker nodes
+    world_circle_launch, starts up the 4 way light control publisher, and the circle odometry publisher
+    track_launch currently only boots up the 4_way_state publisher. will add more in time.
+
+
 four_way_light
     pub  This is a publisher node to publish to four_way_state
 direct_io
+    esp_serial  This is the converter from state to serial coms for the ESP32
+
+        These need updated to work with the 4 int control instead of 2int
     testpub sends out an 8 integer message to test 4 possible nodes
-    direct_light sends along the four_way_state topic
+    direct_light sends along the four_way_state topic defunct since updated
     direct_servo sends along the train_state topic
     direct_master sends along any list of states, better for sending individual commands to all nodes
-    esp_serial  This is the converter from state to serial coms for the ESP32
+    
 
 world_gen
     gen generates a vizualiztion file for RVIZ
+    four_way_markers  creates the markers for the map
+    parse_and_pass  working on a new pose method, incomplete
+
+testing_pubs  
+    linear_x_odometry  generates an odom topic of a car driing along he X Axis
+    circle_odometery  generates a car driing in a circle_odometery
+    color_publisher  former design for four_way_state, currently defunct.
+
+do this on the pi soon
+sudo nano ~/.bashrc
+paste this line at the bottom, saves a lot of menace with the ros2 sourcing.
+
+source /home/dev/RaspberryCore/CoreRaspberry/install/local_setup.bash
+
+
+cd /home/dev/RaspberryCore/CoreRaspberry/
+source install/local_setup.bash
+
+ros2 launch world_gen world_viewer_launch.py
+ros2 launch world_gen world_circle_launch.py
+ros2 launch world_gen track_launch.py
 
 
 Pastable command lists
@@ -46,7 +77,6 @@ ros2 run direct_io direct_light
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
 ros2 run direct_io direct_master
-
 
 cd /home/dev/RaspberryCore/CoreRaspberry/
 source install/local_setup.bash
