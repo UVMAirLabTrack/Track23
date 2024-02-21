@@ -23,6 +23,7 @@ setup(
     license='TODO',
     data_files=[
     (f'share/{package_name}/msg', ['msg/world_marker_msg.msg']),
+    (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
     ('share/' + package_name + '/worlds', glob(os.path.join('world_gen', 'worlds', '*.*'))),
     ('share/' + package_name + '/markers', glob(os.path.join('world_gen', 'markers', '*.*'))),
     ('share/' + package_name, ['package.xml']),
