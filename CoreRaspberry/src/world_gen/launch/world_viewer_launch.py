@@ -3,7 +3,7 @@ from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-   package_share_directory = get_package_share_directory('your_package')
+   package_share_directory = get_package_share_directory('world_gen')
    return LaunchDescription([
       
     Node(
@@ -33,7 +33,7 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             output='screen',
-            parameters=[{'rviz_config_file': package_share_directory + '/path/to/your/rviz/config/file.rviz'}],
+            parameters=[{'4marker_rviz': package_share_directory + 'world_gen/rviz/4marker_rviz.rviz'}],
         ),
 
    ])
