@@ -20,12 +20,7 @@ def generate_launch_description():
     name='Four_markers'
 ),
 
-    Node(
-    package='map_transforms',
-    
-    executable='odom_to_map',
-    name='map_transform'
-),
+
 
     Node(
    
