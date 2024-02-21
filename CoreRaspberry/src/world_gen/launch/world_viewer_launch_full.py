@@ -21,13 +21,6 @@ def generate_launch_description():
 ),
 
     Node(
-    package='map_transforms',
-    
-    executable='odom_to_map',
-    name='map_transform'
-),
-
-    Node(
    
             package='rviz2',
             executable='rviz2',
