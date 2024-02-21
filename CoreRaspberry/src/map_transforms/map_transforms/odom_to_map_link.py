@@ -44,13 +44,13 @@ class OdomTransformer(Node):
         # In this example, we simply copy the original odometry message
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
-        transformed_odom.child_frame_id = 'base_footprint'  # Set to the appropriate child frame id
+        transformed_odom.child_frame_id = 'base_link'  # Set to the appropriate child frame id
 
         # Perform the transformation from "base_link" to "map"
         transform = TransformStamped()
         transform.header.stamp = self.get_clock().now().to_msg()
         transform.header.frame_id = 'map'
-        transform.child_frame_id = 'base_footprint'
+        transform.child_frame_id = 'base_link'
 
         # Set the translation
         transform.transform.translation.x = odom_msg.pose.pose.position.x
@@ -73,7 +73,7 @@ class OdomTransformer(Node):
     def publish_car_mesh(self, odom_msg):
         # Publish the car model mesh in the transformed frame
         car_mesh = Marker()
-        car_mesh.header.frame_id = 'base_footprint'  # Set to the transformed frame
+        car_mesh.header.frame_id = 'base_link'  # Set to the transformed frame
         car_mesh.header.stamp = self.get_clock().now().to_msg()
         car_mesh.ns = 'car_mesh'
         car_mesh.id = 0

@@ -16,7 +16,7 @@ class SerialSend(Node):
             self.get_logger().error('No serial devices found')
         else:
             # Create serial objects for all available serial ports
-            self.serial_objects = [serial.Serial(port, 9600, timeout=1) for port in self.serial_ports]
+            self.serial_objects = [serial.Serial(port, 115200, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
         # Create publishers for individual topics

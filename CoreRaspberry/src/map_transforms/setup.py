@@ -12,6 +12,7 @@ setup(
     py_modules=[
     'map_transforms.odom_to_map',
     'map_transforms.odom_to_map_key',
+    'map_transforms.odom_to_map_link',
     #'map_transforms.four_way_marker',
     #'map_transforms.color_publisher',
     
@@ -32,6 +33,7 @@ setup(
         'console_scripts': [
             'odom_to_map = map_transforms.odom_to_map:main',
             'odom_to_map_key = map_transforms.odom_to_map_key:main',
+            'odom_to_map_link = map_transforms.odom_to_map_link:main',
             #'four_way_marker = map_transforms.four_way_marker:main',
             #'color_test = map_transforms.color_publisher:main',
         ],
