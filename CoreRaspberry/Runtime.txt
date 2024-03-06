@@ -6,6 +6,7 @@ cd /home/dev/RaspberryCore/CoreRaspberry/
 rm -r build install log
 colcon build --symlink-install
 
+ROS_DOMAIN_ID=32
 
 To Run the nodes properly
 
@@ -15,7 +16,8 @@ source install/local_setup.bash
 Current list of packages and nodes
 launch files 
 world_gen 
-    world_viewer_launch  Loads up Rviz, with a map publisher, odom to map converter, and marker nodes
+    world_viewer_launch_full  Loads up Rviz, with a map publisher, and marker nodes, with an odom_map transform node
+    world_viewer_launch  Loads up Rviz, with a map publisher, and marker nodes
     world_circle_launch, starts up the 4 way light control publisher, and the circle odometry publisher
     track_launch currently only boots up the 4_way_state publisher. will add more in time.
 

@@ -27,9 +27,9 @@ class SerialSend(Node):
 
         # Initialize last values for each state
         self.last_four_way_state = [0, 0, 0 , 0] # was just [0,0]
-        self.last_three_way_state = [0, 0]
-        self.last_train_state = [0, 0]
-        self.last_aux_state = [0, 0]
+        self.last_three_way_state = [0, 0, 0 ,0] #added [0,0]
+        self.last_train_state = [0, 0, 0, 0]
+        self.last_aux_state = [0, 0, 0, 0]
 
         print("Node Activated")
 
@@ -57,9 +57,9 @@ class SerialSend(Node):
             # Concatenate all last states into a single array
             all_last_states = [
                 self.last_four_way_state[0], self.last_four_way_state[1], self.last_four_way_state[2], self.last_four_way_state[3],
-                self.last_three_way_state[0], self.last_three_way_state[1],
-                self.last_train_state[0], self.last_train_state[1],
-                self.last_aux_state[0], self.last_aux_state[1]
+                self.last_three_way_state[0], self.last_three_way_state[1], self.last_three_way_state[2], self.last_three_way_state[3],
+                self.last_train_state[0], self.last_train_state[1], self.last_train_state[2], self.last_train_state[3],
+                self.last_aux_state[0], self.last_aux_state[1] , self.last_aux_state[2] , self.last_aux_state[3]
             ]
 
             # Log the received data for debugging
@@ -72,8 +72,8 @@ class SerialSend(Node):
             publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
-        # Convert the list of integers to a string and send it over all specified serial ports   #expanded serial from 7 to 9
-        serial_str = f'{serial_data[0]} {serial_data[1]} {serial_data[2]} {serial_data[3]} {serial_data[4]} {serial_data[5]} {serial_data[6]} {serial_data[7] } {serial_data[8]} {serial_data[9]}\n'
+        # Convert the list of integers to a string and send it over all specified serial ports   #expanded serial from 7 to 9, to 15
+        serial_str = f'{serial_data[0]} {serial_data[1]} {serial_data[2]} {serial_data[3]} {serial_data[4]} {serial_data[5]} {serial_data[6]} {serial_data[7] } {serial_data[8]} {serial_data[9]} {serial_data[10]} {serial_data[11]} {serial_data[12]} {serial_data[13]} {serial_data[14]} {serial_data[15]}\n'
         self.get_logger().info(f'Attempting Serial Send {serial_str}')
         for serial_object in self.serial_objects:
             serial_object.write(serial_str.encode('utf-8'))
