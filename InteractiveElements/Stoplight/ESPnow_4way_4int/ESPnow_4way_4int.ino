@@ -154,10 +154,15 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.print(", ");
   Serial.println(Ctrl4);
 
-  activateLight(Ctrl1, redPin, yellowPin, greenPin, whitePin, bluePin );
-  activateLight(Ctrl2, redPin2, yellowPin2, greenPin2, whitePin2, bluePin2 );
-  activateLight(Ctrl3, redPin3, yellowPin, greenPin3, whitePin3, bluePin3 );
   activateLight(Ctrl4, redPin4, yellowPin2, greenPin4, whitePin4, bluePin4 );
+  activateLight(Ctrl3, redPin3, yellowPin, greenPin3, whitePin3, bluePin3 );
+
+
+  activateLight(Ctrl2, redPin2, yellowPin2, greenPin2, whitePin2, bluePin2);
+  activateLight(Ctrl1, redPin, yellowPin, greenPin, whitePin, bluePin );
+
+
+ 
 
 
 

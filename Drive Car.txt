@@ -1,0 +1,18 @@
+
+To Drive the car with Odometry active.
+for this command set, you will require two terminals
+NOTE: to paste into a terminal, the command is Ctrl+Shift+V.  Ctrl+C kills the active process.
+
+From an initial startup, This command boots docker, and loads an initial terminal access
+./start.sh 
+
+if successful, you will see the user change from jetson to root.
+
+To add additional access to the docker container. Run this in a new terminal window,
+./docker_term.sh
+
+In one terminal, run this command.
+ros2 launch yahboomcar_bringup yahboomcar_bringup_R2_launch.py
+
+If you want to use keyboard control, run this command in another terminal
+ros2 run yahboomcar_ctrl yahboom_keyboard

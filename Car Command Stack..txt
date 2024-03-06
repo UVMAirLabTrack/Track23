@@ -11,7 +11,6 @@ docker commit main_image ros-foxy:4.0.5.(change increment if needed)
 
 Run keyboard controls
 ros2 run yahboomcar_bringup Ackman_driver_R2
-
 ros2 run yahboomcar_ctrl yahboom_keyboard
 
 joystick controls. Still figuring this out
@@ -21,9 +20,12 @@ ros2 run joy joy_node
 boot lidar, note the one with launch visualizer is not functioning.
 ros2 launch ydlidar_ros2_driver ydlidar_launch.py
 
+URDF Model?
 ros2 launch yahboomcar_description display_R2.launch.py
 
+Launch Odometry data?
 ros2 launch yahboomcar_bringup yahboomcar_bringup_R2_launch.py
+
 
 use this to find the ports the camera is attached to
 ll /dev/astra*

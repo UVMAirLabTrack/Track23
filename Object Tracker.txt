@@ -1,0 +1,27 @@
+To Run the object tracker
+for this command set, you will require two terminals
+NOTE: to paste into a terminal, the command is Ctrl+Shift+V.  Ctrl+C kills the active process.
+
+From an initial startup, This command boots docker, and loads an initial terminal access
+./start.sh 
+
+if successful, you will see the user change from jetson to root.
+
+To add additional access to the docker container. Run this in a new terminal window,
+./docker_term.sh
+
+
+
+in one terminal run:
+ros2 launch yahboomcar_bringup yahboomcar_bringup_R2_launch.py
+
+in another terminal run:
+ros2 run yahboomcar_KCFTracker KCF_Tracker_Node
+
+NOTE: sometimes the second node will error out with div/0, just run it again.
+To activate the lane follower, first press "R" on the window that popped up.
+then click and drag to select the color you wish to track.
+Lastly, press spacebar to activate.
+to stop the car, either use the R2 button on the remote, or hit R on the keyboard again.
+
+Aslo, if the car wont stop it's buzzer. you can reboot the control board.  On the rear of the car in the stack of 3 boards. the middle board on the rear right has two white buttons. Press the one further forward, labeled "reset"

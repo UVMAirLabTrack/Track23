@@ -1,0 +1,19 @@
+To launch only the camera viewer with no controls. Run these commands in terminal windows
+for this command set, you will require two terminals
+NOTE: to paste into a terminal, the command is Ctrl+Shift+V.  Ctrl+C kills the active process.
+
+From an initial startup, This command boots docker, and loads an initial terminal access
+./start.sh 
+
+if successful, you will see the user change from jetson to root.
+
+To add additional access to the docker container. Run this in a new terminal window,
+./docker_term.sh
+
+to start the camera, in one terminal run
+ros2 launch astra_camera astro_pro_plus.launch.xml
+
+then in the other terminal run
+ros2 run rqt_image_view rqt_image_view
+
+this will boot up the window with the camera viewer.
