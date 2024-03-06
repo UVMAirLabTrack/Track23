@@ -32,6 +32,12 @@ typedef struct DataStruct {
   int Pair8;
   int Pair9;
   int Pair10;
+  int Pair11;
+  int Pair12;
+  int Pair13;
+  int Pair14;
+  int Pair15;
+  int Pair16;
 }DataStruct;
 DataStruct Data;
 int BufferClear;
@@ -89,6 +95,12 @@ void loop() {
     Data.Pair8 = Serial.parseInt();
     Data.Pair9 = Serial.parseInt();
     Data.Pair10 = Serial.parseInt();
+    Data.Pair11 = Serial.parseInt();
+    Data.Pair12 = Serial.parseInt();
+    Data.Pair13 = Serial.parseInt();
+    Data.Pair14 = Serial.parseInt();
+    Data.Pair15 = Serial.parseInt();
+    Data.Pair16 = Serial.parseInt();
     BufferClear = Serial.parseInt();
 /*
         Serial.print("String: ");
