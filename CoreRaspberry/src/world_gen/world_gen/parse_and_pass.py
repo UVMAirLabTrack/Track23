@@ -9,7 +9,7 @@ class PoseParserNode(Node):
         super().__init__('pose_parser_node')
         self.publisher = self.create_publisher(WorldMarkers, 'custom_poses', 10)
         self.timer = self.create_timer(1.0, self.publish_poses)
-        self.pose_filename = "test.txt"
+        self.pose_filename = "signpose.txt"
 
         # Read poses from file
         self.filepath = self.move_to_world_path(self.pose_filename)
@@ -21,8 +21,8 @@ class PoseParserNode(Node):
         with open(filename, 'r') as file:
             for line in file:
                 entries = line.strip().split()
-                index = int(entries[1])
-                entry1 = entries[0]
+                index = int(entries[0])
+                entry1 = entries[1]
                 entry2 = entries[2]
                 pose_values = list(map(float, entries[3:]))
                 poses.append((index, entry1, entry2, *pose_values))
