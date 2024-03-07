@@ -8,7 +8,7 @@ sudo systemctl disable brltty.service
 for the system to work with nomachine without needing a connection to a monitor
 sudo systemctl set-default multi-user
 to go back to standard
-sudo systemctl set-default multi-user
+sudo systemctl set-default graphical.target
 to boot the gui on a monitor
 sudo systemctl start gdm3
 
