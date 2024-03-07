@@ -22,10 +22,11 @@ class PoseParserNode(Node):
             for line in file:
                 entries = line.strip().split()
                 index = int(entries[0])
-                entry1 = entries[1]
-                entry2 = entries[2]
-                pose_values = list(map(float, entries[3:]))
-                poses.append((index, entry1, entry2, *pose_values))
+                title = entries[1]
+                entry1 = entries[2]
+                entry2 = entries[3]
+                pose_values = list(map(float, entries[4:]))
+                poses.append((index, title, entry1, entry2, *pose_values))
         return poses
     
     def move_to_world_path(self, pose_filename):
@@ -44,15 +45,16 @@ class PoseParserNode(Node):
             #pose_msg.header = Header()
             #pose_msg.header.stamp = self.get_clock().now().to_msg()
             pose_msg.index = [pose_values[0]]
-            pose_msg.entry1 = [pose_values[1]]
-            pose_msg.entry2 = [pose_values[2]]
-            pose_msg.x = [pose_values[3]]
-            pose_msg.y = [pose_values[4]]
-            pose_msg.z = [pose_values[5]]
-            pose_msg.qx = [pose_values[6]]
-            pose_msg.qy = [pose_values[7]]
-            pose_msg.qz = [pose_values[8]]
-            #pose_msg.qw = [pose_values[9]]
+            pose_msg.title = [pose_values[1]]
+            pose_msg.entry1 = [pose_values[2]]
+            pose_msg.entry2 = [pose_values[3]]
+            pose_msg.x = [pose_values[4]]
+            pose_msg.y = [pose_values[5]]
+            pose_msg.z = [pose_values[6]]
+            pose_msg.qx = [pose_values[7]]
+            pose_msg.qy = [pose_values[8]]
+            pose_msg.qz = [pose_values[9]]
+            
 
             self.get_logger().info(f"Publishing Pose {self.pose_index + 1}: {pose_values}")
             self.publisher.publish(pose_msg)
