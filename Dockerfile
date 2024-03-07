@@ -3,7 +3,7 @@ FROM osrf/ros:humble-desktop-full
 
 # working directory
 ENV HOME /root
-ENV DISPLAY=:0
+#ENV DISPLAY=:0
 WORKDIR $HOME
 
 RUN apt-get update && apt-get install -y \
