@@ -1,0 +1,14 @@
+docker run -it --rm '
+--network="host" '
+-e "DISPLAY '
+-v /tmp/.X11-unix:/tmp/.X11-unix 
+-p 9090:9090 '
+-p 8888:8888 '
+-p  11311:1311 '
+-p 6000:6000 '
+
+trackvisualizer:latest 
+
+docker run -it --rm --network="host" -e DISPLAY=192.168.3.117:0 -v /tmp/.X11-unix:/tmp/.X11-unix -p 9090:9090 -p 8888:8888 -p  11811:11811 -p 11311:11311 -p 6000:6000 -p 5090:5090 -p 5091:5091 trackvisualizer:latest /bin/bash
+
+docker run -it --rm  -e DISPLAY=192.168.3.117:0 -v /tmp/.X11-unix:/tmp/.X11-unix -p 9090:9090 -p 8888:8888 -p  11811:11811 -p 11311:11311 -p 6000:6000 -p 5090:5090 -p 5091:5091 trackvisualizer:latest /bin/bash

@@ -40,4 +40,6 @@ RUN echo ' \n\
 echo "Sourcing ROS2 packages..." \n\
 source $HOME/CoreRaspberry/install/local_setup.sh' >> $HOME/.bashrc
 
+#comment out below to build in windows, still working on the networking side but gui apps are good.
 CMD xhost + && source $HOME/CoreRaspberry/install/local_setup.sh
+#CMD source $HOME/CoreRaspberry/install/local_setup.sh
