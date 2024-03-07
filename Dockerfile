@@ -6,7 +6,7 @@ ENV HOME /root
 ENV DISPLAY=:0
 WORKDIR $HOME
 
-RUN RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
 x11-apps \
 xauth
 
