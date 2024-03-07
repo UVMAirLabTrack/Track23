@@ -12,7 +12,8 @@ class PoseParserNode(Node):
         self.pose_filename = "test.txt"
 
         # Read poses from file
-        self.poses = self.read_poses_from_file(self.move_to_world_path(self.pose_filename))
+        self.filepath = self.move_to_world_path(self.pose_filename)
+        self.poses = self.read_poses_from_file(self.filepath)
         self.pose_index = 0
 
     def read_poses_from_file(self, filename):
