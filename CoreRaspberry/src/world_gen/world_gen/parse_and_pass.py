@@ -41,8 +41,8 @@ class PoseParserNode(Node):
         if self.pose_index < len(self.poses):
             pose_values = self.poses[self.pose_index]
             pose_msg = WorldMarkers()
-            pose_msg.header = Header()
-            pose_msg.header.stamp = self.get_clock().now().to_msg()
+            #pose_msg.header = Header()
+            #pose_msg.header.stamp = self.get_clock().now().to_msg()
             pose_msg.index = [pose_values[0]]
             pose_msg.entry1 = [pose_values[1]]
             pose_msg.entry2 = [pose_values[2]]
