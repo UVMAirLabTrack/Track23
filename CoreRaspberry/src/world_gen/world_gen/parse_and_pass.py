@@ -32,7 +32,7 @@ class PoseParserNode(Node):
             script_path = os.path.dirname(os.path.abspath(__file__))
             parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
             #world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
-            world_file, world_pose = pose_filename
+            world_file = pose_filename
             path = os.path.join(parent_folder, 'worlds', f'{world_file}')
             #world_pose_path = os.path.join(parent_folder, 'worlds', f'{world_pose}')
             return(path)
