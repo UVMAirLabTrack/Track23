@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(builtin_interfaces REQUIRED)
+find_package(std_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -22,12 +23,12 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES builtin_interfaces
 )
 
-install(DIRECTORY
-    ${CMAKE_CURRENT_LIST_DIR}/config
-    ${CMAKE_CURRENT_LIST_DIR}/data
-    ${CMAKE_CURRENT_LIST_DIR}/launch
+#install(DIRECTORY
+ #   ${CMAKE_CURRENT_LIST_DIR}/config
+ #   ${CMAKE_CURRENT_LIST_DIR}/data
+ #   ${CMAKE_CURRENT_LIST_DIR}/launch
     
-    DESTINATION share/${PROJECT_NAME}/
-)
+ #   DESTINATION share/${PROJECT_NAME}/
+#)
 
 ament_package()
