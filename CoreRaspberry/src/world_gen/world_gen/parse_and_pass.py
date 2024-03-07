@@ -28,7 +28,7 @@ class PoseParserNode(Node):
                 poses.append((index, entry1, entry2, *pose_values))
         return poses
     
-    def move_to_world_path(pose_filename):
+    def move_to_world_path(self, pose_filename):
             script_path = os.path.dirname(os.path.abspath(__file__))
             parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
             #world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
