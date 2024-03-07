@@ -18,3 +18,4 @@ To rectify this
 sudo usermod -a -G tty yourname
 sudo usermod -a -G dialout yourname
 where yourname is dev
+.
