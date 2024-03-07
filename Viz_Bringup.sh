@@ -2,10 +2,10 @@ xhost+
 
 docker run -it --rm \
 --net=host \
---env="DISPLAY" \
---env="QT_X11_NO_MITSHM=1" \
+-e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
 --device=/dev/dri:/dev/dri \
+--security-opt apparmor:unconfined \
 -p 9090:9090 \
 -p 8888:8888 \
 -p 11811:11811 \
@@ -14,5 +14,4 @@ docker run -it --rm \
 -p 7413:7413 \
 -p 5900:5900 \
 -p 5901:5901 \
---security-opt apparmor:unconfined \
 raspberrycore:latest
