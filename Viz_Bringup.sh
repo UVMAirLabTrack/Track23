@@ -12,5 +12,7 @@ docker run -it --rm \
 -p 11812:11812 \
 -p 7412:7412 \
 -p 7413:7413 \
+-p 5900:5900 \
+-p 5901:5901 \
 --security-opt apparmor:unconfined \
 raspberrycore:latest
