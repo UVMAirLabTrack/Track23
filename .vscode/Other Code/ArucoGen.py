@@ -26,3 +26,5 @@ if __name__ == "__main__":
     num_markers = 5    # Adjust the number of markers as needed
 
     generate_and_display_aruco_markers(marker_size, num_markers)
+
+    #comment
