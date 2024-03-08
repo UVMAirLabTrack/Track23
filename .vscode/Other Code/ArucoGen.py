@@ -27,4 +27,4 @@ if __name__ == "__main__":
 
     generate_and_display_aruco_markers(marker_size, num_markers)
 
-    #comment
+    #comment v2
