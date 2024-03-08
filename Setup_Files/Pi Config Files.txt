@@ -18,4 +18,7 @@ To rectify this
 sudo usermod -a -G tty yourname
 sudo usermod -a -G dialout yourname
 where yourname is dev
-.
+
+sudo nano ~/.bashrc
+paste this line at the bottom, saves a lot of menace with the ros2 sourcing.
+source /home/dev/RaspberryCore/CoreRaspberry/install/local_setup.bash

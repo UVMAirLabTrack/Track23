@@ -2,6 +2,7 @@
 builtin_interfaces/Time stamp
 string frame_id
 uint32[] index
+string[] title
 string[] entry1
 string[] entry2
 float64[] x
