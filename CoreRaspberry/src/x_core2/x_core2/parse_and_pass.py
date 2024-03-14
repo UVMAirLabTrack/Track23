@@ -5,7 +5,7 @@ from std_msgs.msg import Header
 import os
 import numpy as np
 from x_core2 import open_world_data
-from transforms3d.euler import euler2quat
+
 
 class PoseParserNode(Node):
     def __init__(self):
