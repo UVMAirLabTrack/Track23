@@ -75,10 +75,11 @@ class ThreeWayVisualizer(Node):
 
     def pose_call(self,msg):
         self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
-        print(self.pose)
+
 
     def loc_call(self,msg):
         self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
+        print(self.marker)
         print(f'{self.zone} {self.loc}')
         #end copy
 
