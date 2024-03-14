@@ -1,13 +1,13 @@
 from setuptools import setup
 
-package_name = 'three_way_light'
+package_name = 'x_core'
 
 setup(
     name=package_name,
     version='0.0.0',
     packages=[],
     py_modules=[
-        'three_way_light.pub',
+        'x_core.open_world_data',
 
 
     ],
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'pub = three_way_light.pub:main',
+            'open_world_data = x_core.open_world_data:main',
         ],
     },
 )
