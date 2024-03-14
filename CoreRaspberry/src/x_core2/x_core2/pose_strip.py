@@ -40,7 +40,9 @@ def strip_pose(msg, desired_title, desired_entry1):
 
             return pose  # Return the pose if match found
 
-    print("Matching combination not found.")
+    print("Matching Pose not found, returning empty pose.")
+    pose = Pose()
+    return pose
 
 def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):
@@ -49,7 +51,10 @@ def strip_marker_loc(msg,marker):
             loc = msg.entry2[i]
             return zone,loc
         
-    print("Matching combination not found.")
+    print("Matching Loc not found, defaulting to na.")
+    zone = 'na'
+    loc = 'na'
+    return zone, loc
 
 def return_pose(poses, title_term, entry1_term):
         matching_poses = []
