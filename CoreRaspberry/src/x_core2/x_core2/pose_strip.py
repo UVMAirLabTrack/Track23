@@ -11,8 +11,8 @@ class PoseRecNode(Node):
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
         self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
         
-        self.zone= None
-        self.loc = None
+        self.zone= 'empty'
+        self.loc = 'empty'
         self.pose = Pose()
         self.marker = '3Way'
 
