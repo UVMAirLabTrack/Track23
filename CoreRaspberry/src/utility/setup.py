@@ -7,7 +7,7 @@ setup(
     version='0.0.0',
     packages=[package_name],
     py_modules=[
-        'utility.open_world_data',
+        'utility.open_world_data', 'utility.pub_old',
 
 
     ],
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'open_world_data = utility.open_world_data:main',
+            'open_world_data = utility.open_world_data:main','pub = utility.pub_old:main',
         ],
     },
 )
