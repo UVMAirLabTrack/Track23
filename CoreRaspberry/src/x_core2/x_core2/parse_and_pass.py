@@ -15,14 +15,12 @@ class PoseParserNode(Node):
         self.timer2 = self.create_timer(5.0, self.publish_indexes)
         self.timer = self.create_timer(5.0, self.publish_poses)
         
-        self.pose_filename = "signpose.txt" #unused
 
-        # Read poses from file
-        #self.filepath = self.move_to_world_path(self.pose_filename)
         self.filepath = open_world_data.find_marker_loc_path()
         self.markerpath = open_world_data.find_marker_path()
         self.poses = self.read_poses_from_file(self.filepath)
         self.markers = self.read_indexes_from_file(self.markerpath)
+        self.poses = self.find_zero_loc(self.poses)
         self.pose_index = 0
 
     def read_poses_from_file(self, filename):
@@ -38,6 +36,39 @@ class PoseParserNode(Node):
                 poses.append((index, title, entry1, entry2, *pose_values))
         return poses
     
+    def find_zero_loc(self, poses):
+    # Find the index of the ZPM pose
+        zpm_index = None
+        for i, pose in enumerate(poses):
+            if pose[1] == "ZPM":  # Check the title
+                zpm_index = i
+                break
+
+        if zpm_index is None:
+            print("ZPM pose not found.")
+            return None
+
+        # Get the x, y, z values of the ZPM pose
+        zpm_x, zpm_y, zpm_z, *_ = poses[zpm_index][4:]  # Assuming x, y, z values start from index 4
+
+        # Adjust other poses based on the difference between their x, y, and z values and those of the ZPM pose
+        adjusted_poses = []
+        for pose in poses:
+            index, title, entry1, entry2, x, y, z, qx, qy, qz, qw = pose
+            if title == "ZPM":
+                # Skip the ZPM pose
+                continue
+            # Calculate the differences
+            dx = x - zpm_x
+            dy = y - zpm_y
+            dz = z - zpm_z
+            # Adjust the pose values
+            adjusted_pose = (index, title, entry1, entry2, x + dx, y + dy, z + dz, qx, qy, qz, qw)
+            adjusted_poses.append(adjusted_pose)
+
+        return adjusted_poses
+        
+
     def read_indexes_from_file(self,filename):
         indexes = []
         with open(filename, 'r') as file:

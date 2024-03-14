@@ -55,6 +55,7 @@ class ThreeWayVisualizer(Node):
         self.marker_data = pose_strip.read_marker_param(self.marker_title)
         self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
 
+
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
         # Create publisher for the marker
@@ -67,21 +68,16 @@ class ThreeWayVisualizer(Node):
         self.timer = self.create_timer(1.0, self.publish_marker)
 
                 #copy the lines below into any marker nodes, dont forget the import either
-        
-        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
-        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
+        self.pose = Pose()
         self.zone= 'empty'
         self.loc = 'empty'
-        self.pose = Pose()
+        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
+        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
+        self.pose = pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
+
         self.marker = self.node_title+marker_name #set for testing, use later in other classes.
 
-
-
         
-    def pose_shift(self):    
-        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
-        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
-        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
 
     def loc_call(self,msg):
         self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
@@ -90,7 +86,7 @@ class ThreeWayVisualizer(Node):
 
     def pose_call(self,msg):
         self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
-        self.pose_shift()
+        self.pose_xyz_shift()
 
     def color_callback(self, msg):
         # Use the numeric values directly

@@ -50,6 +50,13 @@ def strip_pose(msg, desired_title, desired_entry1):
     pose = Pose()
     return pose
 
+def pose_xyz_shift(pose,marker_pose):
+    pose.position.x = pose.position.x - marker_pose.position.x
+    pose.position.y = pose.position.y - marker_pose.position.y
+    pose.position.z = pose.position.z - marker_pose.position.z
+
+    return pose
+
 def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):
         if msg.title[i] == marker:
