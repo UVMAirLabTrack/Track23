@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from custom_msgs.msg import WorldMarkers,MarkerLoc
+from custom_msgs.msg import WorldMarkers, MarkerLoc
 from std_msgs.msg import Header
 import os
 import numpy as np
@@ -50,7 +50,7 @@ class PoseParserNode(Node):
         return indexes
     
     def publish_indexes(self):
-        marker_msg = WorldMarkers()
+        marker_msg = MarkerLoc()
         
         marker_msg.title = []
         marker_msg.entry1 = []
