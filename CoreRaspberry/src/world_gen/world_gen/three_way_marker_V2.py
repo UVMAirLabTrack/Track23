@@ -15,7 +15,7 @@ import multiprocessing
 
 class ThreeWayVisualizer(Node):
     package_name = 'world_gen'
-    node_title = "3way_"
+    node_title = "threeway_"
     color_mapping = {
         'red': [1.0, 0.0, 0.0, 1.0],
         'yellow': [1.0, 1.0, 0.0, 1.0],
