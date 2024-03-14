@@ -1,15 +1,13 @@
 from setuptools import setup
 
-package_name = 'x_core'
+package_name = 'x_core2'
 
 setup(
     name=package_name,
     version='0.0.0',
     packages=[],
     py_modules=[
-        'x_core.pub',
-        'x_core.open_world_data',
-        
+        'x_core2.pub',
 
 
     ],
@@ -22,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'pub = x_core.pub:main',
-            'open_world_data = x_core.open_world_data:main',
+            'pub = x_core2.pub:main',
         ],
     },
 )
