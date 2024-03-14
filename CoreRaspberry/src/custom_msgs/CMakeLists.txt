@@ -20,6 +20,7 @@ endif()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/WorldMarkers.msg"
+  "msg/MarkerLoc.msg"
   DEPENDENCIES builtin_interfaces
 )
 

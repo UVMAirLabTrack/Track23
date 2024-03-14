@@ -13,16 +13,17 @@ def world_select(file_path):
                 selected_world = f"{parts[0]}.dae"
                 world_pose = f"{parts[0]}.txt"
                 world_marker = f"{parts[0]}_markers.txt"
+                world_marker_loc = f"{parts[0]}_marker_loc.txt"
                 break  # Exit the loop after the first match
 
-    return selected_world, world_pose, world_marker
+    return selected_world, world_pose, world_marker_loc, world_marker
 
 def find_world_path():
 
     script_path = os.path.dirname(os.path.abspath(__file__))
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
     world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
-    world_file, world_pose,world_marker = world_select(world_ctrl)
+    world_file, world_pose,world_marker_loc,world_marker = world_select(world_ctrl)
     world_path = os.path.join(parent_folder, 'worlds', f'{world_file}')
     
 
@@ -33,18 +34,28 @@ def find_pose_path():
     script_path = os.path.dirname(os.path.abspath(__file__))
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
     world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
-    world_file, world_pose,world_marker = world_select(world_ctrl)
+    world_file, world_pose,world_marker_loc,world_marker = world_select(world_ctrl)
     
     world_pose_path = os.path.join(parent_folder, 'worlds', f'{world_pose}')
 
     return world_pose_path
+
+def find_marker_loc_path():
+
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
+    world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
+    world_file, world_pose,world_marker_loc,world_marker = world_select(world_ctrl)
+    world_marker_path = os.path.join(parent_folder, 'worlds', f'{world_marker_loc}')
+
+    return world_marker_path
 
 def find_marker_path():
 
     script_path = os.path.dirname(os.path.abspath(__file__))
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
     world_ctrl = os.path.join(parent_folder, 'worlds', 'world_select.txt')
-    world_file, world_pose,world_marker = world_select(world_ctrl)
+    world_file, world_pose,world_marker_loc,world_marker = world_select(world_ctrl)
     world_marker_path = os.path.join(parent_folder, 'worlds', f'{world_marker}')
 
     return world_marker_path

@@ -7,7 +7,7 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'x_core2.pub',
+        'x_core2.parse_and_pass',
         'x_core2.open_world_data'
 
 
@@ -21,7 +21,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'pub = x_core2.pub:main',
+            'pub = x_core2.parse_and_pass:main',
             'open_world_data = x_core2.open_world_data:main'
         ],
     },
