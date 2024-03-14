@@ -5,7 +5,7 @@ package_name = 'core_functions'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[],
+    packages=[package_name],
     py_modules=[
         'core_functions.open_world_data',
 
