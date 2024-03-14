@@ -8,7 +8,7 @@
   <maintainer email="iantheterror4@gmail.com">Ian M</maintainer>
   <license>TODO</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_python</buildtool_depend>
   <build_depend>rclpy</build_depend>
   <build_depend>std_msgs</build_depend>
   <exec_depend>launch</exec_depend>
