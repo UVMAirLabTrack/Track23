@@ -52,8 +52,8 @@ class ThreeWayVisualizer(Node):
         }
         self.marker_title = 'light'
         self.marker_path = f'package://world_gen/markers/{self.marker_title}.stl'
-        #self.marker_data = pose_strip.read_marker_param(self.marker_title)
-        #self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
+        self.marker_data = pose_strip.read_marker_param(self.marker_title)
+        self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
 
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
@@ -75,17 +75,22 @@ class ThreeWayVisualizer(Node):
         self.pose = Pose()
         self.marker = self.node_title+marker_name #set for testing, use later in other classes.
 
-    def pose_call(self,msg):
 
-        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc) 
+
         
+    def pose_shift(self):    
+        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
+        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
+        self.pose.position.x = self.pose.position.x - self.marker_pose.position.x
 
     def loc_call(self,msg):
         self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
         #print(f'marker: {self.marker}  zone: {self.zone}   loc: {self.loc}')
         #end copy
 
-
+    def pose_call(self,msg):
+        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
+        self.pose_shift()
 
     def color_callback(self, msg):
         # Use the numeric values directly
