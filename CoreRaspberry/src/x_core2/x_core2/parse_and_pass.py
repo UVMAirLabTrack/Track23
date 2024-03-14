@@ -34,18 +34,8 @@ class PoseParserNode(Node):
                 title = entries[1]
                 entry1 = entries[2]
                 entry2 = entries[3]
-                x = entries[4]
-                y = entries[5]
-                z = entries[6]
-                roll = entries[7]
-                pitch = entries[8]
-                yaw = entries[9]
-                quat = euler2quat(roll, pitch, yaw)
-                qx = quat[1]
-                qy = quat[2]
-                qz = quat[3]
-                qw = quat[4]
-                poses.append((index, title, entry1, entry2,x,y,z,qx,qy,qz,qw))
+                pose_values = list(map(float, entries[4:]))
+                poses.append((index, title, entry1, entry2, *pose_values))
         return poses
     
     def read_indexes_from_file(self,filename):
