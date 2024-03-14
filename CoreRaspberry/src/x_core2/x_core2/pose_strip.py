@@ -65,7 +65,7 @@ def shift_pose_xy(msg,msg2):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = PoseRecNode(marker_name, pose_file)
+    node = PoseRecNode()
     rclpy.spin(node)
     rclpy.shutdown()
     
