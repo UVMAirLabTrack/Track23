@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(four_way_light)
+project(core_functions)
 
 
 find_package(ament_cmake REQUIRED)
