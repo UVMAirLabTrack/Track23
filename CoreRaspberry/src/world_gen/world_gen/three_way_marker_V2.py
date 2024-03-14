@@ -73,7 +73,7 @@ class ThreeWayVisualizer(Node):
         self.loc = 'empty'
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
         self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
-        self.pose = pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
+        #self.pose = pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
 
         self.marker = self.node_title+marker_name #set for testing, use later in other classes.
 
@@ -86,7 +86,7 @@ class ThreeWayVisualizer(Node):
 
     def pose_call(self,msg):
         self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
-        self.pose_xyz_shift()
+        pose_strip.pose_xyz_shift()
 
     def color_callback(self, msg):
         # Use the numeric values directly
