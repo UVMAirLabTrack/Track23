@@ -28,17 +28,20 @@ class PoseRecNode(Node):
 def strip_pose(msg, desired_title, desired_entry1):
     for i in range(len(msg.title)):
         
-        if msg.title[i] == desired_title and msg.entry1[i] == desired_entry1:
-            pose = Pose()
-            pose.position.x = msg.x[i]
-            pose.position.y = msg.y[i]
-            pose.position.z = msg.z[i]
-            pose.orientation.x = msg.qx[i]
-            pose.orientation.y = msg.qy[i]
-            pose.orientation.z = msg.qz[i]
-            pose.orientation.w = 1.0  # Assuming no rotation
+        if msg.title[i] == desired_title:
+            print("title Match")
+            if msg.entry1[i] == desired_entry1:
+                print("loc match")
+                pose = Pose()
+                pose.position.x = msg.x[i]
+                pose.position.y = msg.y[i]
+                pose.position.z = msg.z[i]
+                pose.orientation.x = msg.qx[i]
+                pose.orientation.y = msg.qy[i]
+                pose.orientation.z = msg.qz[i]
+                pose.orientation.w = 1.0  # Assuming no rotation
 
-            return pose  # Return the pose if match found
+                return pose  # Return the pose if match found
 
     print("Matching Pose not found, returning empty pose.")
     pose = Pose()
