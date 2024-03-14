@@ -14,7 +14,6 @@ setup(
     'world_gen.four_way_marker',
     'world_gen.parse_and_pass',
     'world_gen.gen_v2',
-    'world_gen.open_world_data'
     
     ],
     install_requires=['setuptools','core_functions'],
@@ -38,7 +37,6 @@ setup(
             'four_way_marker = world_gen.four_way_marker:main',
             'parse_and_pass = world_gen.parse_and_pass:main',
             'gen_v2 = world_gen.gen_v2:main',
-            'core = world_gen.open_world_data:main'
         ],
     },
 )
