@@ -27,8 +27,8 @@ class PoseRecNode(Node):
 
 def strip_pose(msg, desired_title, desired_entry1):
     for i in range(len(msg.title)):
-        print(msg.title[i])
-        print(desired_title)
+        print(f'--{msg.title[i]}--{desired_title}')
+        
         if msg.title[i].strip() == desired_title.strip():
             print("title Match")
             if msg.entry1[i].strip() == desired_entry1.strip():
