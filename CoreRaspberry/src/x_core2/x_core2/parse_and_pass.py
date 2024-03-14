@@ -11,7 +11,9 @@ class PoseParserNode(Node):
         super().__init__('pose_parser_node')
         self.publisher = self.create_publisher(WorldMarkers, 'custom_poses', 10)
         self.publisher2 = self.create_publisher(MarkerLoc, 'marker_loc', 10)
+        self.timer2 = self.create_timer(5.0, self.publish_indexes)
         self.timer = self.create_timer(5.0, self.publish_poses)
+        
         self.pose_filename = "signpose.txt" #unused
 
         # Read poses from file
