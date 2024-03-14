@@ -36,7 +36,7 @@ setup(
             'gen = world_gen.gen:main',
             'four_way_marker = world_gen.four_way_marker:main',
             'parse_and_pass = world_gen.parse_and_pass:main',
-            'gen_v2 = world_gen.gen_v2'
+            'gen_v2 = world_gen.gen_v2:main'
         ],
     },
 )
