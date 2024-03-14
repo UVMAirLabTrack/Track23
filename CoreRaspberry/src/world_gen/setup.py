@@ -13,6 +13,7 @@ setup(
     'world_gen.gen',
     'world_gen.four_way_marker',
     'world_gen.parse_and_pass',
+    'world_gen.gen_22'
     
     ],
     install_requires=['setuptools'],
@@ -35,6 +36,7 @@ setup(
             'gen = world_gen.gen:main',
             'four_way_marker = world_gen.four_way_marker:main',
             'parse_and_pass = world_gen.parse_and_pass:main',
+            'gen_v2 = world_gen.gen_v2'
         ],
     },
 )
