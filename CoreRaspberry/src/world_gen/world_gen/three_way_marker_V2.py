@@ -51,7 +51,7 @@ class ThreeWayVisualizer(Node):
         'three_way_marker_' + marker_name: 'white',
         }
         
-        self.subscription = self.create_subscription(Int32MultiArray, 'custom_poses', self.color_callback, 10)
+        
 
         self.current_pose = Pose() 
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color

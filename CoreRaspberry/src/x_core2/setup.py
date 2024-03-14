@@ -8,7 +8,9 @@ setup(
     packages=[],
     py_modules=[
         'x_core2.parse_and_pass',
-        'x_core2.open_world_data'
+        'x_core2.open_world_data',
+        'x_core2.pose_strip'
+
 
 
     ],
@@ -21,8 +23,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'pub = x_core2.parse_and_pass:main',
-            'open_world_data = x_core2.open_world_data:main'
+            'pub_all_pose = x_core2.parse_and_pass:main',
+            'open_world_data = x_core2.open_world_data:main',
+            'pose_strip = x_core2.pose_strip:main',
         ],
     },
 )

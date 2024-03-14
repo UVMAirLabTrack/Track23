@@ -1,10 +1,33 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Pose
-from custom_msgs.msg import WorldMarkers
+from custom_msgs.msg import WorldMarkers,MarkerLoc
+from rclpy.node import Node
 
-def strip_pose_callback(msg, desired_title, desired_entry1):
+
+class PoseRecNode(Node):
+    def __init__(self):
+        super().__init__('pose_test_node')
+        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.strip_marker_loc_callback, 10)
+        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.strip_pose_callback, 10)
+        
+        self.zone= None
+        self.loc = None
+        self.pose = Pose()
+        self.marker = 'Sign1'
+
+
+    def pose_call(self,msg):
+        self.pose = strip_pose(msg,self.zone,self.loc)
+        print(self.pose)
+
+    def loc_call(self,msg):
+        self.zone,self.loc = strip_marker_loc(msg,self.marker)
+        print(f'{self.zone} {self.loc}')
+
+def strip_pose(msg, desired_title, desired_entry1):
     for i in range(len(msg.title)):
+        
         if msg.title[i] == desired_title and msg.entry1[i] == desired_entry1:
             pose = Pose()
             pose.position.x = msg.x[i]
@@ -19,7 +42,7 @@ def strip_pose_callback(msg, desired_title, desired_entry1):
 
     print("Matching combination not found.")
 
-def strip_marker_loc_callback(msg,marker):
+def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):
         if msg.title[i] == marker:
             zone = msg.entry1[i]
@@ -41,6 +64,15 @@ def shift_pose_xy(msg,msg2):
 
 
 def main(args=None):
-    pass
+    rclpy.init(args=args)
+    node = PoseRecNode(marker_name, pose_file)
+    rclpy.spin(node)
+    rclpy.shutdown()
+    
+
+
+
+
+
 if __name__ == '__main__':
     main()
