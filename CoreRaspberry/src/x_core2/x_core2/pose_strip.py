@@ -8,8 +8,8 @@ from rclpy.node import Node
 class PoseRecNode(Node):
     def __init__(self):
         super().__init__('pose_test_node')
-        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.strip_marker_loc_callback, 10)
-        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.strip_pose_callback, 10)
+        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
+        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
         
         self.zone= None
         self.loc = None
