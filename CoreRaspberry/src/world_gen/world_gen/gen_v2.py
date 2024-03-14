@@ -2,7 +2,7 @@ import rclpy
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 import os
-from core_functions.core_functions import open_world_data
+from core_functions import open_world_data
 
 
 def read_world_pose(file_path):
