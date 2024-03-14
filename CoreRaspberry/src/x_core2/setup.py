@@ -8,6 +8,7 @@ setup(
     packages=[],
     py_modules=[
         'x_core2.pub',
+        'x_core2.open_world_data'
 
 
     ],
@@ -21,6 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
             'pub = x_core2.pub:main',
+            'open_world_data = x_core2.open_world_data:main'
         ],
     },
 )
