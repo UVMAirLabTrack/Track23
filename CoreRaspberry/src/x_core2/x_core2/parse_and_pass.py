@@ -17,7 +17,9 @@ class PoseParserNode(Node):
         # Read poses from file
         #self.filepath = self.move_to_world_path(self.pose_filename)
         self.filepath = open_world_data.find_marker_loc_path()
+        self.markerpath = open_world_data.find_marker_path()
         self.poses = self.read_poses_from_file(self.filepath)
+        self.markers = self.read_indexes_from_file(self.filepath)
         self.pose_index = 0
 
     def read_poses_from_file(self, filename):
@@ -33,6 +35,37 @@ class PoseParserNode(Node):
                 poses.append((index, title, entry1, entry2, *pose_values))
         return poses
     
+    def read_indexes_from_file(self,filename):
+        indexes = []
+        with open(filename, 'r') as file:
+            for line in file:
+                entries = line.strip().split()
+  
+                title = entries[0]
+                entry1 = entries[1]
+                entry2 = entries[2]
+                indexes.append((title,entry1,entry2))
+        return indexes
+    
+    def publish_indexes(self):
+        marker_msg = WorldMarkers()
+        
+        marker_msg.title = []
+        marker_msg.entry1 = []
+        marker_msg.entry2 = []
+
+
+        for marker_values in self.markers:
+            
+            marker_msg.title.append(marker_values[0])
+            marker_msg.entry1.append(marker_values[1])
+            marker_msg.entry2.append(marker_values[2])
+
+
+        self.get_logger().info(f"Publishing {len(self.markers)} Markers")
+        self.publisher2.publish(marker_msg)
+        self.get_logger().info('Finished publishing Markers')
+
 
 
     def publish_poses(self):
