@@ -13,7 +13,8 @@ setup(
     'world_gen.gen',
     'world_gen.four_way_marker',
     'world_gen.parse_and_pass',
-    'world_gen.gen_v2'
+    'world_gen.gen_v2',
+    'core_functions.open_world_data'
     
     ],
     install_requires=['setuptools','core_functions'],
