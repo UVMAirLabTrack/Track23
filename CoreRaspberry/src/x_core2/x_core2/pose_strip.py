@@ -42,7 +42,7 @@ def strip_pose(msg, desired_title, desired_entry1):
                 pose.orientation.x = msg.qx[i]
                 pose.orientation.y = msg.qy[i]
                 pose.orientation.z = msg.qz[i]
-                pose.orientation.w = 1.0  # Assuming no rotation
+                pose.orientation.w = msg.qw[i]  # Assuming no rotation
 
                 return pose  # Return the pose if match found
     if desired_title != "na":
@@ -62,7 +62,7 @@ def strip_marker_loc(msg,marker):
     loc = 'na'
     return zone, loc
 
-def read_marker_param(marker_name):
+def read_marker_param(marker_name): #also not in use
         file_path = open_world_data.find_marker_adjust_path(marker_name)
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -78,7 +78,7 @@ def read_marker_param(marker_name):
 
         return pose_data    
 
-def strip_marker_pose(pose_data):
+def strip_marker_pose(pose_data): #currently not in use
     marker = Pose()
     marker.position.x = pose_data.get('X_position', 0.0)
     marker.position.y = pose_data.get('Y_position', 1.0)

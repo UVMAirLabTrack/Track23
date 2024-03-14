@@ -5,6 +5,7 @@ from std_msgs.msg import Header
 import os
 import numpy as np
 from x_core2 import open_world_data
+from transforms3d.euler import euler2quat
 
 class PoseParserNode(Node):
     def __init__(self):
@@ -33,8 +34,18 @@ class PoseParserNode(Node):
                 title = entries[1]
                 entry1 = entries[2]
                 entry2 = entries[3]
-                pose_values = list(map(float, entries[4:]))
-                poses.append((index, title, entry1, entry2, *pose_values))
+                x = entries[4]
+                y = entries[5]
+                z = entries[6]
+                roll = entries[7]
+                pitch = entries[8]
+                yaw = entries[9]
+                quat = euler2quat(roll, pitch, yaw)
+                qx = quat[1]
+                qy = quat[2]
+                qz = quat[3]
+                qw = quat[4]
+                poses.append((index, title, entry1, entry2,x,y,z,qx,qy,qz,qw))
         return poses
     
     def read_indexes_from_file(self,filename):
@@ -84,6 +95,7 @@ class PoseParserNode(Node):
         pose_msg.qx = []
         pose_msg.qy = []
         pose_msg.qz = []
+        pose_msg.qw = []
 
         for pose_values in self.poses:
             pose_msg.index.append(pose_values[0])
@@ -96,6 +108,7 @@ class PoseParserNode(Node):
             pose_msg.qx.append(pose_values[7])
             pose_msg.qy.append(pose_values[8])
             pose_msg.qz.append(pose_values[9])
+            pose_msg.qw.append(pose_values[10])
 
         self.get_logger().info(f"Publishing {len(self.poses)} Poses")
         self.publisher.publish(pose_msg)

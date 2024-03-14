@@ -52,8 +52,8 @@ class ThreeWayVisualizer(Node):
         }
         self.marker_title = 'light'
         self.marker_path = f'package://world_gen/markers/{self.marker_title}.stl'
-        self.marker_data = pose_strip.read_marker_param(self.marker_title)
-        self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
+        #self.marker_data = pose_strip.read_marker_param(self.marker_title)
+        #self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
 
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
