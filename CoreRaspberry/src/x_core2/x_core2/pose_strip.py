@@ -45,8 +45,8 @@ def strip_pose(msg, desired_title, desired_entry1):
                 pose.orientation.w = 1.0  # Assuming no rotation
 
                 return pose  # Return the pose if match found
-
-    print(f'{desired_title}:{desired_entry1}, Matching Pose not found, returning empty pose.')
+    if desired_title != "na":
+        print(f'{desired_title}:{desired_entry1}, Matching Pose not found, returning empty pose.')
     pose = Pose()
     return pose
 
