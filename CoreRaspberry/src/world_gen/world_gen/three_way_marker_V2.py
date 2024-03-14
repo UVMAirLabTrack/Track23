@@ -71,7 +71,7 @@ class ThreeWayVisualizer(Node):
         self.zone= 'empty'
         self.loc = 'empty'
         self.pose = Pose()
-        self.marker = 'Sign2' #set for testing, use later in other classes.
+        self.marker = self.node_title+marker_name #set for testing, use later in other classes.
 
     def pose_call(self,msg):
         self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)

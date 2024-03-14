@@ -1,2 +1,2 @@
-Sign1 3way A
-Sign2 3way B
+3way_1 3way A
+3way_2 3way B
