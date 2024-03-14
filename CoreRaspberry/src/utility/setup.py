@@ -5,7 +5,7 @@ package_name = 'utility'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[],
+    packages=[package_name],
     py_modules=[
         'utility.open_world_data',
 
