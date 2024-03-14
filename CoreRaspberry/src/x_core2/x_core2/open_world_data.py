@@ -1,4 +1,5 @@
 import os
+from x_core2 import open_world_data
 
 def world_select(file_path):
     selected_world = None
@@ -59,6 +60,16 @@ def find_marker_path():
     world_marker_path = os.path.join(parent_folder, 'worlds', f'{world_marker}')
 
     return world_marker_path
+
+def find_marker_adjust_path(marker_name):
+
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
+    marker_path = os.path.join(parent_folder, 'worlds', 'markers',f'{marker_name}_pose.txt')
+    return marker_path
+
+   
+
 
 def main(args=None):
     pass

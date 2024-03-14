@@ -49,6 +49,8 @@ class PoseParserNode(Node):
                 indexes.append((title,entry1,entry2))
         return indexes
     
+
+
     def publish_indexes(self):
         marker_msg = MarkerLoc()
         

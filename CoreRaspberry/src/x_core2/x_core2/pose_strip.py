@@ -3,7 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Pose
 from custom_msgs.msg import WorldMarkers,MarkerLoc
 from rclpy.node import Node
-from x_core2 import pose_strip
+from x_core2 import pose_strip,open_world_data
 
 
 class PoseRecNode(Node):
@@ -61,6 +61,36 @@ def strip_marker_loc(msg,marker):
     zone = 'na'
     loc = 'na'
     return zone, loc
+
+def read_marker_param(marker_name):
+        file_path = open_world_data.find_marker_adjust_path(marker_name)
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        pose_data = {}
+        for line in lines:
+            key, value = line.strip().split()
+            try:
+                pose_data[key] = float(value)
+            except ValueError:
+                # Handle non-numeric values, for example, by keeping them as strings
+                pose_data[key] = value
+
+        return pose_data    
+
+def strip_marker_pose(pose_data):
+    marker = Pose()
+    marker.position.x = pose_data.get('X_position', 0.0)
+    marker.position.y = pose_data.get('Y_position', 1.0)
+    marker.position.z = pose_data.get('Z_position', 1.0)
+
+    marker.orientation.x = pose_data.get('Quaternion_x', 0.0)
+    marker.orientation.y = pose_data.get('Quaternion_y', 0.0)
+    marker.orientation.z = pose_data.get('Quaternion_z', 0.0)
+    marker.orientation.w = pose_data.get('Quaternion_w', 1.0)
+
+    return marker
+    
 
 
 def shift_pose_xy(msg,msg2):

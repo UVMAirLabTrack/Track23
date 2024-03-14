@@ -5,7 +5,7 @@ from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 from std_msgs.msg import Int32MultiArray
 from custom_msgs.msg import WorldMarkers, MarkerLoc
-from x_core2 import pose_strip
+from x_core2 import pose_strip, open_world_data
 import os
 from ament_index_python.packages import get_package_share_directory
 
@@ -50,8 +50,10 @@ class ThreeWayVisualizer(Node):
         self.light_colors = {
         self.node_title + marker_name: 'white',
         }
-        
-        
+        self.marker_title = 'light'
+        self.marker_path = f'package://world_gen/markers/{self.marker_title}.stl'
+        self.marker_data = pose_strip.read_marker_param(self.marker_title)
+        self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
 
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
@@ -74,8 +76,9 @@ class ThreeWayVisualizer(Node):
         self.marker = self.node_title+marker_name #set for testing, use later in other classes.
 
     def pose_call(self,msg):
-        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
 
+        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc) -self.marker_pose
+        
 
     def loc_call(self,msg):
         self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
@@ -125,7 +128,7 @@ class ThreeWayVisualizer(Node):
        # print(rgba_values)
 
 
-        marker_msg.mesh_resource = 'package://world_gen/markers/light.stl'#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+        marker_msg.mesh_resource = self.marker_path#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
         self.publisher.publish(marker_msg)
 
