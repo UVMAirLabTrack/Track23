@@ -2,7 +2,7 @@ import rclpy
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 import os
-import core_functions
+from core_functions import open_world_data
 
 
 def read_world_pose(file_path):
@@ -31,8 +31,8 @@ def main():
     marker = Marker()
     marker.type = Marker.MESH_RESOURCE
 
-    world_pose_path = core_functions.find_pose_path()
-    world_path = core_functions.find_world_path()
+    world_pose_path = open_world_data.find_pose_path()
+    world_path = open_world_data.find_world_path()
     pose_data = read_world_pose(world_pose_path)
 
 
