@@ -1,7 +1,7 @@
 Change_Color False
-X_position 0.0
+X_position 1.0
 Y_position 0.0
-Z_position 0.0
+Z_position 1.0
 Quaternion_x 0.707
 Quaternion_y 0.0
 Quaternion_z 0.0
