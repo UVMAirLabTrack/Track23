@@ -16,7 +16,7 @@ setup(
     'world_gen.gen_v2'
     
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools','core_functions'],
     zip_safe=True,
     maintainer='Ian M',
     maintainer_email='iantheterror4@gmail.com',
