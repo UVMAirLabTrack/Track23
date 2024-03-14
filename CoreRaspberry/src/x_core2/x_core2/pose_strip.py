@@ -9,6 +9,10 @@ from x_core2 import pose_strip
 class PoseRecNode(Node):
     def __init__(self):
         super().__init__('pose_test_node')
+
+        #copy the lines below into any marker nodes, dont forget the import either
+        #from x_core2 import pose_strip
+        #from custom_msgs.msg import WorldMarkers,MarkerLoc
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
         self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
         self.zone= 'empty'
@@ -23,6 +27,8 @@ class PoseRecNode(Node):
     def loc_call(self,msg):
         self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
         print(f'{self.zone} {self.loc}')
+        #end copy
+        
 
 def strip_pose(msg, desired_title, desired_entry1):
     for i in range(len(msg.title)):

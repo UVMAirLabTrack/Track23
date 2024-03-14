@@ -12,6 +12,7 @@ setup(
     py_modules=[
     'world_gen.gen',
     'world_gen.four_way_marker',
+    'world_gen.three_way_marker_V2',
     'world_gen.parse_and_pass',
     'world_gen.gen_v2',
     
@@ -37,6 +38,7 @@ setup(
             'four_way_marker = world_gen.four_way_marker:main',
             'parse_and_pass = world_gen.parse_and_pass:main',
             'gen_v2 = world_gen.gen_v2:main',
+            'three_way_marker_v2 = world_gen.three_way_marker_V2:main',
         ],
     },
 )

@@ -4,9 +4,8 @@ from std_msgs.msg import String
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 from std_msgs.msg import Int32MultiArray
-from custom_msgs.msg import WorldMarkers
-
-
+from custom_msgs.msg import WorldMarkers, MarkerLoc
+from x_core2 import pose_strip
 import os
 from ament_index_python.packages import get_package_share_directory
 
@@ -16,6 +15,7 @@ import multiprocessing
 
 class ThreeWayVisualizer(Node):
     package_name = 'world_gen'
+    node_title = "3way_"
     color_mapping = {
         'red': [1.0, 0.0, 0.0, 1.0],
         'yellow': [1.0, 1.0, 0.0, 1.0],
@@ -44,26 +44,43 @@ class ThreeWayVisualizer(Node):
             9: 'right_go',
             10: 'all',
         }
-    def __init__(self, marker_name, pose_file):
-        super().__init__('three_way_marker_' + marker_name)
+    def __init__(self, marker_name):
+        super().__init__(self.node_title + marker_name)
         self.marker_name = marker_name
         self.light_colors = {
-        'three_way_marker_' + marker_name: 'white',
+        self.node_title + marker_name: 'white',
         }
         
         
 
-        self.current_pose = Pose() 
         self.current_color = [0.0, 0.0, 0.0, 0.0]  # Default black color
         
         # Create publisher for the marker
-        self.publisher = self.create_publisher(Marker, 'three_way_marker' + marker_name, 10)
+        self.publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
-        self.subscription = self.create_subscription(Int32MultiArray, 'three_way_state', self.color_callback, 10)
+        self.subscription = self.create_subscription(Int32MultiArray, self.node_title, self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
         self.timer = self.create_timer(1.0, self.publish_marker)
+
+                #copy the lines below into any marker nodes, dont forget the import either
+        
+        self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
+        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
+        self.zone= 'empty'
+        self.loc = 'empty'
+        self.pose = Pose()
+        self.marker = 'Sign2' #set for testing, use later in other classes.
+
+    def pose_call(self,msg):
+        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
+        print(self.pose)
+
+    def loc_call(self,msg):
+        self.zone,self.loc = pose_strip.strip_marker_loc(msg,self.marker)
+        print(f'{self.zone} {self.loc}')
+        #end copy
 
 
 
@@ -75,17 +92,15 @@ class ThreeWayVisualizer(Node):
         colors = [self.numeric_to_color.get(value, 'off') for value in numeric_values]
 
         # Update colors for each light based on the received list
-        for i, light in enumerate(['light_a', 'light_b', 'light_c', 'light_d']):
-            light_name = f'three_way_marker_{light}'
+        for i, light in enumerate(['1', '2', '3', '4']):
+            light_name = f'{self.node_title}{light}'
             if light_name in self.light_colors and colors:
                 self.light_colors[light_name] = colors[i]
             else:
                 self.light_colors[light_name] = 'off'
                 print("length failure")
-    def pose_callback(self,msg):
-        pass
-        
 
+    
 
     def publish_marker(self):
         marker_msg = Marker()
@@ -94,12 +109,12 @@ class ThreeWayVisualizer(Node):
         marker_msg.id = 0
         marker_msg.type = Marker.MESH_RESOURCE
         marker_msg.action = Marker.ADD
-        marker_msg.pose = self.current_pose
+        marker_msg.pose = self.pose
         marker_msg.scale.x = 1.0
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
 
-        color_name = self.light_colors['three_way_marker_' + self.marker_name]
+        color_name = self.light_colors[self.node_title + self.marker_name]
 
     # Use the color_mapping dictionary to get the RGBA values
         rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
@@ -115,9 +130,9 @@ class ThreeWayVisualizer(Node):
         self.publisher.publish(marker_msg)
 
 
-def run_marker(marker_name, pose_file):
+def run_marker(marker_name):
     #rclpy.init()
-    node = ThreeWayVisualizer(marker_name, pose_file)
+    node = ThreeWayVisualizer(marker_name)
     rclpy.spin(node)
     rclpy.shutdown()
 
@@ -125,18 +140,13 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Read ROS parameters for the pose files and set default values
-    pose_files = {
-        'light_a': '4_way_poses_light_a.txt',
-        'light_b': '4_way_poses_light_b.txt',
-        'light_c': '4_way_poses_light_c.txt',
-        'light_d': '4_way_poses_light_d.txt',
-    }
+
 
     # Create processes for each marker
-    process_a = multiprocessing.Process(target=run_marker, args=('light_a', pose_files['light_a']))
-    process_b = multiprocessing.Process(target=run_marker, args=('light_b', pose_files['light_b']))
-    process_c = multiprocessing.Process(target=run_marker, args=('light_c', pose_files['light_c']))
-    process_d = multiprocessing.Process(target=run_marker, args=('light_d', pose_files['light_d']))
+    process_a = multiprocessing.Process(target=run_marker, args=('1'))
+    process_b = multiprocessing.Process(target=run_marker, args=('2'))
+    process_c = multiprocessing.Process(target=run_marker, args=('3'))
+    process_d = multiprocessing.Process(target=run_marker, args=('4'))
 
     # Start the processes
     process_a.start()
