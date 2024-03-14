@@ -14,7 +14,7 @@ class PoseRecNode(Node):
         self.zone= None
         self.loc = None
         self.pose = Pose()
-        self.marker = 'Sign1'
+        self.marker = '3Way'
 
 
     def pose_call(self,msg):
