@@ -48,3 +48,8 @@ def find_marker_path():
     world_marker_path = os.path.join(parent_folder, 'worlds', f'{world_marker}')
 
     return world_marker_path
+
+def main(args=None):
+    pass
+if __name__ == '__main__':
+    main()
