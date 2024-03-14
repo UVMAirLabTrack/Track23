@@ -19,17 +19,17 @@ class SerialSend(Node):
             self.serial_objects = [serial.Serial(port, 115200, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
-        # Create publishers for individual topics
-        self.four_way_publisher = self.create_publisher(Int32MultiArray, 'four_way_serial_state', 10)
-        self.three_way_publisher = self.create_publisher(Int32MultiArray, 'three_way_serial_state', 10)
-        self.train_publisher = self.create_publisher(Int32MultiArray, 'train_serial_state', 10)
-        self.aux_publisher = self.create_publisher(Int32MultiArray, 'aux_serial_state', 10)
+ #       # Create publishers for individual topics
+ #       self.four_way_publisher = self.create_publisher(Int32MultiArray, 'four_way_serial_state', 10)
+ #       self.three_way_publisher = self.create_publisher(Int32MultiArray, 'three_way_serial_state', 10)
+ #       self.train_publisher = self.create_publisher(Int32MultiArray, 'train_serial_state', 10)
+ #       self.aux_publisher = self.create_publisher(Int32MultiArray, 'aux_serial_state', 10)
 
         # Initialize last values for each state
         self.last_four_way_state = [0, 0, 0 , 0] # was just [0,0]
         self.last_three_way_state = [0, 0, 0 ,0] #added [0,0]
-        self.last_train_state = [0, 0, 0, 0]
-        self.last_aux_state = [0, 0, 0, 0]
+        self.train_crossing_state = [0, 0, 0, 0]
+        self.aux_state = [0, 0, 0, 0]
 
         print("Node Activated")
 
@@ -40,10 +40,10 @@ class SerialSend(Node):
         self.process_state_callback(msg, self.three_way_publisher, self.last_three_way_state, 1)
 
     def callback_train(self, msg):
-        self.process_state_callback(msg, self.train_publisher, self.last_train_state, 2)
+        self.process_state_callback(msg, self.train_publisher, self.train_crossing_state, 2)
 
     def callback_aux(self, msg):
-        self.process_state_callback(msg, self.aux_publisher, self.last_aux_state, 3)
+        self.process_state_callback(msg, self.aux_publisher, self.aux_state, 3)
 
     def process_state_callback(self, msg, publisher, last_state, index):
         # Ensure the received message has at least 2 integers
@@ -58,8 +58,8 @@ class SerialSend(Node):
             all_last_states = [
                 self.last_four_way_state[0], self.last_four_way_state[1], self.last_four_way_state[2], self.last_four_way_state[3],
                 self.last_three_way_state[0], self.last_three_way_state[1], self.last_three_way_state[2], self.last_three_way_state[3],
-                self.last_train_state[0], self.last_train_state[1], self.last_train_state[2], self.last_train_state[3],
-                self.last_aux_state[0], self.last_aux_state[1] , self.last_aux_state[2] , self.last_aux_state[3]
+                self.train_crossing_state[0], self.train_crossing_state[1], self.train_crossing_state[2], self.train_crossing_state[3],
+                self.aux_state[0], self.aux_state[1] , self.aux_state[2] , self.aux_state[3]
             ]
 
             # Log the received data for debugging

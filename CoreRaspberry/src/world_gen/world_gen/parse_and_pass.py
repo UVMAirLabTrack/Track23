@@ -3,6 +3,7 @@ from rclpy.node import Node
 from custom_msgs.msg import WorldMarkers
 from std_msgs.msg import Header
 import os
+import core_functions
 
 class PoseParserNode(Node):
     def __init__(self):
@@ -12,7 +13,8 @@ class PoseParserNode(Node):
         self.pose_filename = "signpose.txt"
 
         # Read poses from file
-        self.filepath = self.move_to_world_path(self.pose_filename)
+        #self.filepath = self.move_to_world_path(self.pose_filename)
+        self.filepath = core_functions.find_pose_path()
         self.poses = self.read_poses_from_file(self.filepath)
         self.pose_index = 0
 

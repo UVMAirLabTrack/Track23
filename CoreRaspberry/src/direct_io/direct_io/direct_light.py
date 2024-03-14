@@ -27,19 +27,25 @@ def main():
     while rclpy.ok():
         user_input = input("Enter state 1 (Red, Yellow, Green, Right, Left, All) or an integer: ")
         user_input2 = input("Enter state 2 (Red, Yellow, Green, Right, Left, All) or an integer: ")
+        user_input3 = input("Enter state 3 (Red, Yellow, Green, Right, Left, All) or an integer: ")
+        user_input4 = input("Enter state 4 (Red, Yellow, Green, Right, Left, All) or an integer: ")
 
         try:
             # Try parsing input as an integer
             state_integer = int(user_input)
             state_integer2 = int(user_input2)
+            state_integer3 = int(user_input3)
+            state_integer4 = int(user_input4)
         except ValueError:
             # If it's not a valid integer, map the input to an integer state
             state_integer = map_state_to_integer(user_input)
             state_integer2 = map_state_to_integer(user_input2)
+            state_integer3 = map_state_to_integer(user_input3)
+            state_integer4 = map_state_to_integer(user_input4)
 
         # Create an array message with two integers
         msg = Int32MultiArray()
-        msg.data = [state_integer, state_integer2]  # For simplicity, setting the second element to 0
+        msg.data = [state_integer, state_integer2,state_integer3,state_integer4]  # For simplicity, setting the second element to 0
 
         node.get_logger().info(f'Publishing: {msg.data}')
         publisher.publish(msg)

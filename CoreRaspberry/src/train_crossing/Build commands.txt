@@ -1,0 +1,15 @@
+Build commands;
+
+ls /dev/ttyUSB*
+
+will return available ports, code into the pycode for specific pieces.
+
+ros2 pkg create four_way_light
+
+CMakeLists.txt and package.xml files in your ROS 2 package to include dependencies and build instructions for your Python script.
+
+ros2 run four_way_light pi_stoplight.py
+
+ros2 topic pub /four_way_state std_msgs/msg/Int32MultiArray "data:
+  - 5
+  - 8"

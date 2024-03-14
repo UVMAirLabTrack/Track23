@@ -17,14 +17,14 @@ def read_light_states_from_file(file_path):
 def main(args=None):
     rclpy.init(args=args)
     node = rclpy.create_node('pub')
-    publisher = node.create_publisher(Int32MultiArray, 'four_way_state', 10)
+    publisher = node.create_publisher(Int32MultiArray, 'three_way_state', 10)
 
     # Get the path of the current script
     script_path = os.path.dirname(os.path.abspath(__file__))
 
     # Navigate up three parent levels and then access the 'control' folder
     parent_folder = os.path.abspath(os.path.join(script_path, os.pardir, os.pardir, os.pardir))
-    file_path = os.path.join(parent_folder, 'control', 'light_states_4.txt')  # Specify the filename
+    file_path = os.path.join(parent_folder, 'control', 'light_states_3.txt')  # Specify the filename
 
     lights = read_light_states_from_file(file_path)
 
