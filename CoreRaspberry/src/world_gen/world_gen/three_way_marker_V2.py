@@ -77,7 +77,7 @@ class ThreeWayVisualizer(Node):
 
     def pose_call(self,msg):
 
-        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc) -self.marker_pose
+        self.pose = pose_strip.strip_pose(msg,self.zone,self.loc) 
         
 
     def loc_call(self,msg):
