@@ -16,7 +16,7 @@ class PoseParserNode(Node):
 
         # Read poses from file
         #self.filepath = self.move_to_world_path(self.pose_filename)
-        self.filepath = open_world_data.find_pose_path()
+        self.filepath = open_world_data.find_marker_loc_path()
         self.poses = self.read_poses_from_file(self.filepath)
         self.pose_index = 0
 
