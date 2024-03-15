@@ -58,14 +58,15 @@ class OdomTransformer(Node):
         transform.transform.translation.z = odom_msg.pose.pose.position.z
 
         # Set the orientation (quaternion)
-        transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
+        #transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
 
         # Publish the transform
         self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
         transformed_odom.pose.pose.position = odom_msg.pose.pose.position
-        transformed_odom.pose.pose.orientation = transform.transform.rotation
+       # transformed_odom.pose.pose.orientation = transform.transform.rotation
+        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation
 
         return transformed_odom
 
