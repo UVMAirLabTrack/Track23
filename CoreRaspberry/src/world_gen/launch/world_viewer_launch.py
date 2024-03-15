@@ -21,9 +21,9 @@ def generate_launch_description():
 ),
 
     Node(
-    package='world_gen',
+    package='x_core2',
     
-    executable='pub_all_pose',
+    executable='parse_and_pass',
     name='marker_parser'
 ),
 
