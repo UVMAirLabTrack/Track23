@@ -30,6 +30,12 @@ def generate_launch_description():
     name='Three_markers'
 ),
 
+    Node(
+    package='world_gen',
+    
+    executable='four_way_marker',
+    name='four_markers'
+),
 
 
     Node(
