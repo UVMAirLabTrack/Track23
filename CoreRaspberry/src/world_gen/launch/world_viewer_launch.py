@@ -13,17 +13,9 @@ def generate_launch_description():
     print(path)
 
     # Declare a launch argument for the RViz configuration file parameter
-    declare_rviz_config_arg = DeclareLaunchArgument(
-        'rviz',
-        
-        default_value= f'{path}',
 
-        description="RViz configuration file"
-
-    )
 
     # Get the path to the RViz configuration file from the launch argument
-    rviz = LaunchConfiguration('rviz')
 
     # Launch RViz with the specified configuration file
     rviz2_node = Node(
@@ -31,11 +23,11 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=[rviz],
+        arguments=['-d',path],
     )
 
     return LaunchDescription([
-        declare_rviz_config_arg,
+
         rviz2_node,
         
         Node(
