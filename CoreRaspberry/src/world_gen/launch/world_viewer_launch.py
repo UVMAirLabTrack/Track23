@@ -8,7 +8,7 @@ import os
 def generate_launch_description():
     package_share_directory = get_package_share_directory('world_gen')
     rviz_directory = os.path.join(package_share_directory, 'world_gen', 'rviz')
-    file = 'config1.rviz',
+    file = 'config1.rviz'
     path = os.path.join(rviz_directory,file)
 
     # Declare a launch argument for the RViz configuration file parameter
