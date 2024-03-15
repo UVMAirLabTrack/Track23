@@ -23,7 +23,7 @@ def generate_launch_description():
     Node(
     package='x_core2',
     
-    executable='parse_and_pass',
+    executable='pub_all_pose',
     name='marker_parser'
 ),
 
