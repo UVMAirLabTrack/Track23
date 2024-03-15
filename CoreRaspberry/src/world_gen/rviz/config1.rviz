@@ -4,7 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Marker1/Topic1
+        - /Marker0/Topic1
         - /Marker2/Topic1
         - /Marker3/Topic1
         - /Marker4/Topic1
