@@ -12,7 +12,7 @@ import multiprocessing
 
 
 
-class ThreeWayVisualizer(Node):
+class FourWayVisualizer(Node):
     package_name = 'world_gen'
     node_title = "fourway_"
     color_mapping = {
@@ -136,7 +136,7 @@ class ThreeWayVisualizer(Node):
 
 def run_marker(marker_name):
     #rclpy.init()
-    node = ThreeWayVisualizer(marker_name)
+    node = FourWayVisualizer(marker_name)
     rclpy.spin(node)
     rclpy.shutdown()
 
