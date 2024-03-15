@@ -9,7 +9,7 @@ def generate_launch_description():
     Node(
     package='world_gen',
     
-    executable='gen',
+    executable='gen_V2',
     name='world_map'
 ),
 
@@ -18,6 +18,20 @@ def generate_launch_description():
     
     executable='four_way_marker',
     name='Four_markers'
+),
+
+    Node(
+    package='world_gen',
+    
+    executable='parse_and_pass',
+    name='marker_parser'
+),
+
+    Node(
+    package='world_gen',
+    
+    executable='three_way_marker',
+    name='Three_markers'
 ),
 
 

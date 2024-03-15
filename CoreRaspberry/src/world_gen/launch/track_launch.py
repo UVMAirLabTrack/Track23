@@ -12,6 +12,12 @@ def generate_launch_description():
     executable='pub',
     name='four_way_control'),
 
+      Node(
+    package='three_way_light',
+    
+    executable='pub',
+    name='three_way_control'),
+
    Node(
     package='direct_io',
     
