@@ -13,12 +13,6 @@ def generate_launch_description():
     name='world_map'
 ),
 
-    Node(
-    package='world_gen',
-    
-    executable='four_way_marker',
-    name='Four_markers'
-),
 
     Node(
     package='x_core2',
@@ -33,7 +27,12 @@ def generate_launch_description():
     executable='three_way_marker',
     name='Three_markers'
 ),
-
+    Node(
+    package='world_gen',
+    
+    executable='four_way_marker',
+    name='Four_markers'
+),
 
 
     Node(
