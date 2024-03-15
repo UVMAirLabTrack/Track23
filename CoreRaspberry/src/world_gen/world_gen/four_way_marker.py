@@ -12,9 +12,9 @@ import multiprocessing
 
 
 
-class ThreeWayVisualizer(Node):
+class FourWayVisualizer(Node):
     package_name = 'world_gen'
-    node_title = "threeway_"
+    node_title = "fourway_"
     color_mapping = {
         'red': [1.0, 0.0, 0.0, 1.0],
         'yellow': [1.0, 1.0, 0.0, 1.0],
@@ -62,7 +62,7 @@ class ThreeWayVisualizer(Node):
         self.publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
-        self.subscription = self.create_subscription(Int32MultiArray, 'three_way_state', self.color_callback, 10)
+        self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
         self.timer = self.create_timer(1.0, self.publish_marker)
@@ -136,7 +136,7 @@ class ThreeWayVisualizer(Node):
 
 def run_marker(marker_name):
     #rclpy.init()
-    node = ThreeWayVisualizer(marker_name)
+    node = FourWayVisualizer(marker_name)
     rclpy.spin(node)
     rclpy.shutdown()
 
