@@ -1,47 +1,58 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory
+import os
 
 def generate_launch_description():
-   package_share_directory = get_package_share_directory('world_gen')
-   return LaunchDescription([
-      
-    Node(
-    package='world_gen',
-    
-    executable='gen_v2',
-    name='world_map'
-),
+    package_share_directory = get_package_share_directory('world_gen')
+    rviz_directory = os.path.join(package_share_directory, 'world_gen', 'rviz')
 
+    # Declare a launch argument for the RViz configuration file parameter
+    declare_rviz_config_arg = DeclareLaunchArgument(
+        'rviz',
+        default_value='config1.rviz',
+        description="RViz configuration file"
+    )
 
-    Node(
-    package='x_core2',
-    
-    executable='pub_all_pose',
-    name='marker_parser'
-),
+    # Get the path to the RViz configuration file from the launch argument
+    rviz = os.path.join(rviz_directory, LaunchConfiguration('rviz'))
 
-    Node(
-    package='world_gen',
-    
-    executable='four_way_marker',
-    name='four_markers'
-),
-    Node(
-    package='world_gen',
-    
-    executable='three_way_marker',
-    name='three_markers'
-),
+    # Launch RViz with the specified configuration file
+    rviz2_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=[rviz],
+    )
 
-
-    Node(
-   
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            output='screen',
-            parameters=[{'4marker_rviz': package_share_directory + 'world_gen/rviz/4marker_rviz.rviz'}],
+    return LaunchDescription([
+        declare_rviz_config_arg,
+        rviz2_node,
+        
+        Node(
+            package='world_gen',
+            executable='gen_v2',
+            name='world_map'
         ),
 
-   ])
+        Node(
+            package='x_core2',
+            executable='pub_all_pose',
+            name='marker_parser'
+        ),
+
+        Node(
+            package='world_gen',
+            executable='four_way_marker',
+            name='four_markers'
+        ),
+
+        Node(
+            package='world_gen',
+            executable='three_way_marker',
+            name='three_markers'
+        ),
+    ])
