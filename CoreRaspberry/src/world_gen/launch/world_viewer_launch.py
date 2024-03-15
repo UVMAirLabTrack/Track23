@@ -23,15 +23,6 @@ def generate_launch_description():
 
 
 
-
-    Node(
-    package='world_gen',
-    
-    executable='four_way_marker',
-    name='four_markers'
-),
-
-
     Node(
    
             package='rviz2',
