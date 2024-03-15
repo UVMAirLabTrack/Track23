@@ -25,7 +25,7 @@ setup(
     data_files=[
     (f'share/{package_name}/msg', ['msg/world_marker_msg.msg']),
     (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
-    (os.path.join('share', package_name, 'rviz'), glob(os.path.join('rviz', '*rviz.*'))),
+    (os.path.join('share', package_name, 'rviz'), glob(os.path.join('rviz', '*.rviz'))),
     ('share/' + package_name + '/worlds', glob(os.path.join('world_gen', 'worlds', '*.*'))),
     ('share/' + package_name + '/markers', glob(os.path.join('world_gen', 'markers', '*.*'))),
     ('share/' + package_name, ['package.xml']),
