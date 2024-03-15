@@ -51,9 +51,9 @@ def strip_pose(msg, desired_title, desired_entry1):
     return pose
 
 def pose_xyz_shift(pose,marker_pose):
-    pose.position.x = pose.position.x - marker_pose.position.x
-    pose.position.y = pose.position.y - marker_pose.position.y
-    pose.position.z = pose.position.z - marker_pose.position.z
+    pose.position.x = pose.position.x + marker_pose.position.x
+    pose.position.y = pose.position.y + marker_pose.position.y
+    pose.position.z = pose.position.z + marker_pose.position.z
 
     return pose
 

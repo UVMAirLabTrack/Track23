@@ -72,7 +72,7 @@ class ThreeWayVisualizer(Node):
         self.zone= 'empty'
         self.loc = 'empty'
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
-        self.subscription = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
+        self.subscription3 = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
         #self.pose = pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
 
         self.marker = self.node_title+marker_name #set for testing, use later in other classes.
