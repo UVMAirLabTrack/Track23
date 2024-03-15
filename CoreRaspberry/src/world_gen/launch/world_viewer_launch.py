@@ -23,12 +23,6 @@ def generate_launch_description():
 
 
 
-    Node(
-    package='world_gen',
-    
-    executable='three_way_marker',
-    name='Three_markers'
-),
 
     Node(
     package='world_gen',
