@@ -86,7 +86,7 @@ class ThreeWayVisualizer(Node):
 
     def pose_call(self,msg):
         self.pose = pose_strip.strip_pose(msg,self.zone,self.loc)
-        pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
+        self.pose = pose_strip.pose_xyz_shift(self.pose,self.marker_pose)
 
     def color_callback(self, msg):
         # Use the numeric values directly
