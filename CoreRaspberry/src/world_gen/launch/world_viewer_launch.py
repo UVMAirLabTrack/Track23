@@ -17,7 +17,7 @@ def generate_launch_description():
     )
 
     # Get the path to the RViz configuration file from the launch argument
-    rviz = os.path.join(rviz_directory, LaunchConfiguration('rviz'))
+    rviz = os.path.join(rviz_directory, LaunchConfiguration('rviz').perform())
 
     # Launch RViz with the specified configuration file
     rviz2_node = Node(
