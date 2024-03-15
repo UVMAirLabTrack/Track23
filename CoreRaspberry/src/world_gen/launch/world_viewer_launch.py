@@ -9,7 +9,7 @@ def generate_launch_description():
     Node(
     package='world_gen',
     
-    executable='gen_V2',
+    executable='gen_v2',
     name='world_map'
 ),
 
