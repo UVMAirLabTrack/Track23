@@ -13,6 +13,7 @@ setup(
     'world_gen.gen',
     'world_gen.four_way_marker',
     'world_gen.three_way_marker',
+    'world_gen.train_marker',
     'world_gen.gen_v2',
     
     ],
@@ -37,6 +38,7 @@ setup(
             'four_way_marker = world_gen.four_way_marker:main',
             'gen_v2 = world_gen.gen_v2:main',
             'three_way_marker = world_gen.three_way_marker:main',
+            'train_marker = world_gen.train_marker:main',
         ],
     },
 )

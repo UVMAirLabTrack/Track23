@@ -52,7 +52,7 @@ class FourWayVisualizer(Node):
         }
         self.marker_title = 'light'
         self.marker_path = f'package://world_gen/markers/{self.marker_title}.stl'
-        self.marker_data = pose_strip.read_marker_param(self.marker_title)
+        self.marker_data = pose_strip.read_marker_param(self.marker_title) #change these for package files when tuning is complete
         self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
 
 
