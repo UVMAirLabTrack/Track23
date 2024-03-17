@@ -34,7 +34,7 @@ class TrainVisualizer(Node):
 
         # Initialize marker pose
         self.pose = Pose()
-        self.pose.orientation = Quaternion(w=1.0)  # Identity quaternion
+        self.pose.orientation = Quaternion()  # Identity quaternion
         self.eulers = [0,0,0]
 
         # Subscribe to marker_loc topic for marker location information
@@ -64,8 +64,8 @@ class TrainVisualizer(Node):
     def publish_marker(self):
         # Update orientation based on the current angle
         new_y = self.eulers[1]+self.current_angle
-        self.pose.orientation = Quaternion(
-            formulas.euler_to_quat(self.eulers[0],new_y,self.eulers[2]))
+        q = formulas.euler_to_quat(self.eulers[0],new_y,self.eulers[2])
+        self.pose.orientation = Quaternion(q)
         
 
         # Publish marker
