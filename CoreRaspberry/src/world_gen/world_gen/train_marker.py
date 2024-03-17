@@ -82,7 +82,7 @@ class TrainVisualizer(Node):
 
 
 def run_marker(marker_name):
-    rclpy.init()
+    #rclpy.init()
     node = TrainVisualizer(marker_name)
     rclpy.spin(node)
     rclpy.shutdown()
