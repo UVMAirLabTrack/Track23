@@ -76,14 +76,14 @@ def main():
     def publish_marker_callback():
         nonlocal marker
         node.get_logger().info(f'Publishing world from path: {world_path}')
-        node.get_logger().info("Marker properties set:")
+       # node.get_logger().info("Marker properties set:")
         node.get_logger().info(f"Pose: {marker.pose}")
-        node.get_logger().info(f"Scale: {marker.scale}")
-        node.get_logger().info(f"Change Color?: {change_color}")
-        node.get_logger().info(f"Color: {marker.color}")
-        node.get_logger().info(f"Lifetime_sec: {marker.lifetime.sec}")
-        node.get_logger().info(f"Frame_locked: {marker.frame_locked}")
-        node.get_logger().info(f"Mesh_use_embedded_materials: {marker.mesh_use_embedded_materials}")
+        #node.get_logger().info(f"Scale: {marker.scale}")
+        #node.get_logger().info(f"Change Color?: {change_color}")
+        #node.get_logger().info(f"Color: {marker.color}")
+        ##node.get_logger().info(f"Lifetime_sec: {marker.lifetime.sec}")
+        #node.get_logger().info(f"Frame_locked: {marker.frame_locked}")
+        #node.get_logger().info(f"Mesh_use_embedded_materials: {marker.mesh_use_embedded_materials}")
         node.get_logger().info(f"Frame_id: {marker.header.frame_id}")
         marker_publisher.publish(marker)
 

@@ -45,7 +45,7 @@ def generate_launch_description():
         Node(
             package='world_gen',
             executable='train_marker',
-            name='four_markers'
+            name='train_marker'
         ),
 
         Node(

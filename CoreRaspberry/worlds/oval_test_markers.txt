@@ -6,3 +6,7 @@ fourway_1 3way A
 fourway_2 3way B
 fourway_3 4way C
 fourway_4 4way D
+train_1 4way D
+train_2 park A
+train_3 park B
+train_4 park C

@@ -100,7 +100,7 @@ class PoseParserNode(Node):
 
         self.get_logger().info(f"Publishing {len(self.markers)} Markers")
         self.publisher2.publish(marker_msg)
-        self.get_logger().info('Finished publishing Markers')
+        #self.get_logger().info('Finished publishing Markers')
 
 
 
@@ -133,7 +133,7 @@ class PoseParserNode(Node):
 
         self.get_logger().info(f"Publishing {len(self.poses)} Poses")
         self.publisher.publish(pose_msg)
-        self.get_logger().info('Finished publishing poses')
+        #self.get_logger().info('Finished publishing poses')
 
 
 
