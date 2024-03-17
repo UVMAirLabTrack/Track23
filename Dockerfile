@@ -21,6 +21,7 @@ ENV QT_QPA_PLATFORM=xcb
 WORKDIR $HOME
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
+python3-ament-cmake \
 x11-apps \
 xauth \
 libxcb1 \
@@ -28,12 +29,12 @@ libxcb1-dev \
 xvfb \
 && rm -rf /var/lib/apt/lists/*
 
-#Could also utilize a Git Pull, but may need to separate the Repo for lightweight building, this seems better
+#Could also utilize a Git Pull, but may need to separate the Repo for lightweight building, this seems better for now
 COPY CoreRaspberry $HOME/CoreRaspberry
 
 #switch to workspace
 WORKDIR $HOME/CoreRaspberry
-
+#comment this out to copy from a built set
 RUN colcon build --symlink-install
 
 RUN echo ' \n\
