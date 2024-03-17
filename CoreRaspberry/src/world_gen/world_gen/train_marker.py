@@ -43,8 +43,12 @@ class TrainVisualizer(Node):
         # Subscribe to custom_poses topic for custom marker poses
         self.subscription3 = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
 
+        self.marker = self.node_title+marker_name #set for testing, use later in other classes.
+
+
+
     def loc_call(self, msg):
-        self.zone, self.loc = pose_strip.strip_marker_loc(msg, self.marker_name)
+        self.zone, self.loc = pose_strip.strip_marker_loc(msg, self.marker)
 
     def pose_call(self, msg):
         temp_pose = pose_strip.strip_pose(msg, self.zone, self.loc)
