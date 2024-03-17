@@ -9,7 +9,8 @@ setup(
     py_modules=[
         'x_core2.parse_and_pass',
         'x_core2.open_world_data',
-        'x_core2.pose_strip'
+        'x_core2.pose_strip',
+        'x_core2.formulas'
 
 
 
@@ -26,6 +27,7 @@ setup(
             'pub_all_pose = x_core2.parse_and_pass:main',
             'open_world_data = x_core2.open_world_data:main',
             'pose_strip = x_core2.pose_strip:main',
+            'formulas = x_core2.formulas:main',
         ],
     },
 )

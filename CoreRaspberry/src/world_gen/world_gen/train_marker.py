@@ -4,7 +4,7 @@ from std_msgs.msg import Int32MultiArray
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 from custom_msgs.msg import MarkerLoc, WorldMarkers
-from x_core2 import pose_strip, open_world_data
+from x_core2 import pose_strip, open_world_data,formulas
 from math import sin, cos, radians
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -35,11 +35,10 @@ class TrainVisualizer(Node):
         # Initialize marker pose
         self.pose = Pose()
         self.pose.orientation = Quaternion(w=1.0)  # Identity quaternion
-        self.pose.position.z = 0.0  # Assuming the marker is initially at ground level
+        self.ex,self.ey,self.ez = formulas.quat_to_euler(self.pose.orientation)
 
         # Subscribe to marker_loc topic for marker location information
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
-
         # Subscribe to custom_poses topic for custom marker poses
         self.subscription3 = self.create_subscription(WorldMarkers, 'custom_poses', self.pose_call, 10)
 
@@ -63,13 +62,10 @@ class TrainVisualizer(Node):
 
     def publish_marker(self):
         # Update orientation based on the current angle
-        new_orientation = Quaternion(
-            x=0.0,
-            y=sin(radians(self.current_angle) / 2),
-            z=0.0,
-            w=cos(radians(self.current_angle) / 2)
-        )
-        self.pose.orientation = new_orientation
+        new_y = self.ey+self.current_angle
+        self.pose.orientation = Quaternion(
+            formulas.euler_to_quat(self.ex,new_y,self.ez))
+        
 
         # Publish marker
         marker_msg = Marker()
