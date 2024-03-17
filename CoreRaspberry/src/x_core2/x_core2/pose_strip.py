@@ -55,12 +55,11 @@ def strip_pose_quat(msg, desired_title, desired_entry1):
        # print(f'--{msg.title[i]}--{desired_title}--')     
         if msg.title[i].strip() == desired_title.strip():
             if msg.entry1[i].strip() == desired_entry1.strip():
-                pose = []
-
-                pose[0] = msg.qx[i]
-                pose[1] = msg.qy[i]
-                pose[2] = msg.qz[i]
-                pose[3] = msg.qw[i]  # Assuming no rotation
+                pose = [
+                msg.qx[i],
+                msg.qy[i],
+                msg.qz[i],
+                 msg.qw[i] ] # Assuming no rotation
 
                 return pose  # Return the pose if match found
     if desired_title != "na":
