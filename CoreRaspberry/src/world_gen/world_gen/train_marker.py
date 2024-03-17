@@ -81,6 +81,10 @@ class TrainVisualizer(Node):
         marker_msg.scale.y = 1.0
         marker_msg.scale.z = 1.0
         marker_msg.mesh_resource = self.marker_path
+        rgba_values = [1.0, 1.0, 1.0, 1.0]
+
+    # Assign RGBA values to the marker message
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
 
         self.publisher.publish(marker_msg)
 
