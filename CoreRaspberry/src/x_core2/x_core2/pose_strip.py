@@ -50,6 +50,24 @@ def strip_pose(msg, desired_title, desired_entry1):
     pose = Pose()
     return pose
 
+def strip_pose_quat(msg, desired_title, desired_entry1):
+    for i in range(len(msg.title)):
+       # print(f'--{msg.title[i]}--{desired_title}--')     
+        if msg.title[i].strip() == desired_title.strip():
+            if msg.entry1[i].strip() == desired_entry1.strip():
+                pose = []
+
+                pose[0] = msg.qx[i]
+                pose[1] = msg.qy[i]
+                pose[2] = msg.qz[i]
+                pose[3] = msg.qw[i]  # Assuming no rotation
+
+                return pose  # Return the pose if match found
+    if desired_title != "na":
+        print(f'{desired_title}:{desired_entry1}, Matching Pose not found, returning empty pose.')
+    pose = Pose()
+    return pose
+
 def pose_xyz_shift(pose,marker_pose):
     pose.position.x = pose.position.x + marker_pose.position.x
     pose.position.y = pose.position.y + marker_pose.position.y

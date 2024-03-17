@@ -35,7 +35,7 @@ class TrainVisualizer(Node):
         # Initialize marker pose
         self.pose = Pose()
         self.pose.orientation = Quaternion(w=1.0)  # Identity quaternion
-        self.ex,self.ey,self.ez = formulas.quat_to_euler(self.pose.orientation)
+        self.eulers = None
 
         # Subscribe to marker_loc topic for marker location information
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
@@ -52,6 +52,7 @@ class TrainVisualizer(Node):
     def pose_call(self, msg):
         temp_pose = pose_strip.strip_pose(msg, self.zone, self.loc)
         self.pose = pose_strip.pose_xyz_shift(temp_pose, self.marker_pose)
+        self.eulers = formulas.quat_to_euler(pose_strip.strip_pose_quat(msg, self.zone, self.loc))
 
     def angle_callback(self, msg):
         # Assuming the received message contains angles for all markers
