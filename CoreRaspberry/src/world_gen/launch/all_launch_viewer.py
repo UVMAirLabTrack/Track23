@@ -8,7 +8,7 @@ import os
 def generate_launch_description():
     package_share_directory = get_package_share_directory('world_gen')
     rviz_directory = os.path.join(package_share_directory, 'rviz')
-    file = 'config1.rviz'
+    file = 'config_full.rviz'
     path = os.path.join(rviz_directory,file)
     print(path)
 
@@ -53,4 +53,17 @@ def generate_launch_description():
             executable='three_way_marker',
             name='three_markers'
         ),
+        Node(
+            package='train_crossing',
+            executable='pub',
+            name='train_xing'
+        ),
+
+
+        Node(
+            package='map_transforms',
+    
+    executable='odom_to_map',
+    name='map_transform'
+),
     ])

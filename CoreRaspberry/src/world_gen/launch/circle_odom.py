@@ -12,12 +12,4 @@ def generate_launch_description():
 ),
 
 
-
-    Node(
-    package='four_way_light',
-    
-    executable='pub',
-    name='four_way_control')
-
-
    ])

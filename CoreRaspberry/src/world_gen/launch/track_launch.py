@@ -12,6 +12,12 @@ def generate_launch_description():
     executable='pub',
     name='four_way_control'),
 
+    Node(
+    package='train_crossing',
+    
+    executable='pub',
+    name='train_control'),
+
       Node(
     package='three_way_light',
     
