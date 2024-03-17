@@ -63,9 +63,9 @@ class TrainVisualizer(Node):
 
     def publish_marker(self):
         # Update orientation based on the current angle
-        new_y = self.ey+self.current_angle
+        new_y = self.eulers[1]+self.current_angle
         self.pose.orientation = Quaternion(
-            formulas.euler_to_quat(self.ex,new_y,self.ez))
+            formulas.euler_to_quat(self.eulers[0],new_y,self.eulers[2]))
         
 
         # Publish marker
