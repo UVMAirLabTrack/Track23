@@ -35,7 +35,7 @@ class TrainVisualizer(Node):
         # Initialize marker pose
         self.pose = Pose()
         self.pose.orientation = Quaternion(w=1.0)  # Identity quaternion
-        self.eulers = None
+        self.eulers = [0,0,0]
 
         # Subscribe to marker_loc topic for marker location information
         self.subscription2 = self.create_subscription(MarkerLoc, 'marker_loc', self.loc_call, 10)
