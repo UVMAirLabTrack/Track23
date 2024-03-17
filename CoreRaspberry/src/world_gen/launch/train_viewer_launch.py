@@ -48,11 +48,6 @@ def generate_launch_description():
             name='train_marker'
         ),
 
-        Node(
-            package='train_crossing',
-            executable='pub',
-            name='train_xing'
-        ),
 
             Node(
     package='map_transforms',

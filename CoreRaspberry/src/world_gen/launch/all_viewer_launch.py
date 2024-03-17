@@ -54,16 +54,15 @@ def generate_launch_description():
             name='three_markers'
         ),
         Node(
-            package='train_crossing',
-            executable='pub',
+            package='world_gen',
+            executable='train_crossing',
             name='train_xing'
         ),
-
 
         Node(
             package='map_transforms',
     
-    executable='odom_to_map',
-    name='map_transform'
+            executable='odom_to_map',
+            name='map_transform'
 ),
     ])
