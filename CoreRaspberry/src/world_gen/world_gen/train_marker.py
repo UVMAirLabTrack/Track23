@@ -65,7 +65,10 @@ class TrainVisualizer(Node):
         # Update orientation based on the current angle
         new_y = self.eulers[1]+self.current_angle
         q = formulas.euler_to_quat(self.eulers[0],new_y,self.eulers[2])
-        self.pose.orientation = q
+        self.pose.orientation.x = q[0]
+        self.pose.orientation.y = q[1]
+        self.pose.orientation.z = q[2]
+        self.pose.orientation.w = q[3] 
         
 
         # Publish marker
