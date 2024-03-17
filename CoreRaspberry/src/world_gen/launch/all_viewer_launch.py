@@ -55,7 +55,7 @@ def generate_launch_description():
         ),
         Node(
             package='world_gen',
-            executable='train_crossing',
+            executable='train_marker',
             name='train_xing'
         ),
 
