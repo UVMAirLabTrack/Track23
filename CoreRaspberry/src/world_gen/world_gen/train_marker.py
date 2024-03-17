@@ -55,9 +55,11 @@ class TrainVisualizer(Node):
         self.pose = pose_strip.pose_xyz_shift(temp_pose, self.marker_pose)
 
     def angle_callback(self, msg):
-        # Assuming the received message contains the angle in degrees
-        if len(msg.data) > 0:
-            self.current_angle = msg.data[0]  # Assuming only one angle is sent
+        # Assuming the received message contains angles for all markers
+        if len(msg.data) >= int(self.marker_name):
+            self.current_angle = msg.data[int(self.marker_name) - 1]  # Index starts from 0
+        else:
+            self.get_logger().warn("Insufficient data in angle message.")
 
     def publish_marker(self):
         # Update orientation based on the current angle
