@@ -21,7 +21,7 @@ ENV QT_QPA_PLATFORM=xcb
 WORKDIR $HOME
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
-python3-ament-cmake \
+cmake \
 x11-apps \
 xauth \
 libxcb1 \
