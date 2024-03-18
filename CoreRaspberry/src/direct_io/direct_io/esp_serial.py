@@ -34,18 +34,18 @@ class SerialSend(Node):
         print("Node Activated")
 
     def callback_four_way(self, msg):
-        self.process_state_callback(msg, self.four_way_publisher, self.last_four_way_state, 0)
+        self.process_state_callback(msg, self.last_four_way_state, 0)
 
     def callback_three_way(self, msg):
-        self.process_state_callback(msg, self.three_way_publisher, self.last_three_way_state, 1)
+        self.process_state_callback(msg, self.last_three_way_state, 1)
 
     def callback_train(self, msg):
-        self.process_state_callback(msg, self.train_publisher, self.train_crossing_state, 2)
+        self.process_state_callback(msg, self.train_crossing_state, 2)
 
     def callback_aux(self, msg):
-        self.process_state_callback(msg, self.aux_publisher, self.aux_state, 3)
+        self.process_state_callback(msg, self.aux_state, 3)
 
-    def process_state_callback(self, msg, publisher, last_state, index):
+    def process_state_callback(self, msg, last_state, index):
         # Ensure the received message has at least 2 integers
         if len(msg.data) >= 2:
             # Update the last state with the received values
@@ -69,7 +69,7 @@ class SerialSend(Node):
             self.send_to_all_serial_ports(all_last_states)
 
             # Publish the received data on the appropriate serial state topic
-            publisher.publish(Int32MultiArray(data=last_state))
+            #publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
         # Convert the list of integers to a string and send it over all specified serial ports   #expanded serial from 7 to 9, to 15
