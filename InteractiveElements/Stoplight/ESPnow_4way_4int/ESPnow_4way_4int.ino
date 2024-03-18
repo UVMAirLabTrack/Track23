@@ -96,7 +96,7 @@ int timer = 0;
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
@@ -145,27 +145,28 @@ if(color == Glow){
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&Data, incomingData, sizeof(Data));
-  Serial.print("Bytes received: ");
+  /*Serial.print("Bytes received: ");
   Serial.println(len);
-  Serial.print("Relevant Data: ");
+  Serial.print("Relevant Data: ");*/
   Ctrl1 = Data.Pair1;
   Ctrl2 = Data.Pair2;
   Ctrl3 = Data.Pair3;
   Ctrl4 = Data.Pair4;
-  Serial.print(Ctrl1);
+  /*Serial.print(Ctrl1);
   Serial.print(", ");
   Serial.print(Ctrl2);
   Serial.print(", ");
   Serial.print(Ctrl3);
   Serial.print(", ");
-  Serial.println(Ctrl4);
+  Serial.println(Ctrl4);*/
 
   activateLight(Ctrl4, redPin4, yellowPin2, greenPin4, whitePin4, bluePin4 );
   activateLight(Ctrl3, redPin3, yellowPin, greenPin3, whitePin3, bluePin3 );
 
-
   activateLight(Ctrl2, redPin2, yellowPin2, greenPin2, whitePin2, bluePin2);
   activateLight(Ctrl1, redPin, yellowPin, greenPin, whitePin, bluePin );
+
+  printDataStructure(Data);
 
 
  
@@ -173,6 +174,29 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
 
 
+}
+
+void printDataStructure(const DataStruct &data) {
+    char lines[4][50], dataArray[50];
+
+    // Format lines with message and variables
+    sprintf(lines[0], "4_way:------[ %d,  %d,  %d, %d]", data.Pair1, data.Pair2, data.Pair3, data.Pair4);
+    sprintf(lines[1], "3_way:----- [ %d,  %d,  %d, %d]", data.Pair5, data.Pair6, data.Pair7, data.Pair8);
+    sprintf(lines[2], "Train_Xing:-[ %d,  %d,  %d, %d]", data.Pair9, data.Pair10, data.Pair11, data.Pair12);
+    sprintf(lines[3], "Aux:------- [ %d,  %d,  %d, %d]", data.Pair13, data.Pair14, data.Pair15, data.Pair16);
+
+    // Format the array at the end
+    sprintf(dataArray, "Data array: [%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d]", 
+            data.Pair1, data.Pair2, data.Pair3, data.Pair4,
+            data.Pair5, data.Pair6, data.Pair7, data.Pair8,
+            data.Pair9, data.Pair10, data.Pair11, data.Pair12,
+            data.Pair13, data.Pair14, data.Pair15, data.Pair16);
+
+    // Print the lines to serial
+    for (int i = 0; i < 4; ++i) {
+        Serial.println(lines[i]);
+    }
+    Serial.println(dataArray);
 }
 
 void activateLight(int ctrl ,int rpin, int ypin, int gpin, int wpin, int bpin){
