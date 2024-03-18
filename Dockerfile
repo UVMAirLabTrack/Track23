@@ -16,7 +16,7 @@ EXPOSE 6000
 ENV HOME /root
 ENV DISPLAY=:0
 ENV QT_QPA_PLATFORM=xcb
-ENV ROS2_WS  /home/CoreRaspberry
+ENV ROS2_WS  /root/CoreRaspberry
 
 WORKDIR $HOME
 
