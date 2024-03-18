@@ -20,6 +20,8 @@ ENV ROS2_WS  /root/CoreRaspberry
 
 WORKDIR $HOME
 
+RUN mkdir -p ${ROS2_WS}
+
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
 x11-apps \
 xauth \
