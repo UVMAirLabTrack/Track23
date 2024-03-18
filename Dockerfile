@@ -21,7 +21,6 @@ ENV QT_QPA_PLATFORM=xcb
 WORKDIR $HOME
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
-cmake \
 x11-apps \
 xauth \
 libxcb1 \
@@ -35,11 +34,13 @@ COPY CoreRaspberry $HOME/CoreRaspberry
 #switch to workspace
 WORKDIR $HOME/CoreRaspberry
 #comment this out to copy from a built set
-RUN colcon build --symlink-install
+
 
 RUN echo ' \n\
 echo "Sourcing ROS2 packages..." \n\
 source $HOME/CoreRaspberry/install/local_setup.sh' >> $HOME/.bashrc
+
+RUN colcon build --symlink-install
 
 #comment out below to build in windows, still working on the networking side but gui apps are good.
 CMD xhost + && source $HOME/CoreRaspberry/install/local_setup.sh
