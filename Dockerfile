@@ -35,6 +35,7 @@ xvfb \
 #modded copy to bypass a built package
 COPY CoreRaspberry/src $HOME/CoreRaspberry/src
 COPY CoreRaspberry/worlds $HOME/CoreRaspberry/worlds
+COPY CoreRaspberry/control $HOME/CoreRaspberry/control
 
 #switch to workspace
 WORKDIR $HOME/CoreRaspberry
