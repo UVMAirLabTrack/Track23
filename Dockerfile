@@ -33,8 +33,8 @@ xvfb \
 #Could also utilize a Git Pull, but may need to separate the Repo for lightweight building, this seems better for now
 #COPY CoreRaspberry $HOME/CoreRaspberry
 #modded copy to bypass a built package
-COPY CoreRaspberry $HOME/CoreRaspberry/src
-COPY CoreRaspberry $HOME/CoreRaspberry/worlds
+COPY CoreRaspberry/src $HOME/CoreRaspberry/src
+COPY CoreRaspberry/worlds $HOME/CoreRaspberry/worlds
 
 #switch to workspace
 WORKDIR $HOME/CoreRaspberry
