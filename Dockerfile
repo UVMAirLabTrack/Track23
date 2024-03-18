@@ -16,7 +16,7 @@ EXPOSE 6000
 ENV HOME /root
 ENV DISPLAY=:0
 ENV QT_QPA_PLATFORM=xcb
-
+ENV ROS2_WS  /home/CoreRaspberry
 
 WORKDIR $HOME
 
@@ -40,7 +40,10 @@ RUN echo ' \n\
 echo "Sourcing ROS2 packages..." \n\
 source $HOME/CoreRaspberry/install/local_setup.sh' >> $HOME/.bashrc
 
-RUN colcon build --symlink-install
+
+RUN cd ${ROS2_WS} \
+    && . /opt/ros/humble/setup.sh \ 
+    && colcon build --symlink-install
 
 #comment out below to build in windows, still working on the networking side but gui apps are good.
 CMD xhost + && source $HOME/CoreRaspberry/install/local_setup.sh
