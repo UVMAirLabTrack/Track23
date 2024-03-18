@@ -19,11 +19,7 @@ class SerialSend(Node):
             self.serial_objects = [serial.Serial(port, 115200, timeout=1) for port in self.serial_ports]
             self.get_logger().info(f'Serial devices opened successfully: {self.serial_ports}')
 
- #       # Create publishers for individual topics
- #       self.four_way_publisher = self.create_publisher(Int32MultiArray, 'four_way_serial_state', 10)
- #       self.three_way_publisher = self.create_publisher(Int32MultiArray, 'three_way_serial_state', 10)
- #       self.train_publisher = self.create_publisher(Int32MultiArray, 'train_serial_state', 10)
- #       self.aux_publisher = self.create_publisher(Int32MultiArray, 'aux_serial_state', 10)
+
 
         # Initialize last values for each state
         self.last_four_way_state = [0, 0, 0 , 0] # was just [0,0]
@@ -68,8 +64,6 @@ class SerialSend(Node):
             # Send the concatenated 8-integer message to all serial ports
             self.send_to_all_serial_ports(all_last_states)
 
-            # Publish the received data on the appropriate serial state topic
-            #publisher.publish(Int32MultiArray(data=last_state))
 
     def send_to_all_serial_ports(self, serial_data):
         # Convert the list of integers to a string and send it over all specified serial ports   #expanded serial from 7 to 9, to 15
@@ -79,7 +73,7 @@ class SerialSend(Node):
             serial_object.write(serial_str.encode('utf-8'))
             
         # Log the sent values
-        self.get_logger().info(f'Sent values to all ports: {serial_data}')
+        #self.get_logger().info(f'Sent values to all ports: {serial_data}')
 
     def get_available_serial_ports(self):
         available_ports = [port.device for port in list_ports.comports() if "USB" in port.device]
