@@ -2,6 +2,10 @@
 #Hey, Got problems with not seeing the network and/or xcb plugins. TRY SUDO!!!
 FROM osrf/ros:humble-desktop-full
 
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 EXPOSE 9090 
 EXPOSE 11811
@@ -15,8 +19,6 @@ EXPOSE 6000
 
 # working directory
 ENV HOME /root
-ENV DISPLAY=:0
-ENV QT_QPA_PLATFORM=xcb
 ENV ROS2_WS  /root/CoreRaspberry
 
 WORKDIR $HOME
