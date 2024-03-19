@@ -13,7 +13,8 @@ cap = cv.VideoCapture(0)  # 0 corresponds to the default webcam
 if not cap.isOpened():
     print("Error: Couldn't open the webcam")
     exit()
-
+actual_width = int
+actual_height = int
 actual_width = cap.get(cv.CAP_PROP_FRAME_WIDTH)
 actual_height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)
 
@@ -21,11 +22,12 @@ lowres = [480,320]
 medres = [640,480]
 highres = [1280,720]
 maxres = [1920,1080]
+override = [0,0]
 print(f"Camera Base Resolution: {actual_width}x{actual_height}")
 
 # Set the resolution (width, height)  #will crop the image frame
-print(f'Low Res "L" = {lowres[0]} X {lowres[1]}  Med Res "M" = {medres[0]}X{medres[1]}\n High Res "H" ={highres[0]}X{highres[1]}  Max Res "X"={maxres[0]}X{maxres[1]}')
-check = input("change native resolution? any other key will leave default. L,M,H,X?:  ")
+print(f'Low Res "L" = {lowres[0]} X {lowres[1]}  Med Res "M" = {medres[0]}X{medres[1]}\n High Res "H" ={highres[0]}X{highres[1]}  Max Res "X"={maxres[0]}X{maxres[1]}\nOverride [or] not functioning')
+check = input("change native resolution? any other key will leave default. L,M,H,X,OR?:  ")
 if check == "l":
     actual_width = lowres[0]
     actual_height = lowres[1]
@@ -44,6 +46,11 @@ elif check == "h":
 elif check == "x":
     actual_width = maxres[0]
     actual_height = maxres[1]
+    cap.set(cv.CAP_PROP_FRAME_WIDTH, actual_width)
+    cap.set(cv.CAP_PROP_FRAME_HEIGHT, actual_height)
+elif check == "or":
+    actual_width = input("Set frame Width: ")
+    actual_height = input("Set frame Height: ")
     cap.set(cv.CAP_PROP_FRAME_WIDTH, actual_width)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, actual_height)
 else:
@@ -72,6 +79,10 @@ while True:
     if not ret:
         print("Error: Couldn't capture frame")
         break
+    cv.namedWindow('Webcam Feed', cv.WINDOW_NORMAL) 
+  
+# Using resizeWindow() 
+    cv.resizeWindow('Webcam Feed', medres[0], medres[1]) 
 
     # Display the captured frame
     cv.imshow('Webcam Feed', frame)

@@ -1,0 +1,23 @@
+To capture images from the car.
+Open a terminal window and paste in this command:
+
+python webcam_capture.py
+
+this will then ask you to set the resolution.
+the options are:   to not change the res  use any other key  (it seems to default to 640X480)
+480X320  L
+640x480  M
+1280X720 H
+1920X1080 X
+
+you can also edit these values  more on this later.  the L and M options seem to crop width off. 
+
+Next enter the folder name for where the photos will be, i reccomend new folders for each type of sign.
+
+lastly it will ask what you want to call the files themselves  "stop"   it will create stop_1 --- stop_n
+
+a window with video will pop up. to capture frames, have this window selected. then hit the spacebar.  the terminal will tell you you've captured a photo.
+To exit. hit the "q" key with the video window selected.
+
+to find the photos, simply open "files" (second icon from the top on the left pane <<< below firefox)  and look for your folder, it will be in this window, not buried in another folder, promise.
+if you want to edit the possible resolutions, simply open the "webcam_capture.py" file from "files" (located in "home")  and change one of the res blocks at the top of the file structured like  "highres = [1280x720]"
