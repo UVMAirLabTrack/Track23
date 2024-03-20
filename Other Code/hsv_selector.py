@@ -1,69 +1,125 @@
 import cv2
 import numpy as np
 import tkinter as tk
-from tkinter import Scale
+from tkinter import messagebox, ttk
+from PIL import Image, ImageTk
 
-class WebcamApp:
-    def __init__(self, window, window_title, video_source=0):
+class HSVAdjustmentApp:
+    def __init__(self, window, window_title):
         self.window = window
         self.window.title(window_title)
-        self.video_source = video_source
         
-        # Open video source
-        self.vid = cv2.VideoCapture(video_source)
+        self.cap = cv2.VideoCapture(0)
         
-        # Create sliders for HSV conversion
-        self.hue_slider = Scale(window, from_=0, to=179, orient=tk.HORIZONTAL, label="Hue")
-        self.hue_slider.pack()
-        self.saturation_slider = Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, label="Saturation")
-        self.saturation_slider.pack()
-        self.value_slider = Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, label="Value")
-        self.value_slider.pack()
+        # Initialize HSV range variables
+        self.lower_hue = tk.DoubleVar()
+        self.upper_hue = tk.DoubleVar()
+        self.lower_saturation = tk.DoubleVar()
+        self.upper_saturation = tk.DoubleVar()
+        self.lower_value = tk.DoubleVar()
+        self.upper_value = tk.DoubleVar()
         
-        # Create canvas to display video
-        self.canvas = tk.Canvas(window, width=self.vid.get(cv2.CAP_PROP_FRAME_WIDTH), 
-                                 height=self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        # Set default HSV ranges
+        self.lower_hue.set(110)
+        self.upper_hue.set(130)
+        self.lower_saturation.set(50)
+        self.upper_saturation.set(255)
+        self.lower_value.set(50)
+        self.upper_value.set(255)
+        
+        # Initialize lower and upper bounds
+        self.lower_bound = np.array([self.lower_hue.get(), self.lower_saturation.get(), self.lower_value.get()])
+        self.upper_bound = np.array([self.upper_hue.get(), self.upper_saturation.get(), self.upper_value.get()])
+        
+        self.create_widgets()
+        self.update_feed()
+        
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
+    def create_widgets(self):
+        # Hue sliders
+        self.lower_hue_label = tk.Label(self.window, text="Lower Hue:")
+        self.lower_hue_label.pack()
+        self.lower_hue_slider = tk.Scale(self.window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.lower_hue)
+        self.lower_hue_slider.pack()
+        
+        self.upper_hue_label = tk.Label(self.window, text="Upper Hue:")
+        self.upper_hue_label.pack()
+        self.upper_hue_slider = tk.Scale(self.window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.upper_hue)
+        self.upper_hue_slider.pack()
+        
+        # Saturation sliders
+        self.lower_saturation_label = tk.Label(self.window, text="Lower Saturation:")
+        self.lower_saturation_label.pack()
+        self.lower_saturation_slider = tk.Scale(self.window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.lower_saturation)
+        self.lower_saturation_slider.pack()
+        
+        self.upper_saturation_label = tk.Label(self.window, text="Upper Saturation:")
+        self.upper_saturation_label.pack()
+        self.upper_saturation_slider = tk.Scale(self.window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.upper_saturation)
+        self.upper_saturation_slider.pack()
+        
+        # Value sliders
+        self.lower_value_label = tk.Label(self.window, text="Lower Value:")
+        self.lower_value_label.pack()
+        self.lower_value_slider = tk.Scale(self.window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.lower_value)
+        self.lower_value_slider.pack()
+        
+        self.upper_value_label = tk.Label(self.window, text="Upper Value:")
+        self.upper_value_label.pack()
+        self.upper_value_slider = tk.Scale(self.window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.upper_value)
+        self.upper_value_slider.pack()
+        
+        # Update button
+        self.update_button = tk.Button(self.window, text="Update", command=self.update_hsv_values)
+        self.update_button.pack()
+        
+        # Canvas for displaying video feed
+        self.canvas = tk.Canvas(self.window, width=640, height=480)
         self.canvas.pack()
         
-        # Button to capture HSV image
-        self.capture_button = tk.Button(window, text="Capture HSV", command=self.capture_hsv)
-        self.capture_button.pack()
+    def update_hsv_values(self):
+        # Get HSV range values from sliders
+        lower_hue = int(self.lower_hue.get())
+        upper_hue = int(self.upper_hue.get())
+        lower_saturation = int(self.lower_saturation.get())
+        upper_saturation = int(self.upper_saturation.get())
+        lower_value = int(self.lower_value.get())
+        upper_value = int(self.upper_value.get())
         
-        # Start video playback
-        self.update()
+        # Update HSV range
+        self.lower_bound = np.array([lower_hue, lower_saturation, lower_value])
+        self.upper_bound = np.array([upper_hue, upper_saturation, upper_value])
         
-        self.window.mainloop()
-        
-    def capture_hsv(self):
-        # Capture current HSV values from sliders
-        hue = self.hue_slider.get()
-        saturation = self.saturation_slider.get()
-        value = self.value_slider.get()
-        
-        # Apply HSV conversion
-        ret, frame = self.vid.read()
-        hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        hsv_frame[:,:,0] += hue  # Hue
-        hsv_frame[:,:,1] += saturation  # Saturation
-        hsv_frame[:,:,2] += value  # Value
-        hsv_frame = np.clip(hsv_frame, 0, 255).astype(np.uint8)
-        
-        # Show the new HSV image
-        cv2.imshow('HSV Image', cv2.cvtColor(hsv_frame, cv2.COLOR_HSV2BGR))
-        
-    def update(self):
-        # Get a frame from the video source
-        ret, frame = self.vid.read()
-        
+    def update_feed(self):
+        ret, frame = self.cap.read()
         if ret:
-            # Display the frame in the GUI
-            self.photo = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            self.photo = tk.PhotoImage(image=tk.Image.fromarray(self.photo))
-            self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
+            frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
-        self.window.after(10, self.update)
+            # Apply HSV range filter
+            mask = cv2.inRange(frame_hsv, self.lower_bound, self.upper_bound)
+            result = cv2.bitwise_and(frame, frame, mask=mask)
+            
+            # Convert image format
+            img = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
+            img = cv2.resize(img, (640, 480))
+            img = Image.fromarray(img)
+            imgtk = ImageTk.PhotoImage(image=img)
+            
+            # Update canvas with filtered image
+            self.canvas.imgtk = imgtk
+            self.canvas.create_image(0, 0, anchor=tk.NW, image=imgtk)
+            
+        # Repeat the update process
+        self.window.after(10, self.update_feed)
         
-        
-# Create a window and pass it to the WebcamApp class
-root = tk.Tk()
-app = WebcamApp(root, "Webcam Application")
+    def on_closing(self):
+        # Release the webcam capture and close the window
+            self.cap.release()
+            self.window.destroy()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = HSVAdjustmentApp(root, "HSV Adjustment")
+    root.mainloop()
+
