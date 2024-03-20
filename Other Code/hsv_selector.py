@@ -115,6 +115,7 @@ class HSVAdjustmentApp:
         
     def on_closing(self):
         # Release the webcam capture and close the window
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.cap.release()
             self.window.destroy()
 
