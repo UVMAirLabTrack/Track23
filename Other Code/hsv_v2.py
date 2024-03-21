@@ -81,10 +81,6 @@ class HSVAdjustmentApp:
         bandwidth = int(self.bandwidth.get())
         band_center = int(self.band_center.get())
         
-        # Calculate lower and upper bounds
-        lower_hue = (band_center - bandwidth // 2) % 180
-        upper_hue = (band_center + bandwidth // 2) % 180
-        
         # Update sliders
         self.hue.set(hue)
         self.saturation.set(saturation)
@@ -104,7 +100,7 @@ class HSVAdjustmentApp:
             bandwidth = int(self.bandwidth.get())
             band_center = int(self.band_center.get())
             
-            # Calculate lower and upper bounds
+            # Calculate lower and upper bounds for Hue
             lower_hue = (band_center - bandwidth // 2) % 180
             upper_hue = (band_center + bandwidth // 2) % 180
             
