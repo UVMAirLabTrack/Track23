@@ -50,7 +50,7 @@ class HSVAdjustmentApp:
         # Hue bandwidth slider
         self.hue_bandwidth_label = tk.Label(self.slider_window, text="Hue Bandwidth:")
         self.hue_bandwidth_label.pack()
-        self.hue_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=100, orient=tk.HORIZONTAL, variable=self.hue_bandwidth)
+        self.hue_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_bandwidth)
         self.hue_bandwidth_slider.pack()
 
         # Saturation center slider
@@ -62,7 +62,7 @@ class HSVAdjustmentApp:
         # Saturation bandwidth slider
         self.saturation_bandwidth_label = tk.Label(self.slider_window, text="Saturation Bandwidth:")
         self.saturation_bandwidth_label.pack()
-        self.saturation_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=100, orient=tk.HORIZONTAL, variable=self.saturation_bandwidth)
+        self.saturation_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_bandwidth)
         self.saturation_bandwidth_slider.pack()
 
         # Value center slider
@@ -74,7 +74,7 @@ class HSVAdjustmentApp:
         # Value bandwidth slider
         self.value_bandwidth_label = tk.Label(self.slider_window, text="Value Bandwidth:")
         self.value_bandwidth_label.pack()
-        self.value_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=100, orient=tk.HORIZONTAL, variable=self.value_bandwidth)
+        self.value_bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_bandwidth)
         self.value_bandwidth_slider.pack()
 
         # Update button
@@ -84,8 +84,8 @@ class HSVAdjustmentApp:
     def update_hue_label(self, value):
         center = int(value)
         bandwidth = int(self.hue_bandwidth.get())
-        lower_bound = (center - bandwidth // 2) % 180
-        upper_bound = (center + bandwidth // 2) % 180
+        lower_bound = max((center - bandwidth // 2) % 180,0)
+        upper_bound = min((center + bandwidth // 2) % 180,179)
         self.hue_center_label.config(text="Hue (Center: {0}, Lower: {1}, Upper: {2})".format(center, lower_bound, upper_bound))
 
     def update_saturation_label(self, value):
@@ -102,7 +102,7 @@ class HSVAdjustmentApp:
         upper_bound = min(center + bandwidth // 2, 255)
         self.value_center_label.config(text="Value (Center: {0}, Lower: {1}, Upper: {2})".format(center, lower_bound, upper_bound))
 
-            
+                
     def update_hsv_values(self):
         # Get HSV range values from sliders
         hue_center = int(self.hue_center.get())
@@ -134,12 +134,14 @@ class HSVAdjustmentApp:
             value_bandwidth = int(self.value_bandwidth.get())
             
             # Calculate lower and upper bounds for Hue
-            lower_hue = (hue_center - hue_bandwidth // 2) % 180
-            upper_hue = (hue_center + hue_bandwidth // 2) % 180
+            lower_hue = max(min((hue_center - hue_bandwidth // 2) % 180, 179), 0)
+            upper_hue = max(min((hue_center + hue_bandwidth // 2) % 180, 179), 0)
+
             
             # Calculate lower and upper bounds for Saturation
             lower_saturation = max(saturation_center - saturation_bandwidth // 2, 0)
             upper_saturation = min(saturation_center + saturation_bandwidth // 2, 255)
+
             
             # Calculate lower and upper bounds for Value
             lower_value = max(value_center - value_bandwidth // 2, 0)
