@@ -44,37 +44,37 @@ class HSVAdjustmentApp:
         # Hue min slider
         self.hue_min_label = tk.Label(self.slider_window, text="Hue Min (0-179):")
         self.hue_min_label.pack()
-        self.hue_min_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_min)
+        self.hue_min_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_min, showvalue=1)
         self.hue_min_slider.pack()
 
         # Hue max slider
         self.hue_max_label = tk.Label(self.slider_window, text="Hue Max (0-179):")
         self.hue_max_label.pack()
-        self.hue_max_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_max)
+        self.hue_max_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_max, showvalue=1)
         self.hue_max_slider.pack()
 
         # Saturation min slider
         self.saturation_min_label = tk.Label(self.slider_window, text="Saturation Min (0-255):")
         self.saturation_min_label.pack()
-        self.saturation_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_min)
+        self.saturation_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_min, showvalue=1)
         self.saturation_min_slider.pack()
 
         # Saturation max slider
         self.saturation_max_label = tk.Label(self.slider_window, text="Saturation Max (0-255):")
         self.saturation_max_label.pack()
-        self.saturation_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_max)
+        self.saturation_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_max, showvalue=1)
         self.saturation_max_slider.pack()
 
         # Value min slider
         self.value_min_label = tk.Label(self.slider_window, text="Value Min (0-255):")
         self.value_min_label.pack()
-        self.value_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_min)
+        self.value_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_min, showvalue=1)
         self.value_min_slider.pack()
 
         # Value max slider
         self.value_max_label = tk.Label(self.slider_window, text="Value Max (0-255):")
         self.value_max_label.pack()
-        self.value_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_max)
+        self.value_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_max, showvalue=1)
         self.value_max_slider.pack()
 
         # Update button
