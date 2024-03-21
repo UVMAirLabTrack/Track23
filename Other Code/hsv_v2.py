@@ -12,20 +12,18 @@ class HSVAdjustmentApp:
         self.cap = cv2.VideoCapture(0)
         
         # Initialize HSV range variables
-        self.band_width = tk.DoubleVar()
-        self.band_position = tk.DoubleVar()
-        self.lower_saturation = tk.DoubleVar()
-        self.upper_saturation = tk.DoubleVar()
-        self.lower_value = tk.DoubleVar()
-        self.upper_value = tk.DoubleVar()
+        self.hue = tk.DoubleVar()
+        self.saturation = tk.DoubleVar()
+        self.value = tk.DoubleVar()
+        self.bandwidth = tk.DoubleVar()
+        self.band_center = tk.DoubleVar()
         
-        # Set default HSV ranges
-        self.band_width.set(20)
-        self.band_position.set(120)
-        self.lower_saturation.set(50)
-        self.upper_saturation.set(255)
-        self.lower_value.set(50)
-        self.upper_value.set(255)
+        # Set default values
+        self.hue.set(110)
+        self.saturation.set(50)
+        self.value.set(50)
+        self.bandwidth.set(30)
+        self.band_center.set(120)
         
         self.create_widgets()
         self.update_feed()
@@ -33,75 +31,87 @@ class HSVAdjustmentApp:
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
         
     def create_widgets(self):
-        # Band width slider
-        self.band_width_label = tk.Label(self.window, text="Band Width:")
-        self.band_width_label.pack()
-        self.band_width_slider = tk.Scale(self.window, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.band_width)
-        self.band_width_slider.pack()
-        
-        # Band position slider
-        self.band_position_label = tk.Label(self.window, text="Band Position:")
-        self.band_position_label.pack()
-        self.band_position_slider = tk.Scale(self.window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.band_position)
-        self.band_position_slider.pack()
-        
-        # Saturation sliders
-        self.lower_saturation_label = tk.Label(self.window, text="Lower Saturation:")
-        self.lower_saturation_label.pack()
-        self.lower_saturation_entry = tk.Entry(self.window, textvariable=self.lower_saturation)
-        self.lower_saturation_entry.pack()
-        
-        self.upper_saturation_label = tk.Label(self.window, text="Upper Saturation:")
-        self.upper_saturation_label.pack()
-        self.upper_saturation_entry = tk.Entry(self.window, textvariable=self.upper_saturation)
-        self.upper_saturation_entry.pack()
-        
-        # Value sliders
-        self.lower_value_label = tk.Label(self.window, text="Lower Value:")
-        self.lower_value_label.pack()
-        self.lower_value_entry = tk.Entry(self.window, textvariable=self.lower_value)
-        self.lower_value_entry.pack()
-        
-        self.upper_value_label = tk.Label(self.window, text="Upper Value:")
-        self.upper_value_label.pack()
-        self.upper_value_entry = tk.Entry(self.window, textvariable=self.upper_value)
-        self.upper_value_entry.pack()
-        
-        # Update button
-        self.update_button = tk.Button(self.window, text="Update", command=self.update_hsv_values)
-        self.update_button.pack()
-        
         # Canvas for displaying video feed
         self.canvas = tk.Canvas(self.window, width=640, height=480)
         self.canvas.pack()
         
+        # Create a separate window for sliders
+        self.slider_window = tk.Toplevel(self.window)
+        self.slider_window.title("HSV Sliders")
+        
+        # Hue slider
+        self.hue_label = tk.Label(self.slider_window, text="Hue:")
+        self.hue_label.pack()
+        self.hue_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue)
+        self.hue_slider.pack()
+        
+        # Saturation slider
+        self.saturation_label = tk.Label(self.slider_window, text="Saturation:")
+        self.saturation_label.pack()
+        self.saturation_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation)
+        self.saturation_slider.pack()
+        
+        # Value slider
+        self.value_label = tk.Label(self.slider_window, text="Value:")
+        self.value_label.pack()
+        self.value_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value)
+        self.value_slider.pack()
+        
+        # Bandwidth slider
+        self.bandwidth_label = tk.Label(self.slider_window, text="Bandwidth:")
+        self.bandwidth_label.pack()
+        self.bandwidth_slider = tk.Scale(self.slider_window, from_=0, to=100, orient=tk.HORIZONTAL, variable=self.bandwidth)
+        self.bandwidth_slider.pack()
+        
+        # Band center slider
+        self.band_center_label = tk.Label(self.slider_window, text="Band Center:")
+        self.band_center_label.pack()
+        self.band_center_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.band_center)
+        self.band_center_slider.pack()
+        
+        # Update button
+        self.update_button = tk.Button(self.slider_window, text="Update", command=self.update_hsv_values)
+        self.update_button.pack()
+        
     def update_hsv_values(self):
-        # Get HSV range values from entry boxes
-        lower_saturation = int(self.lower_saturation.get())
-        upper_saturation = int(self.upper_saturation.get())
-        lower_value = int(self.lower_value.get())
-        upper_value = int(self.upper_value.get())
+        # Get HSV range values from sliders
+        hue = int(self.hue.get())
+        saturation = int(self.saturation.get())
+        value = int(self.value.get())
+        bandwidth = int(self.bandwidth.get())
+        band_center = int(self.band_center.get())
         
-        # Calculate lower and upper bounds based on band width and position
-        position = int(self.band_position.get())
-        width = int(self.band_width.get())
-        lower_hue = (position - width // 2) % 180
-        upper_hue = (position + width // 2) % 180
+        # Calculate lower and upper bounds
+        lower_hue = (band_center - bandwidth // 2) % 180
+        upper_hue = (band_center + bandwidth // 2) % 180
         
-        # Apply HSV range filter
-        self.lower_bound = np.array([lower_hue, lower_saturation, lower_value])
-        self.upper_bound = np.array([upper_hue, upper_saturation, upper_value])
-        
-        # Refresh the video feed
-        self.update_feed()
+        # Update sliders
+        self.hue.set(hue)
+        self.saturation.set(saturation)
+        self.value.set(value)
+        self.bandwidth.set(bandwidth)
+        self.band_center.set(band_center)
         
     def update_feed(self):
         ret, frame = self.cap.read()
         if ret:
             frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
+            # Get HSV range values from sliders
+            hue = int(self.hue.get())
+            saturation = int(self.saturation.get())
+            value = int(self.value.get())
+            bandwidth = int(self.bandwidth.get())
+            band_center = int(self.band_center.get())
+            
+            # Calculate lower and upper bounds
+            lower_hue = (band_center - bandwidth // 2) % 180
+            upper_hue = (band_center + bandwidth // 2) % 180
+            
             # Apply HSV range filter
-            mask = cv2.inRange(frame_hsv, self.lower_bound, self.upper_bound)
+            lower_bound = np.array([lower_hue, saturation, value])
+            upper_bound = np.array([upper_hue, 255, 255])
+            mask = cv2.inRange(frame_hsv, lower_bound, upper_bound)
             result = cv2.bitwise_and(frame, frame, mask=mask)
             
             # Convert image format
@@ -110,12 +120,12 @@ class HSVAdjustmentApp:
             img = Image.fromarray(img)
             imgtk = ImageTk.PhotoImage(image=img)
             
-            # Clear previous image on canvas
-            self.canvas.delete("all")
-            
-            # Display new image
+            # Update canvas with filtered image
             self.canvas.imgtk = imgtk
             self.canvas.create_image(0, 0, anchor=tk.NW, image=imgtk)
+            
+        # Repeat the update process
+        self.window.after(10, self.update_feed)
         
     def on_closing(self):
         # Release the webcam capture and close the window
