@@ -92,7 +92,7 @@ class HSVAdjustmentApp:
         self.bandwidth.set(bandwidth)
         self.band_center.set(band_center)
         
-    def update_feed(self):
+   def update_feed(self):
         ret, frame = self.cap.read()
         if ret:
             frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
