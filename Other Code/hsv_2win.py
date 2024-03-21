@@ -12,24 +12,20 @@ class HSVAdjustmentApp:
         self.cap = cv2.VideoCapture(0)
         
         # Initialize HSV range variables
-        self.lower_hue = tk.DoubleVar()
-        self.upper_hue = tk.DoubleVar()
-        self.lower_saturation = tk.DoubleVar()
-        self.upper_saturation = tk.DoubleVar()
-        self.lower_value = tk.DoubleVar()
-        self.upper_value = tk.DoubleVar()
+        self.hue_min = tk.DoubleVar()
+        self.hue_max = tk.DoubleVar()
+        self.saturation_min = tk.DoubleVar()
+        self.saturation_max = tk.DoubleVar()
+        self.value_min = tk.DoubleVar()
+        self.value_max = tk.DoubleVar()
         
-        # Set default HSV ranges
-        self.lower_hue.set(110)
-        self.upper_hue.set(130)
-        self.lower_saturation.set(50)
-        self.upper_saturation.set(255)
-        self.lower_value.set(50)
-        self.upper_value.set(255)
-        
-        # Initialize lower and upper bounds
-        self.lower_bound = np.array([self.lower_hue.get(), self.lower_saturation.get(), self.lower_value.get()])
-        self.upper_bound = np.array([self.upper_hue.get(), self.upper_saturation.get(), self.upper_value.get()])
+        # Set default values
+        self.hue_min.set(0)
+        self.hue_max.set(179)
+        self.saturation_min.set(0)
+        self.saturation_max.set(255)
+        self.value_min.set(0)
+        self.value_max.set(255)
         
         self.create_widgets()
         self.update_feed()
@@ -40,68 +36,68 @@ class HSVAdjustmentApp:
         # Canvas for displaying video feed
         self.canvas = tk.Canvas(self.window, width=640, height=480)
         self.canvas.pack()
-        
+
         # Create a separate window for sliders
         self.slider_window = tk.Toplevel(self.window)
         self.slider_window.title("HSV Sliders")
-        
-        # Hue sliders
-        self.lower_hue_label = tk.Label(self.slider_window, text="Lower Hue:")
-        self.lower_hue_label.pack()
-        self.lower_hue_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.lower_hue)
-        self.lower_hue_slider.pack()
-        
-        self.upper_hue_label = tk.Label(self.slider_window, text="Upper Hue:")
-        self.upper_hue_label.pack()
-        self.upper_hue_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.upper_hue)
-        self.upper_hue_slider.pack()
-        
-        # Saturation sliders
-        self.lower_saturation_label = tk.Label(self.slider_window, text="Lower Saturation:")
-        self.lower_saturation_label.pack()
-        self.lower_saturation_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.lower_saturation)
-        self.lower_saturation_slider.pack()
-        
-        self.upper_saturation_label = tk.Label(self.slider_window, text="Upper Saturation:")
-        self.upper_saturation_label.pack()
-        self.upper_saturation_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.upper_saturation)
-        self.upper_saturation_slider.pack()
-        
-        # Value sliders
-        self.lower_value_label = tk.Label(self.slider_window, text="Lower Value:")
-        self.lower_value_label.pack()
-        self.lower_value_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.lower_value)
-        self.lower_value_slider.pack()
-        
-        self.upper_value_label = tk.Label(self.slider_window, text="Upper Value:")
-        self.upper_value_label.pack()
-        self.upper_value_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.upper_value)
-        self.upper_value_slider.pack()
-        
+
+        # Hue min slider
+        self.hue_min_label = tk.Label(self.slider_window, text="Hue Min (0-179):")
+        self.hue_min_label.pack()
+        self.hue_min_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_min)
+        self.hue_min_slider.pack()
+
+        # Hue max slider
+        self.hue_max_label = tk.Label(self.slider_window, text="Hue Max (0-179):")
+        self.hue_max_label.pack()
+        self.hue_max_slider = tk.Scale(self.slider_window, from_=0, to=179, orient=tk.HORIZONTAL, variable=self.hue_max)
+        self.hue_max_slider.pack()
+
+        # Saturation min slider
+        self.saturation_min_label = tk.Label(self.slider_window, text="Saturation Min (0-255):")
+        self.saturation_min_label.pack()
+        self.saturation_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_min)
+        self.saturation_min_slider.pack()
+
+        # Saturation max slider
+        self.saturation_max_label = tk.Label(self.slider_window, text="Saturation Max (0-255):")
+        self.saturation_max_label.pack()
+        self.saturation_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.saturation_max)
+        self.saturation_max_slider.pack()
+
+        # Value min slider
+        self.value_min_label = tk.Label(self.slider_window, text="Value Min (0-255):")
+        self.value_min_label.pack()
+        self.value_min_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_min)
+        self.value_min_slider.pack()
+
+        # Value max slider
+        self.value_max_label = tk.Label(self.slider_window, text="Value Max (0-255):")
+        self.value_max_label.pack()
+        self.value_max_slider = tk.Scale(self.slider_window, from_=0, to=255, orient=tk.HORIZONTAL, variable=self.value_max)
+        self.value_max_slider.pack()
+
         # Update button
         self.update_button = tk.Button(self.slider_window, text="Update", command=self.update_hsv_values)
         self.update_button.pack()
-        
-    def update_hsv_values(self):
-        # Get HSV range values from sliders
-        lower_hue = int(self.lower_hue.get())
-        upper_hue = int(self.upper_hue.get())
-        lower_saturation = int(self.lower_saturation.get())
-        upper_saturation = int(self.upper_saturation.get())
-        lower_value = int(self.lower_value.get())
-        upper_value = int(self.upper_value.get())
-        
-        # Update HSV range
-        self.lower_bound = np.array([lower_hue, lower_saturation, lower_value])
-        self.upper_bound = np.array([upper_hue, upper_saturation, upper_value])
-        
+
     def update_feed(self):
         ret, frame = self.cap.read()
         if ret:
             frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
+            # Get HSV range values from sliders
+            hue_min = int(self.hue_min.get())
+            hue_max = int(self.hue_max.get())
+            saturation_min = int(self.saturation_min.get())
+            saturation_max = int(self.saturation_max.get())
+            value_min = int(self.value_min.get())
+            value_max = int(self.value_max.get())
+            
             # Apply HSV range filter
-            mask = cv2.inRange(frame_hsv, self.lower_bound, self.upper_bound)
+            lower_bound = np.array([hue_min, saturation_min, value_min])
+            upper_bound = np.array([hue_max, saturation_max, value_max])
+            mask = cv2.inRange(frame_hsv, lower_bound, upper_bound)
             result = cv2.bitwise_and(frame, frame, mask=mask)
             
             # Convert image format
@@ -117,8 +113,27 @@ class HSVAdjustmentApp:
         # Repeat the update process
         self.window.after(10, self.update_feed)
         
+    def update_hsv_values(self):
+        # This function updates the HSV values based on slider positions
+        
+        # Get HSV range values from sliders
+        hue_min = int(self.hue_min.get())
+        hue_max = int(self.hue_max.get())
+        saturation_min = int(self.saturation_min.get())
+        saturation_max = int(self.saturation_max.get())
+        value_min = int(self.value_min.get())
+        value_max = int(self.value_max.get())
+        
+        # Update sliders
+        self.hue_min.set(hue_min)
+        self.hue_max.set(hue_max)
+        self.saturation_min.set(saturation_min)
+        self.saturation_max.set(saturation_max)
+        self.value_min.set(value_min)
+        self.value_max.set(value_max)
+        
     def on_closing(self):
-        # Release the webcam capture and close the window
+        # This function is called when the window is closed
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.cap.release()
             self.window.destroy()
