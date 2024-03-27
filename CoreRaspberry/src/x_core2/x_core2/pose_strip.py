@@ -75,8 +75,8 @@ def pose_xyz_shift(pose,marker_pose):
     return pose
 
 def z_rotation(pose,Marker_pose):
-        q = [pose.orientation.x,pose.orientation.y,pose.orientation.z]
-        z_rot = Marker_pose.orientation.z
+        q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
+        z_rot = pose.orientation.z
         q2 = formulas.euler_to_quat(q[0],q[1],q[2]+z_rot)
         print(f'angles: {q}  Z_rot: {z_rot}' )
 

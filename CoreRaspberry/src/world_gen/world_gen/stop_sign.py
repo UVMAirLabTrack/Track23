@@ -16,35 +16,6 @@ class StopPub(Node):
     package_name = 'world_gen'
     node_title = "stop_"
 
-    color_mapping = {
-        'red': [1.0, 0.0, 0.0, 1.0],
-        'yellow': [1.0, 1.0, 0.0, 1.0],
-        'green': [0.0, 1.0, 0.0, 1.0],
-        'white': [1.0, 1.0, 1.0, 1.0],
-        'blue': [0.0, 0.0, 1.0, 1.0],
-        'off': [0.0, 0.0, 0.0, 0.0],
-        'left_stop': [0.5, 0.0, 0.5, 1.0],
-        'right_stop': [1.0, 0.0, 0.5, 1.0],
-        'left_go': [0.0, 0.5, 0.5, 1.0],
-        'right_go': [0.0, 1.0, 1.0, 1.0],
-        'all': [0.1,0.1,0.1,0.1]
-
-    }
-    lights = ['1','2','3','4']
-
-    numeric_to_color = {
-            0: 'off',
-            1: 'red',
-            2: 'yellow',
-            3: 'green',
-            4: 'white',
-            5: 'blue',
-            6: 'left_stop',
-            7: 'right_stop',
-            8: 'left_go',
-            9: 'right_go',
-            10: 'all',
-        }
     def __init__(self, marker_name):
         super().__init__(self.node_title + marker_name)
         self.marker_name = marker_name
@@ -83,9 +54,9 @@ class StopPub(Node):
         #end copy
 
     def pose_call(self,msg):
-        temp_pose = pose_strip.strip_pose(msg,self.zone,self.loc)
-        self.pose = pose_strip.pose_xyz_shift(temp_pose,self.marker_pose)
-        self.pose = pose_strip.z_rotation(self.marker_pose,temp_pose)
+        world_pose = pose_strip.strip_pose(msg,self.zone,self.loc)
+        self.pose = pose_strip.pose_xyz_shift(world_pose,self.marker_pose)
+        self.pose = pose_strip.z_rotation(world_pose,self.marker_pose)
 
 
 
