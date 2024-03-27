@@ -85,14 +85,8 @@ class StopPub(Node):
     def pose_call(self,msg):
         temp_pose = pose_strip.strip_pose(msg,self.zone,self.loc)
         self.pose = pose_strip.pose_xyz_shift(temp_pose,self.marker_pose)
+        self.pose = pose_strip.z_rotation(temp_pose,self.marker_pose)
 
-        q = [self.pose.orientation.x,self.pose.orientation.y,self.pose.orientation.z]
-        q2 = formulas.euler_to_quat(q[0],q[1],q[2])
-        print(f'{self.node_title}  X: {q[0]} Y: {q[1]} Z: {q[2]}  QX: {q2[0]} QY: {q2[1]} QZ: {q2[2]} QW: {q2[3]} ')
-        self.pose.orientation.x = q2[0]
-        self.pose.orientation.y = q2[1]
-        self.pose.orientation.z = q2[2]
-        self.pose.orientation.w = q2[3] 
 
 
     def publish_marker(self):

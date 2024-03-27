@@ -3,7 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Pose
 from custom_msgs.msg import WorldMarkers,MarkerLoc
 from rclpy.node import Node
-from x_core2 import pose_strip,open_world_data
+from x_core2 import pose_strip, open_world_data,formulas
 
 
 class PoseRecNode(Node):
@@ -73,6 +73,18 @@ def pose_xyz_shift(pose,marker_pose):
     pose.position.z = pose.position.z + marker_pose.position.z
 
     return pose
+
+def z_rotation(pose,Marker_pose):
+        q = [pose.orientation.x,pose.orientation.y,pose.orientation.z]
+        z_rot = Marker_pose.orientation.z
+        q2 = formulas.euler_to_quat(q[0],q[1],q[2]+z_rot)
+        #print(f'{self.node_title}  X: {q[0]} Y: {q[1]} Z: {q[2]}  QX: {q2[0]} QY: {q2[1]} QZ: {q2[2]} QW: {q2[3]} ')
+        pose.orientation.x = q2[0]
+        pose.orientation.y = q2[1]
+        pose.orientation.z = q2[2]
+        pose.orientation.w = q2[3] 
+
+        return pose
 
 def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):
