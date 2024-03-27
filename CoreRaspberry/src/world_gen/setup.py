@@ -15,7 +15,9 @@ setup(
     'world_gen.three_way_marker',
     'world_gen.train_marker',
     'world_gen.gen_v2',
-    'world_gen.stop_sign'
+    'world_gen.stop_sign',
+    'world_gen.yield_sign',
+    'world_gen.dragon'
     
     ],
     install_requires=['setuptools','core_functions'],
@@ -40,7 +42,9 @@ setup(
             'gen_v2 = world_gen.gen_v2:main',
             'three_way_marker = world_gen.three_way_marker:main',
             'train_marker = world_gen.train_marker:main',
-            'stop_sign=world_gen.stop_sign:main'
+            'stop_sign=world_gen.stop_sign:main',
+            'yield_sign=world_gen.yield_sign:main',
+            'dragon=world_gen.dragon:main'
         ],
     },
 )
