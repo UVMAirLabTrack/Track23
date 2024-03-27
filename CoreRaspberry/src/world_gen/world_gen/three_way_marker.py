@@ -5,7 +5,7 @@ from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose, Quaternion
 from std_msgs.msg import Int32MultiArray
 from custom_msgs.msg import WorldMarkers, MarkerLoc
-from x_core2 import pose_strip, open_world_data,formulas
+from x_core2 import pose_strip, open_world_data
 import os
 from ament_index_python.packages import get_package_share_directory
 import multiprocessing
