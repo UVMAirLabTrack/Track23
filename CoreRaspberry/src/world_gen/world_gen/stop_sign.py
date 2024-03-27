@@ -87,7 +87,7 @@ class StopPub(Node):
         self.pose = pose_strip.pose_xyz_shift(temp_pose,self.marker_pose)
 
         q = [self.pose.position.x,self.pose.position.y,self.pose.position.z]
-        q = formulas.euler_to_quat(self.eulers[0],self.eulers[1],self.eulers[2])
+        q = formulas.euler_to_quat(q[0],q[1],q[2])
         self.pose.orientation.x = q[0]
         self.pose.orientation.y = q[1]
         self.pose.orientation.z = q[2]
