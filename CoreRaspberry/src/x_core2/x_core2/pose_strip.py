@@ -86,6 +86,10 @@ def z_rotation(pose,Marker_pose):
         pose.orientation.w = q2[3] 
 
         return pose
+def strip_eulers(pose,Marker_pose):
+        q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
+        q[2] = pose.orientation.z
+        return q
 
 def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):

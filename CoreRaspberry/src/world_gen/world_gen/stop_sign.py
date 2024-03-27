@@ -58,8 +58,6 @@ class StopPub(Node):
         self.pose = pose_strip.pose_xyz_shift(world_pose,self.marker_pose)
         self.pose = pose_strip.z_rotation(world_pose,self.marker_pose)
 
-
-
     def publish_marker(self):
         # Update orientation based on the current angle
 
