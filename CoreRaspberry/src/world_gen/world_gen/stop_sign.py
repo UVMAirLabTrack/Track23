@@ -85,7 +85,7 @@ class StopPub(Node):
     def pose_call(self,msg):
         temp_pose = pose_strip.strip_pose(msg,self.zone,self.loc)
         self.pose = pose_strip.pose_xyz_shift(temp_pose,self.marker_pose)
-        self.pose = pose_strip.z_rotation(temp_pose,self.marker_pose)
+        self.pose = pose_strip.z_rotation(self.marker_pose,temp_pose)
 
 
 
