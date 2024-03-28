@@ -59,6 +59,14 @@ typedef struct DataStruct {
   int Pair6;
   int Pair7;
   int Pair8;
+  int Pair9;
+  int Pair10;
+  int Pair11;
+  int Pair12;
+  int Pair13;
+  int Pair14;
+  int Pair15;
+  int Pair16;
 }DataStruct;
 DataStruct Data;
 int BufferClear;
@@ -77,7 +85,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
 
 RotaryEncoder encoder( DI_ENCODER_A, DI_ENCODER_B, DI_ENCODER_SW);
-
 int values[8] = {0, 0, 0, 0, 0, 0, 0, 5};
 int mult[8] = {1,1,1,1,10,10,10,10};
 int maxval[8] = {10,10,10,10,100,100,100,100};
@@ -194,13 +201,22 @@ void turnedRight()
     if(values[currentPair] >= maxval[currentPair]){values[currentPair] = maxval[currentPair];}
 
     Data.Pair1 = values[0];
-    Data.Pair2 = values[1];
-    Data.Pair3 = values[2];
-    Data.Pair4 = values[3];
-    Data.Pair5 = values[4];
-    Data.Pair6 = values[5];
-    Data.Pair7 = values[6];
-    Data.Pair8 = values[7];
+    Data.Pair2 = values[0];
+    Data.Pair3 = values[1];
+    Data.Pair4 = values[1];
+    Data.Pair5 = values[2];
+    Data.Pair6 = values[2];
+    Data.Pair7 = values[3];
+    Data.Pair8 = values[3];
+    Data.Pair9 = values[4];
+    Data.Pair10 = values[4];
+    Data.Pair11 = values[5];
+    Data.Pair12 = values[5];
+    Data.Pair13 = values[6];
+    Data.Pair14 = values[6];
+    Data.Pair15 = values[7];
+    Data.Pair16 = values[7];
+
     runDisplay();
 	turnedRightFlag = false;
 }
@@ -211,13 +227,21 @@ void turnedLeft()
     if(values[currentPair] <= minval[currentPair]){values[currentPair] = minval[currentPair];}
     runDisplay();
     Data.Pair1 = values[0];
-    Data.Pair2 = values[1];
-    Data.Pair3 = values[2];
-    Data.Pair4 = values[3];
-    Data.Pair5 = values[4];
-    Data.Pair6 = values[5];
-    Data.Pair7 = values[6];
-    Data.Pair8 = values[7];
+    Data.Pair2 = values[0];
+    Data.Pair3 = values[1];
+    Data.Pair4 = values[1];
+    Data.Pair5 = values[2];
+    Data.Pair6 = values[2];
+    Data.Pair7 = values[3];
+    Data.Pair8 = values[3];
+    Data.Pair9 = values[4];
+    Data.Pair10 = values[4];
+    Data.Pair11 = values[5];
+    Data.Pair12 = values[5];
+    Data.Pair13 = values[6];
+    Data.Pair14 = values[6];
+    Data.Pair15 = values[7];
+    Data.Pair16 = values[7];
 	turnedLeftFlag = false;
 }
 
