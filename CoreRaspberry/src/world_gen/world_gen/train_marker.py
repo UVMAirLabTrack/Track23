@@ -52,7 +52,10 @@ class TrainVisualizer(Node):
     def pose_call(self, msg):
         temp_pose = pose_strip.strip_pose(msg, self.zone, self.loc)
         self.pose = pose_strip.pose_xyz_shift(temp_pose, self.marker_pose)
-        self.eulers = formulas.quat_to_euler(pose_strip.strip_pose_quat(msg, self.zone, self.loc))
+        self.eulers = pose_strip.strip_eulers(temp_pose, self.marker_pose)
+        #self.eulers = formulas.quat_to_euler(pose_strip.strip_pose_quat(msg, self.zone, self.loc))
+        
+
 
     def angle_callback(self, msg):
         # Assuming the received message contains angles for all markers
@@ -70,7 +73,6 @@ class TrainVisualizer(Node):
         self.pose.orientation.z = q[2]
         self.pose.orientation.w = q[3] 
         
-
         # Publish marker
         marker_msg = Marker()
         marker_msg.header.frame_id = 'map'  # Set the frame ID as needed

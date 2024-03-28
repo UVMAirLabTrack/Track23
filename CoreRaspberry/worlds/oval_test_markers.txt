@@ -10,3 +10,4 @@ train_1 4way D
 train_2 park A
 train_3 park B
 train_4 park C
+stop_1 4way D
