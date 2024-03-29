@@ -65,9 +65,9 @@ class PoseParserNode(Node):
             dy = y - zpm_y
             dz = z - zpm_z
             # Adjust the pose values
-            adjusted_pose = (index, title, entry1, entry2, x + dx, y + dy, z + dz, qx, qy, qz, qw)
+            adjusted_pose = (index, title, entry1, entry2, dx, dy, dz, qx, qy, qz, qw)
             adjusted_poses.append(adjusted_pose)
-            print(adjusted_poses)
+
 
         return adjusted_poses
         
