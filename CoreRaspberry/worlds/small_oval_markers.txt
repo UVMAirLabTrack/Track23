@@ -1,4 +1,4 @@
 fourway_2 3way A
-stop_1 3way B
+fourway_3 3way B
 fourway_1 3way C
 train_1 3way D
