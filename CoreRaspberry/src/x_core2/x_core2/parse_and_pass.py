@@ -18,9 +18,9 @@ class PoseParserNode(Node):
 
         self.filepath = open_world_data.find_marker_loc_path()
         self.markerpath = open_world_data.find_marker_path()
-        self.poses = self.read_poses_from_file(self.filepath)
+        self.poses_tmp = self.read_poses_from_file(self.filepath)
         self.markers = self.read_indexes_from_file(self.markerpath)
-        self.poses = self.find_zero_loc(self.poses)
+        self.poses = self.find_zero_loc(self.poses_tmp)
         self.pose_index = 0
 
     def read_poses_from_file(self, filename):
@@ -46,10 +46,12 @@ class PoseParserNode(Node):
 
         if zpm_index is None:
             print("ZPM pose not found.")
+            zpm_x,zpm_y,zpm_z=[0,0,0]
             return None
 
         # Get the x, y, z values of the ZPM pose
-        zpm_x, zpm_y, zpm_z, *_ = poses[zpm_index][4:]  # Assuming x, y, z values start from index 4
+        else:
+            zpm_x, zpm_y, zpm_z, *_ = poses[zpm_index][4:]  # Assuming x, y, z values start from index 4
 
         # Adjust other poses based on the difference between their x, y, and z values and those of the ZPM pose
         adjusted_poses = []
@@ -65,6 +67,7 @@ class PoseParserNode(Node):
             # Adjust the pose values
             adjusted_pose = (index, title, entry1, entry2, x + dx, y + dy, z + dz, qx, qy, qz, qw)
             adjusted_poses.append(adjusted_pose)
+            print(adjusted_poses)
 
         return adjusted_poses
         
