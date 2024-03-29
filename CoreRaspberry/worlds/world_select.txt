@@ -1,3 +1,4 @@
 test 
 test2 
-oval_test y
+oval_test 
+small_oval y
