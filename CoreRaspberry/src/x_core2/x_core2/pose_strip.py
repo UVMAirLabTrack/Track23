@@ -71,7 +71,7 @@ def pose_xyz_shift(pose,marker_pose):
     pose.position.x = pose.position.x + marker_pose.position.x
     pose.position.y = pose.position.y + marker_pose.position.y
     pose.position.z = pose.position.z + marker_pose.position.z
-    print(f'X:{pose.position.x} Y:{pose.position.y} Z:{pose.position.z}')
+    print(f'XYZ Position   X:{pose.position.x} Y:{pose.position.y} Z:{pose.position.z}')
 
     return pose
 
