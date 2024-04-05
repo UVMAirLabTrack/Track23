@@ -86,7 +86,7 @@ def main(args=None):
     # Create subscriptions to the original topics
     node.create_subscription(Int32MultiArray, 'four_way_state', node.callback_four_way, 10)
     node.create_subscription(Int32MultiArray, 'three_way_state', node.callback_three_way, 10)
-    node.create_subscription(Int32MultiArray, 'train_state', node.callback_train, 10)
+    node.create_subscription(Int32MultiArray, 'train_crossing_state', node.callback_train, 10)
     node.create_subscription(Int32MultiArray, 'aux_state', node.callback_aux, 10)
 
     rclpy.spin(node)
