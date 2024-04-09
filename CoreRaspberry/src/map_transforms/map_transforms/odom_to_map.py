@@ -80,12 +80,11 @@ class OdomTransformer(Node):
         transform.child_frame_id = 'base_footprint'
 
         # Set the translation
+        
         transform.transform.translation.x = odom_msg.pose.pose.position.x - self.saved_odom.pose.pose.position.x
         transform.transform.translation.y = odom_msg.pose.pose.position.y - self.saved_odom.pose.pose.position.y
         transform.transform.translation.z = odom_msg.pose.pose.position.z - self.saved_odom.pose.pose.position.z
-
-        # Set the orientation (quaternion)
-        #transform.transform.rotation = self.angle_to_quaternion(0.0)  # Adjust as needed
+        print(f'Current: {odom_msg.pose.pose.position.x}  Saved: {self.saved_odom.pose.pose.position.x}  Transformed: {transform.transform.translation.x}')
 
         # Publish the transform
         self.transform_broadcaster.sendTransform(transform)
