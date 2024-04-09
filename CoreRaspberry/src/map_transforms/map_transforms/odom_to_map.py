@@ -40,7 +40,7 @@ class OdomTransformer(Node):
     def reset_callback(self,msg):
         print(f'Received Reset Message {msg}')
 
-        if msg == True:
+        if msg.data == True:
             self.odom_cap = True
             print(f'Reset Active')
         else:
