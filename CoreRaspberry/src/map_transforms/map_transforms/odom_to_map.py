@@ -38,13 +38,12 @@ class OdomTransformer(Node):
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
     def reset_callback(self,msg):
-        print(f'Received Reset Message {msg}')
-
         if msg.data == True:
             self.odom_cap = True
             print(f'Reset Active')
         else:
             self.odom_cap = False
+            print(f'Reset Finished')
             
 
     def odom_callback(self, msg):
@@ -54,7 +53,6 @@ class OdomTransformer(Node):
         
         if (current_time - self.last_received_time).nanoseconds >= 1e9/self.refresh_rate:  # 1 second/Hz refresh rate
             if self.odom_cap==True:
-                print(f'Odometry Zero Active')
                 self.saved_odom = msg
             transformed_odom = self.transform_odom(msg)
             self.odom_map_publisher.publish(transformed_odom)
