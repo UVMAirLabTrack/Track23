@@ -51,6 +51,7 @@ class OdomTransformer(Node):
         
         if (current_time - self.last_received_time).nanoseconds >= 1e9/self.refresh_rate:  # 1 second/Hz refresh rate
             if self.odom_cap==True:
+                print(f'Odometry Zero Active')
                 self.saved_odom = msg
             transformed_odom = self.transform_odom(msg)
             self.odom_map_publisher.publish(transformed_odom)
