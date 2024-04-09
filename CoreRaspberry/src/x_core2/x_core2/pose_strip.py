@@ -87,6 +87,16 @@ def z_rotation(pose,Marker_pose):
         pose.orientation.w = q2[3] 
 
         return pose
+
+def odom_z_rotation(ref_odom,current_odom,world_z):
+    q_ref= [ref_odom.pose.pose.orientation.x,ref_odom.pose.pose.orientation.y,ref_odom.pose.pose.orientation.z,ref_odom.pose.pose.orientation.w]
+    q_current = [current_odom.pose.pose.orientation.x,current_odom.pose.pose.orientation.y,current_odom.pose.pose.orientation.z,current_odom.pose.pose.orientation.w]
+    e_world = [0,0,world_z]
+    e_ref = formulas.quat_to_euler(q_ref)
+    e_current = formulas.quat_to_euler(q_current)
+    e_ret = e_current-e_ref+e_world
+    Q_ret = formulas.euler_to_quat(e_ret[0],e_ret[1],e_ret[2])
+
 def strip_eulers(pose,Marker_pose):
         q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
         q[2] = pose.orientation.z

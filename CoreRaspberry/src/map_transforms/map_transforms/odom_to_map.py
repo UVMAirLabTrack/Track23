@@ -12,7 +12,7 @@ import subprocess
 
 class OdomTransformer(Node):
     def __init__(self):
-        self.refresh_rate = 1 #Hz
+        self.refresh_rate = 5 #Hz
         super().__init__('odom_transformer')
 
         # Create a subscriber to listen to the "odom" topic
@@ -38,9 +38,10 @@ class OdomTransformer(Node):
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
     def reset_callback(self,msg):
+        print(f'Received Reset Message')
         if msg == True:
             self.odom_cap = True
-            print(f'Received Reset Message')
+            print(f'Reset Active')
         else:
             self.odom_cap = False
             
@@ -65,6 +66,7 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
+        world_z = 0
 
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
@@ -89,11 +91,11 @@ class OdomTransformer(Node):
 
         # Transform the odometry data
         transformed_odom.pose.pose.position = odom_msg.pose.pose.position
-       # transformed_odom.pose.pose.orientation = transform.transform.rotation
-        transformed_odom.pose.pose.orientation.x = odom_msg.pose.pose.orientation.x - self.saved_odom.pose.pose.orientation.x
-        transformed_odom.pose.pose.orientation.y = odom_msg.pose.pose.orientation.y - self.saved_odom.pose.pose.orientation.y
-        transformed_odom.pose.pose.orientation.z = odom_msg.pose.pose.orientation.z - self.saved_odom.pose.pose.orientation.z
-        transformed_odom.pose.pose.orientation.w = odom_msg.pose.pose.orientation.w - self.saved_odom.pose.pose.orientation.w
+        transformed_odom.pose.pose.orientation = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z)
+        #transformed_odom.pose.pose.orientation.x = odom_msg.pose.pose.orientation.x - self.saved_odom.pose.pose.orientation.x
+        #transformed_odom.pose.pose.orientation.y = odom_msg.pose.pose.orientation.y - self.saved_odom.pose.pose.orientation.y
+        #transformed_odom.pose.pose.orientation.z = odom_msg.pose.pose.orientation.z - self.saved_odom.pose.pose.orientation.z
+        #transformed_odom.pose.pose.orientation.w = odom_msg.pose.pose.orientation.w - self.saved_odom.pose.pose.orientation.w
 
         return transformed_odom
 
