@@ -89,13 +89,24 @@ def z_rotation(pose,Marker_pose):
         return pose
 
 def odom_z_rotation(ref_odom,current_odom,world_z):
-    q_ref= [ref_odom.pose.pose.orientation.x,ref_odom.pose.pose.orientation.y,ref_odom.pose.pose.orientation.z,ref_odom.pose.pose.orientation.w]
-    q_current = [current_odom.pose.pose.orientation.x,current_odom.pose.pose.orientation.y,current_odom.pose.pose.orientation.z,current_odom.pose.pose.orientation.w]
-    e_world = [0,0,world_z]
+    # Extract orientations from Odometry messages
+    q_ref = (ref_odom.pose.pose.orientation.x, ref_odom.pose.pose.orientation.y, ref_odom.pose.pose.orientation.z, ref_odom.pose.pose.orientation.w)
+    q_current = (current_odom.pose.pose.orientation.x, current_odom.pose.pose.orientation.y, current_odom.pose.pose.orientation.z, current_odom.pose.pose.orientation.w)
+
+    # Convert quaternion orientations to Euler angles
     e_ref = formulas.quat_to_euler(q_ref)
     e_current = formulas.quat_to_euler(q_current)
-    e_ret = e_current-e_ref+e_world
-    Q_ret = formulas.euler_to_quat(e_ret[0],e_ret[1],e_ret[2])
+
+    # Create a tuple for the world orientation (0, 0, world_z)
+    e_world = (0, 0, world_z)
+
+    # Perform element-wise subtraction and addition
+    e_ret = tuple(e_cur - e_ref + e_w for e_cur, e_ref, e_w in zip(e_current, e_ref, e_world))
+
+    # Convert Euler angles back to quaternion orientation
+    Q_ret = formulas.euler_to_quat(e_ret[0], e_ret[1], e_ret[2])
+
+    return Q_ret
 
 def strip_eulers(pose,Marker_pose):
         q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
