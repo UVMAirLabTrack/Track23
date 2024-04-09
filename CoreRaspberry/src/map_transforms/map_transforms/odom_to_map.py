@@ -24,8 +24,8 @@ class OdomTransformer(Node):
         self.reset_subscriber = self.create_subscription(Bool,"reset_car",self.reset_callback,10)
         self.odom_cap = False
         self.last_received_time = self.get_clock().now()
-        self.transformed_odom = Pose()
-        self.saved_odom = Pose()
+        self.transformed_odom = Odometry()
+        self.saved_odom = Odometry()
 
         # Create a publisher to publish the transformed odometry data to "odom_map"
         self.odom_map_publisher = self.create_publisher(Odometry, 'odom_map', 10)
