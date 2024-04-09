@@ -78,7 +78,7 @@ class OdomTransformer(Node):
         transform.child_frame_id = 'base_footprint'
 
         # Set the translation
-        transformed_odom.pose.pose.position = odom_msg.pose.pose.position
+        #transformed_odom.pose.pose.position = odom_msg.pose.pose.position
         transform.transform.translation.x = odom_msg.pose.pose.position.x - self.saved_odom.pose.pose.position.x
         transform.transform.translation.y = odom_msg.pose.pose.position.y - self.saved_odom.pose.pose.position.y
         transform.transform.translation.z = odom_msg.pose.pose.position.z - self.saved_odom.pose.pose.position.z
