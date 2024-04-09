@@ -87,7 +87,10 @@ class OdomTransformer(Node):
         # Transform the odometry data
         transformed_odom.pose.pose.position = odom_msg.pose.pose.position
        # transformed_odom.pose.pose.orientation = transform.transform.rotation
-        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation - self.saved_odom.pose.pose.orientation
+        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation.x - self.saved_odom.pose.pose.orientation.x
+        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation.y - self.saved_odom.pose.pose.orientation.y
+        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation.z - self.saved_odom.pose.pose.orientation.z
+        transformed_odom.pose.pose.orientation = odom_msg.pose.pose.orientation.w - self.saved_odom.pose.pose.orientation.w
 
         return transformed_odom
 
