@@ -38,7 +38,8 @@ class OdomTransformer(Node):
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
     def reset_callback(self,msg):
-        print(f'Received Reset Message')
+        print(f'Received Reset Message {msg}')
+
         if msg == True:
             self.odom_cap = True
             print(f'Reset Active')
