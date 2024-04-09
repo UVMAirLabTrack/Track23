@@ -28,7 +28,7 @@ def euler_to_quat(roll, pitch, yaw):
 
 def quat_to_euler(quaternion):
     """
-    Convert quaternion to Euler angles.
+    Convert quaternion to Euler angles (roll, pitch, yaw) in radians.
 
     Args:
         quaternion: Quaternion [x, y, z, w].
@@ -37,15 +37,22 @@ def quat_to_euler(quaternion):
         Roll, pitch, yaw angles in radians.
     """
     qw, qx, qy, qz = quaternion
+
+    # Roll (x-axis rotation)
     sinr_cosp = 2.0 * (qw * qx + qy * qz)
     cosr_cosp = 1.0 - 2.0 * (qx * qx + qy * qy)
     roll = np.arctan2(sinr_cosp, cosr_cosp)
 
+    # Pitch (y-axis rotation)
     sinp = 2.0 * (qw * qy - qz * qx)
-    pitch = np.where(np.abs(sinp) >= 1, np.sign(sinp) * np.pi / 2, np.arcsin(sinp))
+    pitch = np.arcsin(np.clip(sinp, -1.0, 1.0))  # Use np.clip to handle edge cases
 
+    # Yaw (z-axis rotation)
     siny_cosp = 2.0 * (qw * qz + qx * qy)
     cosy_cosp = 1.0 - 2.0 * (qy * qy + qz * qz)
     yaw = np.arctan2(siny_cosp, cosy_cosp)
+
+    # Convert pitch from array to scalar (float)
+    pitch = float(pitch)  # Convert to float if needed
 
     return roll, pitch, yaw
