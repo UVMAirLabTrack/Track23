@@ -17,7 +17,7 @@ class ResetCarPub(Node):
             msg = Bool()
             msg.data = True  # Publish True to activate reset
             self.publisher.publish(msg)
-            self.reset_timer = self.create_timer(1.0, self.reset_timer_callback)
+            self.reset_timer = self.create_timer(5.0, self.reset_timer_callback)
 
     def reset_timer_callback(self):
         if self.reset_active:
