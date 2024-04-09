@@ -78,7 +78,7 @@ class OdomTransformer(Node):
         transform.child_frame_id = 'base_footprint'
 
         # Set the translation
-        
+        transformed_odom.pose.pose.position = odom_msg.pose.pose.position
         transform.transform.translation.x = odom_msg.pose.pose.position.x - self.saved_odom.pose.pose.position.x
         transform.transform.translation.y = odom_msg.pose.pose.position.y - self.saved_odom.pose.pose.position.y
         transform.transform.translation.z = odom_msg.pose.pose.position.z - self.saved_odom.pose.pose.position.z
@@ -88,7 +88,7 @@ class OdomTransformer(Node):
         self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
-        transformed_odom.pose.pose.position = odom_msg.pose.pose.position
+        
         Q = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z)
         transformed_odom.pose.pose.orientation.x = Q[0]
         transformed_odom.pose.pose.orientation.y = Q[1]
