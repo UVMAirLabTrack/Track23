@@ -19,9 +19,6 @@ class StopPub(Node):
     def __init__(self, marker_name):
         super().__init__(self.node_title + marker_name)
         self.marker_name = marker_name
-        self.light_colors = {
-        self.node_title + marker_name: 'white',
-        }
         self.marker_title = 'dragon'
         self.marker_path = f'package://world_gen/markers/{self.marker_title}.dae'
         self.marker_data = pose_strip.read_marker_param(self.marker_title) #change these for package files when tuning is complete
