@@ -1,8 +1,0 @@
-threeway_1 3way A
-threeway_2 3way B
-threeway_3 3way C
-threeway_4 3way D
-fourway_1 3way A
-fourway_2 3way B
-fourway_3 4way C
-fourway_4 4way D
