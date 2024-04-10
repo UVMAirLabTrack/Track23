@@ -89,6 +89,7 @@ def z_rotation(pose,Marker_pose):
         return pose
 
 def odom_z_rotation(current_odom,ref_odom,world_z):
+    e_ret = [0,0,0]
     # Extract orientations from Odometry messages
     q_ref =     (ref_odom.pose.pose.orientation.x,     ref_odom.pose.pose.orientation.y,     ref_odom.pose.pose.orientation.z,     ref_odom.pose.pose.orientation.w)
     q_current = (current_odom.pose.pose.orientation.x, current_odom.pose.pose.orientation.y, current_odom.pose.pose.orientation.z, current_odom.pose.pose.orientation.w)
@@ -97,11 +98,15 @@ def odom_z_rotation(current_odom,ref_odom,world_z):
     e_ref = formulas.quat_to_euler(q_ref)
     e_current = formulas.quat_to_euler(q_current)
 
-    # Create a tuple for the world orientation (0, 0, world_z)
+    
     e_world = (0, 0, world_z)
 
     # Perform element-wise subtraction and addition
-    e_ret = tuple(e_cur - e_ref + e_w for e_cur, e_ref, e_w in zip(e_current, e_ref, e_world))
+    #e_ret = tuple(e_cur - e_ref + e_w for e_cur, e_ref, e_w in zip(e_current, e_ref, e_world))
+    e_ret[0] = e_current[0]-e_ref[0]
+    e_ret[1] = e_current[1]-e_ref[1]
+    e_ret[2] = e_current[2]-e_ref[2]+world_z
+
 
     # Convert Euler angles back to quaternion orientation
     Q_ret = formulas.euler_to_quat(e_ret[0], e_ret[1], e_ret[2])
