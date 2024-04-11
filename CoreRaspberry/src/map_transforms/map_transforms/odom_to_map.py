@@ -90,17 +90,18 @@ class OdomTransformer(Node):
         transformed_odom.pose.pose.position.x = transform.transform.translation.x
         transformed_odom.pose.pose.position.y = transform.transform.translation.y
         transformed_odom.pose.pose.position.z = transform.transform.translation.z
-
+        print(f'X odom: {odom_msg.pose.pose.position.x} X_ref: {self.saved_odom.pose.pose.position.x}  X_transform: {transform.transform.translation.x} X_final: {transformed_odom.pose.pose.position.x} ')
+        print(f'Y odom: {odom_msg.pose.pose.position.x} Y_ref: {self.saved_odom.pose.pose.position.x}  Y_transform: {transform.transform.translation.x} Y_final: {transformed_odom.pose.pose.position.x} ')
         Q,a,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z)
         transformed_odom.pose.pose.orientation.x = Q[0]
         transformed_odom.pose.pose.orientation.y = Q[1]
         transformed_odom.pose.pose.orientation.z = Q[2]
         transformed_odom.pose.pose.orientation.w = Q[3]
-        print(f'Euler Ref: {a}')
-        print(f'Euler CT: {b}')
-        print(f'Euler Comb: {c}')
+        #print(f'Euler Ref: {a}')
+        #print(f'Euler CT: {b}')
+        #print(f'Euler Comb: {c}')
 
-        print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
+        #print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
 
         return transformed_odom
 
