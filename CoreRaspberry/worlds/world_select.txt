@@ -1,4 +1,1 @@
-test 
-test2 
-oval_test 
-small_oval y
+Small_oval_v2 y
