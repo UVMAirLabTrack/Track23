@@ -91,14 +91,22 @@ class OdomTransformer(Node):
         
         transform = np.dot(rotation_matrix, translation_vector)
 
-        car_coord_x = transform[0]+ world_x
+        car_coord_x = transform[0] + world_x
         car_coord_y = transform[1] + world_y
+        car_coord_z = 0 
+
+
 
         E=[0,0,0]
 
         E[0] = car_euler[0]-ref_euler[0]
         E[1] = car_euler[1]-ref_euler[1]
         E[2] = car_euler[2]-ref_euler[2]
+
+        print(f'World: {world_x} {world_y} {world_z} {world_yaw}')
+        print(f'Car:   {car_x} {car_y} {car_z} {car_euler}')
+        print(f'Ref:   {ref_x} {ref_y} {ref_z} {ref_euler}')
+        print(f'Coord:   {car_coord_x} {car_coord_y} {car_coord_z} {E}')
 
         car_quat = pose_strip.compute_quat(E)
         Q= car_quat
