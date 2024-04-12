@@ -94,7 +94,13 @@ class OdomTransformer(Node):
         car_coord_x = transform[0]+ world_x
         car_coord_y = transform[1] + world_y
 
-        car_quat = pose_strip.compute_quat(car_euler-ref_euler)
+        E=[0,0,0]
+
+        E[0] = car_euler[0]-ref_euler[0]
+        E[1] = car_euler[1]-ref_euler[1]
+        E[2] = car_euler[2]-ref_euler[2]
+
+        car_quat = pose_strip.compute_quat(E)
         Q= car_quat
 
 
