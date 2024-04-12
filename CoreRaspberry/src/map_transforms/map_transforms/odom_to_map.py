@@ -65,7 +65,9 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
-        world_z = 0
+        world_z_ang = 0
+        world_x = 0
+        world_y = 0
 
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
@@ -77,22 +79,34 @@ class OdomTransformer(Node):
         transform.header.frame_id = 'map'
         transform.child_frame_id = 'base_footprint'
 
-        # Set the translation
-        
-        transform.transform.translation.x = odom_msg.pose.pose.position.x - self.saved_odom.pose.pose.position.x
-        transform.transform.translation.y = odom_msg.pose.pose.position.y - self.saved_odom.pose.pose.position.y
-        transform.transform.translation.z = odom_msg.pose.pose.position.z - self.saved_odom.pose.pose.position.z
+        car_x = odom_msg.pose.pose.position.x
+        car_y = odom_msg.pose.pose.position.y
+        car_z = odom_msg.pose.pose.position.z
+
+        Q,Euler_ref,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z_ang)
+
+        world_z_ang = Euler_ref[2]
+        xform_x = math.cos(world_z_ang)*(car_x+car_y) 
+        xform_y = math.sin(world_z_ang)*(car_x+car_y)
+        xform_z = 0
+
+
+    
+
+        transform.transform.translation.x = xform_x - self.saved_odom.pose.pose.position.x + world_x
+        transform.transform.translation.y = xform_y - self.saved_odom.pose.pose.position.y + world_y
+        transform.transform.translation.z = xform_z - self.saved_odom.pose.pose.position.z
         
         # Publish the transform
-        self.transform_broadcaster.sendTransform(transform)
+        #self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
         transformed_odom.pose.pose.position.x = transform.transform.translation.x
         transformed_odom.pose.pose.position.y = transform.transform.translation.y
         transformed_odom.pose.pose.position.z = transform.transform.translation.z
-        print(f'X odom: {odom_msg.pose.pose.position.x} X_ref: {self.saved_odom.pose.pose.position.x}  X_transform: {transform.transform.translation.x} X_final: {transformed_odom.pose.pose.position.x} ')
-        print(f'Y odom: {odom_msg.pose.pose.position.x} Y_ref: {self.saved_odom.pose.pose.position.x}  Y_transform: {transform.transform.translation.x} Y_final: {transformed_odom.pose.pose.position.x} ')
-        Q,a,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z)
+
+        
+
         transformed_odom.pose.pose.orientation.x = Q[0]
         transformed_odom.pose.pose.orientation.y = Q[1]
         transformed_odom.pose.pose.orientation.z = Q[2]
