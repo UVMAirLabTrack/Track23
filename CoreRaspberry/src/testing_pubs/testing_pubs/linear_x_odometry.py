@@ -3,7 +3,8 @@ from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Quaternion, Vector3
 import math
-
+ang = math.pi/4
+ang2 = ang+math.pi
 class OdomPublisher(Node):
     def __init__(self):
         super().__init__('odometry_publisher')
@@ -36,7 +37,7 @@ class OdomPublisher(Node):
             odom.pose.pose.position.x = (2 * self.distance_limit - elapsed_time * self.linear_speed)
 
         # Set orientation (quaternion)
-        odom.pose.pose.orientation = self.angle_to_quaternion(math.pi) if not self.forward else self.angle_to_quaternion(0.0)
+        odom.pose.pose.orientation = self.angle_to_quaternion(ang) if not self.forward else self.angle_to_quaternion(ang2)
 
         self.odom_publisher.publish(odom)
 

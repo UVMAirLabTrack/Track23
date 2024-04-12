@@ -4,10 +4,12 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Bool
 from geometry_msgs.msg import TransformStamped, Quaternion, Pose, Point, Vector3
 from visualization_msgs.msg import Marker
-from x_core2 import pose_strip, open_world_data
+from x_core2 import pose_strip, open_world_data,formulas
 import tf2_ros
 import math
 import subprocess
+import numpy as np
+from math import cos, sin, radians
 #import pynput as keyboard
 
 class OdomTransformer(Node):
@@ -65,9 +67,36 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
-        world_z_ang = 0
+        world_yaw = 0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
         world_x = 0
         world_y = 0
+        world_z = 0
+
+        car_x = odom_msg.pose.pose.position.x
+        car_y = odom_msg.pose.pose.position.y
+        car_z = odom_msg.pose.pose.position.z
+        car_euler = pose_strip.strip_return_euler_odom(odom_msg)
+
+        ref_x = self.saved_odom.pose.pose.position.x
+        ref_y = self.saved_odom.pose.pose.position.y
+        ref_z = self.saved_odom.pose.pose.position.z
+        ref_euler = pose_strip.strip_return_euler_odom(self.saved_odom)
+
+        translation_vector = np.array([world_x - car_x-ref_x, world_y - car_y-ref_y])
+
+        theta = radians(world_yaw)
+
+        rotation_matrix = np.array([[cos(theta), -sin(theta)],
+                                     [sin(theta), cos(theta)]])
+        
+        transform = np.dot(rotation_matrix, translation_vector)
+
+        car_coord_x = transform[0]+ world_x
+        car_coord_y = transform[1] + world_y
+
+        car_quat = pose_strip.compute_quat(car_euler-ref_euler)
+        Q= car_quat
+
 
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
@@ -79,23 +108,10 @@ class OdomTransformer(Node):
         transform.header.frame_id = 'map'
         transform.child_frame_id = 'base_footprint'
 
-        car_x = odom_msg.pose.pose.position.x
-        car_y = odom_msg.pose.pose.position.y
-        car_z = odom_msg.pose.pose.position.z
 
-        Q,Euler_ref,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z_ang)
-
-        world_z_ang = Euler_ref[2]
-        xform_x = math.cos(world_z_ang)*(car_x+car_y) 
-        xform_y = math.sin(world_z_ang)*(car_x+car_y)
-        xform_z = 0
-
-
-    
-
-        transform.transform.translation.x = xform_x - self.saved_odom.pose.pose.position.x + world_x
-        transform.transform.translation.y = xform_y - self.saved_odom.pose.pose.position.y + world_y
-        transform.transform.translation.z = xform_z - self.saved_odom.pose.pose.position.z
+        transform.transform.translation.x = car_coord_x
+        transform.transform.translation.y = car_coord_y
+        transform.transform.translation.z = world_z
         
         # Publish the transform
         #self.transform_broadcaster.sendTransform(transform)
