@@ -9,7 +9,7 @@ from math import sin, cos, radians
 import os
 from ament_index_python.packages import get_package_share_directory
 import multiprocessing
-
+pub_time = 0.5
 class TrainVisualizer(Node):
     package_name = 'world_gen'
     node_title = "train_"
@@ -30,7 +30,7 @@ class TrainVisualizer(Node):
         self.subscription = self.create_subscription(Int32MultiArray, 'train_crossing_state', self.angle_callback, 10)
 
         # Set a timer to publish the marker periodically
-        self.timer = self.create_timer(1.0, self.publish_marker)
+        self.timer = self.create_timer(pub_time, self.publish_marker)
 
         # Initialize marker pose
         self.pose = Pose()
