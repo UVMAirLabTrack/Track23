@@ -2,6 +2,26 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#define green_pwr 120
+#define yellow_pwr 1//255
+#define blue_pwr 120
+#define white_pwr 120
+#define red_pwr 255
+
+//[Red,Yellow,Green,White,Blue]
+//LEDS controlled by array*respective pwr.  so if you want indivitual control, change powers to 1, and set the 0-255 in the
+static int S0[] = {0,0,0,0,0};  //off
+static int S1[] = {1,0,0,1,1}; //stop
+static int S2[] = {0,1,0,0,0}; //caution
+static int S3[] = {0,0,1,0,1}; //go
+static int S4[] = {0,0,0,1,0}; //white light 
+static int S5[] = {0,0,0,0,1}; //blue Light
+static int S6[] = {0,1,0,1,0}; //opt
+static int S7[] = {0,0,1,0,1}; //opt
+static int S8[] = {0,0,1,1,1}; //opt
+static int S9[] = {0,1,0,1,1}; //opt
+static int S10[] = {1,1,1,1,1}; //opt
+
 typedef struct DataStruct {
   int Pair1;
   int Pair2;
@@ -46,6 +66,8 @@ Green 26             18              13                25
 White  33            19              17                23
 Blue 27               5              16                22
 */
+
+
 #define redPin 12
 #define yellowPin 14
 #define greenPin 26
@@ -75,11 +97,7 @@ Blue 27               5              16                22
 
 
 
-#define green_pwr 120
-#define yellow_pwr 1//255
-#define blue_pwr 120
-#define white_pwr 120
-#define red_pwr 255
+
 
   int red;
   int yellow;
@@ -166,7 +184,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   activateLight(Ctrl2, redPin2, yellowPin2, greenPin2, whitePin2, bluePin2);
   activateLight(Ctrl1, redPin, yellowPin, greenPin, whitePin, bluePin );
 
-  printDataStructure(Data);
+ // printDataStructure(Data);
 
 
  
@@ -257,91 +275,91 @@ void Color_state(){
 
 switch (color){
     case Off:
-    red = 0;
-    yellow = 0;
-    green = 0;
-    white = 0;
-    blue = 0;
+    red = red_pwr*S0[0];
+    yellow = yellow_pwr*S0[1];
+    green = green_pwr*S0[2];
+    white = white_pwr*S0[3];
+    blue = blue_pwr*S0[4];
     break;
 
   case Red:
-    red = red_pwr;
-    yellow = 0;
-    green = 0;
-    white = 0;
-    blue = 0;
+    red = red_pwr*S1[0];
+    yellow = yellow_pwr*S1[1];
+    green = green_pwr*S1[2];
+    white = white_pwr*S1[3];
+    blue = blue_pwr*S1[4];
     break;
 
 case Yellow:
-    red = 0;
-    yellow = yellow_pwr;
-    green = 0;
-    white = 0;
-    blue = 0;
+    red = red_pwr*S2[0];
+    yellow = yellow_pwr*S2[1];
+    green = green_pwr*S2[2];
+    white = white_pwr*S2[3];
+    blue = blue_pwr*S2[4];
     break;
   
 case Green:
-    red = 0;
-    yellow = 0;
-    green = green_pwr;
-    white = 0;
-    blue = 0;
+    red = red_pwr*S3[0];
+    yellow = yellow_pwr*S3[1];
+    green = green_pwr*S3[2];
+    white = white_pwr*S3[3];
+    blue = blue_pwr*S3[4];
     break;
 
     case White:
-    red = 0;
-    yellow = 0;
-    green = 0;
-    white = white_pwr;
-    blue = 0;
+    red = red_pwr*S4[0];
+    yellow = yellow_pwr*S4[1];
+    green = green_pwr*S4[2];
+    white = white_pwr*S4[3];
+    blue = blue_pwr*S4[4];
     break;
 
     case Blue:
-    red = 0;
-    yellow = 0;
-    green = 0;
-    white = 0;
-    blue = blue_pwr;
+    red = red_pwr*S5[0];
+    yellow = yellow_pwr*S5[1];
+    green = green_pwr*S5[2];
+    white = white_pwr*S5[3];
+    blue = blue_pwr*S5[4];
     break;
 
 case Green_White:
-    red = 0;
-    yellow = 0;
-    green = green_pwr;
-    white = white_pwr;
-    blue = 0;
+    red = red_pwr*S6[0];
+    yellow = yellow_pwr*S6[1];
+    green = green_pwr*S6[2];
+    white = white_pwr*S6[3];
+    blue = blue_pwr*S6[4];
     break;
 
 case Green_Blue:
-    red = 0;
-    yellow = 0;
-    green = green_pwr;
-    white = 0;
-    blue = blue_pwr;
+    red = red_pwr*S7[0];
+    yellow = yellow_pwr*S7[1];
+    green = green_pwr*S7[2];
+    white = white_pwr*S7[3];
+    blue = blue_pwr*S7[4];
     break;
  
  case Red_White:
-    red = red_pwr;
-    yellow = 0;
-    green = 0;
-    white = white_pwr;
-    blue = 0;
+    red = red_pwr*S8[0];
+    yellow = yellow_pwr*S8[1];
+    green = green_pwr*S8[2];
+    white = white_pwr*S8[3];
+    blue = blue_pwr*S8[4];
     break;
 
     case Red_Blue:
-    red = red_pwr;
-    yellow = 0;
-    green = 0;
-    white = 0;
-    blue = blue_pwr;
+    red = red_pwr*S9[0];
+    yellow = yellow_pwr*S9[1];
+    green = green_pwr*S9[2];
+    white = white_pwr*S9[3];
+    blue = blue_pwr*S9[4];
     break;
     
     case All:
-    red = red_pwr;
-    yellow = yellow_pwr;
-    green = green_pwr;
-    white = blue_pwr;
-    blue = blue_pwr;
+    red = red_pwr*S10[0];
+    yellow = yellow_pwr*S10[1];
+    green = green_pwr*S10[2];
+    white = white_pwr*S10[3];
+    blue = blue_pwr*S10[4];
     break;
 
     case Glow:
