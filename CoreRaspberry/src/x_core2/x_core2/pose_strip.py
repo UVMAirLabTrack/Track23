@@ -3,7 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Pose
 from custom_msgs.msg import WorldMarkers,MarkerLoc
 from rclpy.node import Node
-from x_core2 import pose_strip,open_world_data
+from x_core2 import pose_strip, open_world_data,formulas
 
 
 class PoseRecNode(Node):
@@ -71,8 +71,53 @@ def pose_xyz_shift(pose,marker_pose):
     pose.position.x = pose.position.x + marker_pose.position.x
     pose.position.y = pose.position.y + marker_pose.position.y
     pose.position.z = pose.position.z + marker_pose.position.z
+    print(f'XYZ Position   X:{pose.position.x} Y:{pose.position.y} Z:{pose.position.z}')
 
     return pose
+
+def z_rotation(pose,Marker_pose):
+        q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
+        z_rot = pose.orientation.z
+        q2 = formulas.euler_to_quat(q[0],q[1],q[2]+z_rot)
+        print(f'angles: {q}  Z_rot: {z_rot}' )
+
+        pose.orientation.x = q2[0]
+        pose.orientation.y = q2[1]
+        pose.orientation.z = q2[2]
+        pose.orientation.w = q2[3] 
+
+        return pose
+
+def odom_z_rotation(current_odom,ref_odom,world_z):
+    e_ret = [0,0,0]
+    # Extract orientations from Odometry messages
+    q_ref =     (ref_odom.pose.pose.orientation.x,     ref_odom.pose.pose.orientation.y,     ref_odom.pose.pose.orientation.z,     ref_odom.pose.pose.orientation.w)
+    q_current = (current_odom.pose.pose.orientation.x, current_odom.pose.pose.orientation.y, current_odom.pose.pose.orientation.z, current_odom.pose.pose.orientation.w)
+
+    # Convert quaternion orientations to Euler angles
+    e_ref = formulas.quat_to_euler(q_ref)
+    e_current = formulas.quat_to_euler(q_current)
+
+    
+    e_world = (0, 0, world_z)
+
+    # Perform element-wise subtraction and addition
+    #e_ret = tuple(e_cur - e_ref + e_w for e_cur, e_ref, e_w in zip(e_current, e_ref, e_world))
+    e_ret[0] = e_current[0]-e_ref[0]
+    e_ret[1] = e_current[1]-e_ref[1]
+    e_ret[2] = e_current[2]-e_ref[2]+world_z
+
+
+    # Convert Euler angles back to quaternion orientation
+    Q_ret = formulas.euler_to_quat(e_ret[0], e_ret[1], e_ret[2])
+
+
+    return Q_ret, e_ref, e_current ,e_ret
+
+def strip_eulers(pose,Marker_pose):
+        q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
+        q[2] = pose.orientation.z
+        return q
 
 def strip_marker_loc(msg,marker):
     for i in range(len(msg.title)):

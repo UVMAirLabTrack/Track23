@@ -343,3 +343,11 @@ void SerialDisp(){
   }
   Serial.println("");
 }
+
+
+int values[8] = {0, 0, 0, 0, 0, 0, 0, 5};
+int mult[8] = {1,1,1,1,10,10,10,10};
+int maxval[8] = {10,10,10,10,100,100,100,100};
+int minval[8] = {0,0,0,0,0,0,0,0};
+String LEDstates[11] = {"Off","Stop","Yellow","Go","Right","Left","R+Fwd","L+Fwd","R+Stop","L+Stop","All"};
+String Controlstates[8] = {"Four Way Light","Four Way Light","Three Way Light","Three Way Light","Train Crossing", "Train Crossing","Auxilliary", "Auxilliary"};
