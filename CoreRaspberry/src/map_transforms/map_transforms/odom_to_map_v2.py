@@ -84,7 +84,7 @@ class OdomTransformer(Node):
 
         translation_vector = np.array([world_x - (car_x-ref_x), world_y - (car_y-ref_y)])
 
-        theta = radians(world_yaw-car_euler[2]) #-ref_euler[2])
+        theta = radians(world_yaw-car_euler[2]-ref_euler[2])
 
         rotation_matrix = np.array([[cos(theta), -sin(theta)],
                                      [sin(theta), cos(theta)]])
@@ -99,9 +99,9 @@ class OdomTransformer(Node):
 
         E=[0,0,0]
 
-        E[0] = car_euler[0]-ref_euler[0]
-        E[1] = car_euler[1]-ref_euler[1]
-        E[2] = car_euler[2]-ref_euler[2]
+        E[0] = car_euler[0]#-ref_euler[0]
+        E[1] = car_euler[1]#-ref_euler[1]
+        E[2] = car_euler[2]#-ref_euler[2]
 
         print(f'World: {world_x} {world_y} {world_z} {world_yaw}')
         print(f'Car:   {car_x} {car_y} {car_z} {car_euler}')
