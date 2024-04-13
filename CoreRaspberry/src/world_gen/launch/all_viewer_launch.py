@@ -59,10 +59,10 @@ def generate_launch_description():
             name='train_xing'
         ),
 
-       # Node(
+        Node(
             #package='map_transforms',
-    #
-        #    executable='odom_to_map',
-     #       name='map_transform'
-#),
+    
+            executable='odom_to_map',
+            name='map_transform'
+),
     ])

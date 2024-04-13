@@ -13,7 +13,7 @@ setup(
     'map_transforms.odom_to_map',
     'map_transforms.odom_to_map_key',
     'map_transforms.reset_car',
-    'map_transforms.odom_to_map_v2',
+    #'map_transforms.odom_to_map_v2',
 
     ],
     install_requires=['setuptools'],
@@ -33,7 +33,7 @@ setup(
             'odom_to_map = map_transforms.odom_to_map:main',
             'odom_to_map_key = map_transforms.odom_to_map_key:main',
             'reset_car = map_transforms.reset_car:main',
-            'odom_to_map2 = map_transforms.odom_to_map_v2:main',
+            #'odom_to_map2 = map_transforms.odom_to_map_v2:main',
 
         ],
     },

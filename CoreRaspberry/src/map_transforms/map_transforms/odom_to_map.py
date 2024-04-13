@@ -4,10 +4,12 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Bool
 from geometry_msgs.msg import TransformStamped, Quaternion, Pose, Point, Vector3
 from visualization_msgs.msg import Marker
-from x_core2 import pose_strip, open_world_data
+from x_core2 import pose_strip, open_world_data,formulas
 import tf2_ros
 import math
 import subprocess
+import numpy as np
+from math import cos, sin, radians
 #import pynput as keyboard
 
 class OdomTransformer(Node):
@@ -65,9 +67,50 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
-        world_z_ang = 0
-        world_x = 0
-        world_y = 0
+        world_yaw = 0.0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
+        world_x = 0.0
+        world_y = 0.0
+        world_z = 0.2
+
+        car_y_shift = math.pi/2
+
+        car_x = odom_msg.pose.pose.position.x
+        car_y = odom_msg.pose.pose.position.y
+        car_z = odom_msg.pose.pose.position.z
+        car_euler = pose_strip.strip_return_euler_odom(odom_msg)
+
+        ref_x = self.saved_odom.pose.pose.position.x
+        ref_y = self.saved_odom.pose.pose.position.y
+        ref_z = self.saved_odom.pose.pose.position.z
+        ref_euler = pose_strip.strip_return_euler_odom(self.saved_odom)
+
+        translation_vector = np.array([world_x + (car_x-ref_x), world_y + (car_y-ref_y)]) #+ car or - car?
+
+        theta = radians(world_yaw+(car_euler[2]-ref_euler[2]))
+
+        rotation_matrix = np.array([[cos(theta), -sin(theta)],
+                                     [sin(theta), cos(theta)]])
+        
+        transform = np.dot(rotation_matrix, translation_vector)
+
+        car_coord_x = transform[0] + world_x
+        car_coord_y = transform[1] + world_y
+        car_coord_z = 0 
+
+        E=[0,0,0]
+
+        E[0] = car_euler[0]#-ref_euler[0]
+        E[1] = car_euler[1]#-ref_euler[1]
+        E[2] = car_euler[2] + car_y_shift#-ref_euler[2]
+
+        print(f'World: {world_x} {world_y} {world_z} {world_yaw}')
+        print(f'Car:   {car_x} {car_y} {car_z} {car_euler}')
+        print(f'Ref:   {ref_x} {ref_y} {ref_z} {ref_euler}')
+        print(f'Coord:   {car_coord_x} {car_coord_y} {car_coord_z} {E}')
+
+        car_quat = pose_strip.compute_quat(E)
+        Q= car_quat
+
 
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
@@ -79,31 +122,18 @@ class OdomTransformer(Node):
         transform.header.frame_id = 'map'
         transform.child_frame_id = 'base_footprint'
 
-        car_x = odom_msg.pose.pose.position.x
-        car_y = odom_msg.pose.pose.position.y
-        car_z = odom_msg.pose.pose.position.z
 
-        Q,Euler_ref,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z_ang)
-
-        world_z_ang = Euler_ref[2]
-        xform_x = math.cos(world_z_ang)*(car_x+car_y) 
-        xform_y = math.sin(world_z_ang)*(car_x+car_y)
-        xform_z = 0
-
-
-    
-
-        transform.transform.translation.x = xform_x - self.saved_odom.pose.pose.position.x + world_x
-        transform.transform.translation.y = xform_y - self.saved_odom.pose.pose.position.y + world_y
-        transform.transform.translation.z = xform_z - self.saved_odom.pose.pose.position.z
+        transform.transform.translation.x = car_coord_x
+        transform.transform.translation.y = car_coord_y
+        transform.transform.translation.z = world_z
         
         # Publish the transform
-        #self.transform_broadcaster.sendTransform(transform)
+        self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
-        transformed_odom.pose.pose.position.x = transform.transform.translation.x
-        transformed_odom.pose.pose.position.y = transform.transform.translation.y
-        transformed_odom.pose.pose.position.z = transform.transform.translation.z
+        transformed_odom.pose.pose.position.x = car_coord_x
+        transformed_odom.pose.pose.position.y = car_coord_y
+        transformed_odom.pose.pose.position.z = world_z
 
         
 
@@ -111,10 +141,10 @@ class OdomTransformer(Node):
         transformed_odom.pose.pose.orientation.y = Q[1]
         transformed_odom.pose.pose.orientation.z = Q[2]
         transformed_odom.pose.pose.orientation.w = Q[3]
+
         #print(f'Euler Ref: {a}')
         #print(f'Euler CT: {b}')
         #print(f'Euler Comb: {c}')
-
         #print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
 
         return transformed_odom
