@@ -56,7 +56,7 @@ class OdomTransformer(Node):
         #self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
-        self.timer = self.create_timer(1.0, self.box_publisher)
+        self.timer = self.create_timer(1.0, self.publish_marker)
 
                 #copy the lines below into any marker nodes, dont forget the import either
         self.pose = Pose()
@@ -200,7 +200,32 @@ class OdomTransformer(Node):
 
         return transformed_odom
 
-    
+    def publish_marker(self):
+        marker_msg = Marker()
+        marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
+        marker_msg.header.stamp = self.get_clock().now().to_msg()
+        marker_msg.id = 0
+        marker_msg.type = Marker.MESH_RESOURCE
+        marker_msg.action = Marker.ADD
+        marker_msg.pose = self.pose
+        marker_msg.scale.x = 1.0
+        marker_msg.scale.y = 1.0
+        marker_msg.scale.z = 1.0
+
+        color_name = self.light_colors[self.node_title + self.marker_name]
+
+    # Use the color_mapping dictionary to get the RGBA values
+        rgba_values = self.color_mapping.get(color_name, [1.0, 1.0, 1.0, 1.0])
+
+    # Assign RGBA values to the marker message
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
+       # marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
+       # print(rgba_values)
+
+
+        marker_msg.mesh_resource = self.marker_path#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+
+        self.publisher.publish(marker_msg)   
     def publish_car_mesh(self, odom_msg):
         # Publish the car model mesh in the transformed frame
         car_mesh = Marker()
