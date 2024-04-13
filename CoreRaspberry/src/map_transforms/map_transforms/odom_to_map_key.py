@@ -50,13 +50,13 @@ class OdomTransformer(Node):
         self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
         
         # Create publisher for the marker
-        self.publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
+        self.box_publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
         #self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
-        self.timer = self.create_timer(1.0, self.publish_marker)
+        self.timer = self.create_timer(1.0, self.box_publisher)
 
                 #copy the lines below into any marker nodes, dont forget the import either
         self.pose = Pose()
