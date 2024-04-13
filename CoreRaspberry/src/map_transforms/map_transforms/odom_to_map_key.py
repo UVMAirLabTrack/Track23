@@ -215,7 +215,7 @@ class OdomTransformer(Node):
         #color_name = self.light_colors[self.node_title + self.marker_name]
 
     # Use the color_mapping dictionary to get the RGBA values
-        rgba_values =  [1.0, 1.0, 1.0, 1.0]
+        rgba_values =  [1.0, 255.0, 1.0, 1.0]
 
     # Assign RGBA values to the marker message
         marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
