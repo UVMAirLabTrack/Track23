@@ -14,7 +14,7 @@ import numpy as np
 from math import cos, sin, radians
 
 
-class OdomTransformer(Node):
+class OdomSimplifier(Node):
     package_name = 'world_gen'
     def __init__(self, marker_name):
         self.refresh_rate = 5 #Hz
@@ -52,3 +52,13 @@ class OdomTransformer(Node):
 
             print(f'Pose [X,Y,Z]: {pose}')
             print(f'Orientation [X,Y,Z,W]: {orient}')
+
+def main(args=None):
+    rclpy.init(args=args)
+    odom_transformer = OdomSimplifier()
+    rclpy.spin(odom_transformer)
+    odom_transformer.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
