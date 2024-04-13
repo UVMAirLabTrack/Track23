@@ -84,7 +84,7 @@ class OdomTransformer(Node):
 
         translation_vector = np.array([world_x - (car_x-ref_x), world_y - (car_y-ref_y)])
 
-        theta = radians(world_yaw-car_euler[2]-ref_euler[2])
+        theta = radians(world_yaw-car_euler[2]) #-ref_euler[2])
 
         rotation_matrix = np.array([[cos(theta), -sin(theta)],
                                      [sin(theta), cos(theta)]])
@@ -128,7 +128,7 @@ class OdomTransformer(Node):
         transform.transform.translation.z = world_z
         
         # Publish the transform
-        #self.transform_broadcaster.sendTransform(transform)
+        self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
         transformed_odom.pose.pose.position.x = transform.transform.translation.x

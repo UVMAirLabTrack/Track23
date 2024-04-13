@@ -32,6 +32,7 @@ class OdomPublisher(Node):
         if elapsed_time < self.distance_limit / self.linear_speed:
             # Moving forward
             odom.pose.pose.position.x = elapsed_time * self.linear_speed
+            odom.pose.pose.position.y = elapsed_time * self.linear_speed
         else:
             # Turning around
             odom.pose.pose.position.x = (2 * self.distance_limit - elapsed_time * self.linear_speed)
