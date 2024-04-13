@@ -70,7 +70,7 @@ class OdomTransformer(Node):
         world_yaw = 0.0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
         world_x = 0.0
         world_y = 0.0
-        world_z = 0.0
+        world_z = 0.2
 
         car_x = odom_msg.pose.pose.position.x
         car_y = odom_msg.pose.pose.position.y
@@ -94,8 +94,6 @@ class OdomTransformer(Node):
         car_coord_x = transform[0] + world_x
         car_coord_y = transform[1] + world_y
         car_coord_z = 0 
-
-
 
         E=[0,0,0]
 
@@ -131,9 +129,9 @@ class OdomTransformer(Node):
         self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
-        transformed_odom.pose.pose.position.x = transform.transform.translation.x
-        transformed_odom.pose.pose.position.y = transform.transform.translation.y
-        transformed_odom.pose.pose.position.z = transform.transform.translation.z
+        transformed_odom.pose.pose.position.x = car_coord_x
+        transformed_odom.pose.pose.position.y = car_coord_y
+        transformed_odom.pose.pose.position.z = world_z
 
         
 
