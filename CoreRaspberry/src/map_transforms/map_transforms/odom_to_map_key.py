@@ -225,7 +225,9 @@ class OdomTransformer(Node):
 
         marker_msg.mesh_resource = self.marker_path#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
 
-        self.publisher.publish(marker_msg)   
+        self.box_publisher.publish(marker_msg)   
+
+
     def publish_car_mesh(self, odom_msg):
         # Publish the car model mesh in the transformed frame
         car_mesh = Marker()
