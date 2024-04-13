@@ -72,6 +72,8 @@ class OdomTransformer(Node):
         world_y = 0.0
         world_z = 0.2
 
+        car_y_shift = math.pi/2
+
         car_x = odom_msg.pose.pose.position.x
         car_y = odom_msg.pose.pose.position.y
         car_z = odom_msg.pose.pose.position.z
@@ -99,7 +101,7 @@ class OdomTransformer(Node):
 
         E[0] = car_euler[0]#-ref_euler[0]
         E[1] = car_euler[1]#-ref_euler[1]
-        E[2] = car_euler[2]#-ref_euler[2]
+        E[2] = car_euler[2] + car_y_shift#-ref_euler[2]
 
         print(f'World: {world_x} {world_y} {world_z} {world_yaw}')
         print(f'Car:   {car_x} {car_y} {car_z} {car_euler}')
@@ -139,10 +141,10 @@ class OdomTransformer(Node):
         transformed_odom.pose.pose.orientation.y = Q[1]
         transformed_odom.pose.pose.orientation.z = Q[2]
         transformed_odom.pose.pose.orientation.w = Q[3]
+
         #print(f'Euler Ref: {a}')
         #print(f'Euler CT: {b}')
         #print(f'Euler Comb: {c}')
-
         #print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
 
         return transformed_odom
