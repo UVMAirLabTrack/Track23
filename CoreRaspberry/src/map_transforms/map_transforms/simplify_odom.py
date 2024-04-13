@@ -55,7 +55,7 @@ class OdomSimplifier(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    odom_transformer = OdomSimplifier()
+    odom_transformer = OdomSimplifier("1")
     rclpy.spin(odom_transformer)
     odom_transformer.destroy_node()
     rclpy.shutdown()
