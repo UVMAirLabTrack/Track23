@@ -1,7 +1,8 @@
-To set the light states, the text file uses 3 integers. 1 2 3
-the first controls one pair of lights with the values below
-the second controls the other pair
-the third is the light timing. or how long that state remains active
+To set the light states, the text file uses 5 integers. 1 2 3 4 5
+
+The first 4 control the color of the light 
+
+the fifth is the light timing. or how long that state remains active, in seconds
 
   case 0:
   color = Off;
@@ -22,17 +23,17 @@ the third is the light timing. or how long that state remains active
   color = Blue;
   .
     case 6:
-  color = Green_White;
+  color = State6;
   .
     case 7:
-  color = Green_Blue;
+  color = State7;
   .
     case 8:
-  color = Red_White;
+  color = State8;
   .
     case 9:
-  color = Red_Blue;
+  color = State9;
   .
     case 10:
-  color = All;
+  color = State10;
   .
