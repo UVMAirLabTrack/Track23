@@ -31,7 +31,7 @@ class OdomPublisher(Node):
         odom.pose.pose.orientation = self.angle_to_quaternion(self.angle)
 
         # Set linear velocity
-        odom.twist.twist.linear = Vector3(x=0.1, y=0.0, z=0.0)  # Adjust as needed
+        odom.twist.twist.linear = Vector3(x=0.0, y=0.0, z=0.0)  # Adjust as needed
 
         self.odom_publisher.publish(odom)
 

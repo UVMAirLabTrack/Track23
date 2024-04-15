@@ -36,7 +36,7 @@ def quat_to_euler(quaternion):
     Returns:
         Roll, pitch, yaw angles in radians.
     """
-    qw, qx, qy, qz = quaternion
+    qx, qy, qz, qw = quaternion
 
     # Roll (x-axis rotation)
     sinr_cosp = 2.0 * (qw * qx + qy * qz)

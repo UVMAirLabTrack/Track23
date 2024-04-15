@@ -13,9 +13,8 @@ setup(
     'map_transforms.odom_to_map',
     'map_transforms.odom_to_map_key',
     'map_transforms.reset_car',
-    #'map_transforms.four_way_marker',
-    #'map_transforms.color_publisher',
-    
+    'map_transforms.simplify_odom',
+
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -34,8 +33,8 @@ setup(
             'odom_to_map = map_transforms.odom_to_map:main',
             'odom_to_map_key = map_transforms.odom_to_map_key:main',
             'reset_car = map_transforms.reset_car:main',
-            #'four_way_marker = map_transforms.four_way_marker:main',
-            #'color_test = map_transforms.color_publisher:main',
+            'simplify_odom = map_transforms.simplify_odom:main',
+
         ],
     },
 )

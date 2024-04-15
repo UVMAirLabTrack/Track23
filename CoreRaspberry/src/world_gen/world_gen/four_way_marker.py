@@ -10,7 +10,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 import multiprocessing
 
-
+pub_time = 0.5
 
 class FourWayVisualizer(Node):
     package_name = 'world_gen'
@@ -65,7 +65,7 @@ class FourWayVisualizer(Node):
         self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
 
         # Set a timer to publish the marker periodically
-        self.timer = self.create_timer(1.0, self.publish_marker)
+        self.timer = self.create_timer(pub_time, self.publish_marker)
 
                 #copy the lines below into any marker nodes, dont forget the import either
         self.pose = Pose()

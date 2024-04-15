@@ -105,7 +105,7 @@ def odom_z_rotation(current_odom,ref_odom,world_z):
     #e_ret = tuple(e_cur - e_ref + e_w for e_cur, e_ref, e_w in zip(e_current, e_ref, e_world))
     e_ret[0] = e_current[0]-e_ref[0]
     e_ret[1] = e_current[1]-e_ref[1]
-    e_ret[2] = e_current[2]-e_ref[2]+world_z
+    e_ret[2] = e_current[2]-e_ref[2]
 
 
     # Convert Euler angles back to quaternion orientation
@@ -113,6 +113,16 @@ def odom_z_rotation(current_odom,ref_odom,world_z):
 
 
     return Q_ret, e_ref, e_current ,e_ret
+
+def strip_return_euler_odom(ref_odom):
+    q_ref =     (ref_odom.pose.pose.orientation.x,     ref_odom.pose.pose.orientation.y,     ref_odom.pose.pose.orientation.z,     ref_odom.pose.pose.orientation.w)
+    e_ref = formulas.quat_to_euler(q_ref)
+    return e_ref
+
+def compute_quat(e_ret):
+    Q_ret = formulas.euler_to_quat(e_ret[0], e_ret[1], e_ret[2])
+    return Q_ret
+
 
 def strip_eulers(pose,Marker_pose):
         q = [Marker_pose.orientation.x,Marker_pose.orientation.y,Marker_pose.orientation.z]
