@@ -17,6 +17,10 @@ To rectify this
 
 sudo usermod -a -G tty yourname
 sudo usermod -a -G dialout yourname
+
+sudo usermod -a -G tty ian
+sudo usermod -a -G dialout ian 
+
 where yourname is dev
 
 sudo nano ~/.bashrc
@@ -26,5 +30,4 @@ source /home/dev/RaspberryCore/CoreRaspberry/install/local_setup.bash
 And this line to set the ros domain ID
 
 export ROS_DOMAIN_ID=32
-
 echo -e "ROS_DOMAIN_ID: \033[32m$ROS_DOMAIN_ID\033[0m"
