@@ -120,9 +120,9 @@ class OdomTransformer(Node):
     def transform_odom(self, odom_msg):
        
         world_yaw = 0.0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
-        world_x = -self.pose.position.x
-        world_y = -self.pose.position.y
-        world_z = -self.pose.position.z
+        world_x = self.pose.position.x
+        world_y = self.pose.position.y
+        world_z = self.pose.position.z
         
 
         car_y_shift = math.pi/2
@@ -146,8 +146,8 @@ class OdomTransformer(Node):
         
         transform = np.dot(rotation_matrix, translation_vector)
 
-        car_coord_x = transform[0] + world_x
-        car_coord_y = transform[1] + world_y
+        car_coord_x = transform[0]#+ world_x
+        car_coord_y = transform[1] #+ world_y
         car_coord_z = 0 
 
         E=[0,0,0]
