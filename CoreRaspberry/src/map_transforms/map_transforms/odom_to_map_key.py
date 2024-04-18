@@ -118,10 +118,11 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
+       
         world_yaw = 0.0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
-        world_x = 0.0
-        world_y = 0.0
-        world_z = 0.2
+        world_x = self.saved_odom.pose.pose.position.x
+        world_y = self.saved_odom.pose.pose.position.y
+        world_z = self.saved_odom.pose.pose.position.z
 
         car_y_shift = math.pi/2
 
