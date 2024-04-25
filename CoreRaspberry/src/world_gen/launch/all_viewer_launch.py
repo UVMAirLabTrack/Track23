@@ -58,11 +58,20 @@ def generate_launch_description():
             executable='train_marker',
             name='train_xing'
         ),
+        Node(
+            package='world_gen',
+            executable='stop_sign',
+            name='stop_sign'
+        ),
+        Node(
+            package='world_gen',
+            executable='yield_sign',
+            name='yield_sign'
+        ),
 
         Node(
-            #package='map_transforms',
-    
-            executable='odom_to_map',
+            package='map_transforms',
+            executable='odom_to_map_key',
             name='map_transform'
 ),
     ])
