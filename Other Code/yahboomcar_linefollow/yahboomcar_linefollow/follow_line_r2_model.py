@@ -241,7 +241,7 @@ class LineDetect(Node):
 						self.dyn_update = True
 				      
 				    
-			else: 
+				else: 
 					self.Track_state = 'init'
 		elif self.Track_state == "identify":
 			#print(self.circle[0])
@@ -276,7 +276,7 @@ class LineDetect(Node):
 		self.get_param()
 		ret, frame = self.capture.read()
 		action = cv.waitKey(10) & 0xFF
-		frame,detect, binary =self.process(frame, action)
+		frame, detect, binary =self.process(frame, action)
 		start = time.time()
 		end = time.time()
 		fps = 1 / (end - start+1)  #added +1 to stop div/0 errors

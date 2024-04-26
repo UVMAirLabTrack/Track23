@@ -8,15 +8,11 @@ from sensor_msgs.msg import CompressedImage, LaserScan, Image
 import os
 import threading
 import math
-import torch #for the object detector
-import cv2 #just to save on troublesome stuff
-import numpy as np
 from yahboomcar_linefollow.follow_common import *
 RAD2DEG = 180 / math.pi
 print ("import finish")
 cv_edition = cv.__version__
 print("cv_edition: ",cv_edition)
-print("Linefollow_V2, with Modelling")
 
 class LineDetect(Node):
 	def __init__(self,name):
@@ -41,7 +37,6 @@ class LineDetect(Node):
 		self.select_flags = False
 		self.Track_state = 'identify'
 		self.windows_name = 'frame'
-		self.windows2_name = 'identification'
 		self.cols, self.rows = 0, 0
 		self.Mouse_XY = (0, 0)
 		self.hsv_text = "/root/yahboomcar_ros2_ws/yahboomcar_ws/src/yahboomcar_linefollow/yahboomcar_linefollow/LineFollowHSV.text"
@@ -57,16 +52,7 @@ class LineDetect(Node):
 		self.capture = cv.VideoCapture(0)
 		if cv_edition[0]=='3': self.capture.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'XVID'))
 		else: self.capture.set(cv.CAP_PROP_FOURCC, cv.VideoWriter.fourcc('M', 'J', 'P', 'G'))
-		self.timer = self.create_timer(0.001, self.on_timer)
-
-
-		self.folder_path = 'C:\\Users\\ianth\\Downloads\\yolov5'
-		print(f' Model Path: {self.folder_path}')
-		self.model_path = self.folder_path + 	'\\runs\\train\\exp14\\weights\\last.pt'
-		self.Detect_Model = torch.hub.load(self.folder_path, 'custom', path=self.model_path, force_reload=True,source='local')
-		self.detected_class=None 
-		self.stop_classes = [0,] #stop, stoplight, dragon
-		self.detected_name = None
+		self.timer = self.create_timer(0.001, self.on_timer)	
 
 	def declare_param(self):
 		#HSV
@@ -120,19 +106,6 @@ class LineDetect(Node):
 			self.cols = min(self.Mouse_XY[0], x), min(self.Mouse_XY[1], y)
 			self.rows = max(self.Mouse_XY[0], x), max(self.Mouse_XY[1], y)
 			self.Roi_init = (self.cols[0], self.cols[1], self.rows[0], self.rows[1])
-			'''
-	def onMouse(event,img, x, y, flags, param):
-		if event == cv2.EVENT_LBUTTONDOWN:
-			img_width, img_height = img.shape[1], img.shape[0]
-			scale_x = img_width / cv2.getWindowImageRect('Image')[2]  # Get window width
-			scale_y = img_height / cv2.getWindowImageRect('Image')[3]  # Get window height
-			img_x = int(x * scale_x)
-			img_y = int(y * scale_y)
-			print(img_x, img_y)
-			bgr_pixel = img[img_y, img_x]
-			hsv_value = cv2.cvtColor(np.uint8([[bgr_pixel]]), cv2.COLOR_BGR2HSV)[0][0]
-			# Process your HSV value here
-			print(hsv_value)'''
 
 	def execute(self, point_x, color_radius):
 
@@ -163,10 +136,6 @@ class LineDetect(Node):
 				self.Buzzer_state = True
 				b.data = True
 				self.pub_Buzzer.publish(b)
-			elif self.detected_class in self.stop_classes:
-				self.pub_cmdVel.publish(Twist())
-				print("------------Stopping-------------")
-				print(f'Object Detected: {self.detected_name} Object class: {self.detected_class}')
 			else:
 				if self.Buzzer_state == True:
 					b.data = False
@@ -181,64 +150,28 @@ class LineDetect(Node):
 				else:
 					twist.angular.z=0.0
                 
-	def manual_entry(self):
- 
-		H_min = input("Set H_Min: "); H_max = input("Set H_Max: ")
-		S_min = input("Set S_Min: "); S_max = input("Set S_Max: ")
-		V_min = input("Set V_Min: "); V_max = input("Set V_Max: ")
-		if H_max  > 179: H_max = 179
-		if H_min < 0: H_min = 0
-		if S_max > 255: S_max = 255
-		if S_min < 0: S_min = 0
-		if V_max > 255: V_max = 255
-		if V_min  < 0: V_min = 0
-
-		hsv_range = ((int(H_min), int(S_min), int(V_min)), (int(H_max), int(S_max), int(V_max)))
-		print(f' Hmin: {self.hsv_range[0]} Hmax: {self.hsv_range[3]}')
-		print(f' Smin: {self.hsv_range[1]} Smax: {self.hsv_range[4]}')
-		print(f' Vmin: {self.hsv_range[2]} Vmax: {self.hsv_range[5]}')
-		return hsv_range					
+						
 
 
 	def process(self, rgb_img, action):
 		
 		binary = []
 		rgb_img = cv.resize(rgb_img, (640, 480))
+        
 		if self.img_flip == True: rgb_img = cv.flip(rgb_img, 1)
-		
-		detect_img = self.Detect_Model(np.copy(rgb_img)) #apply detection modelling.
-		df = detect_img.pandas().xyxy[0]
-		for ind in df.index:
-			x1, y1 = int(df['xmin'][ind]), int(df['ymin'][ind])
-			x2, y2 = int(df['xmax'][ind]), int(df['ymax'][ind])
-			label = df['name'][ind]
-			cv.rectangle(detect_img, (x1, y1), (x2,y2), (255, 255, 0), 2)
-			cv.putText(detect_img, label, (x1, y1-5), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 0), 2)
-			self.detected_class = df['class'][ind]
-			self.detected_name = label
-
 		if action == 32: self.Track_state = 'tracking'
 		elif action == ord('i') or action == 105: self.Track_state = "identify"
 		elif action == ord('r') or action == 114: self.Reset()
 		elif action == ord('q') or action == 113: self.cancel()
 		if self.Track_state == 'init':
 			cv.namedWindow(self.windows_name, cv.WINDOW_AUTOSIZE)
-			cv.namedWindow(self.windows2_name,cv.WINDOW_AUTOSIZE) #added 2nd window deploy.
 			cv.setMouseCallback(self.windows_name, self.onMouse, 0)
-			manual_flag = input("Manual Entry Mode? y/n: ") #activates the manual entry mode
-			if manual_flag == "Y":
-				self.hsv_range=self.manual_entry()
-				self.dyn_update = True
-			else: #delete else, and above to "manual flag" and tab the lines up to the next "Else" back by 1 to eliminate the changes
-				if self.select_flags == True:
-					cv.line(rgb_img, self.cols, self.rows, (255, 0, 0), 2)
-					cv.rectangle(rgb_img, self.cols, self.rows, (0, 255, 0), 2)
-					if self.Roi_init[0]!=self.Roi_init[2] and self.Roi_init[1]!=self.Roi_init[3]:
-						rgb_img, self.hsv_range = self.color.Roi_hsv(rgb_img, self.Roi_init)
-						print(f' Hmin: {self.hsv_range[0]} Hmax: {self.hsv_range[3]}')
-						print(f' Smin: {self.hsv_range[1]} Smax: {self.hsv_range[4]}')
-						print(f' Vmin: {self.hsv_range[2]} Vmax: {self.hsv_range[5]}')
-						self.dyn_update = True
+			if self.select_flags == True:
+				cv.line(rgb_img, self.cols, self.rows, (255, 0, 0), 2)
+				cv.rectangle(rgb_img, self.cols, self.rows, (0, 255, 0), 2)
+				if self.Roi_init[0]!=self.Roi_init[2] and self.Roi_init[1]!=self.Roi_init[3]:
+				    rgb_img, self.hsv_range = self.color.Roi_hsv(rgb_img, self.Roi_init)
+				    self.dyn_update = True
 				      
 				    
 			else: 
@@ -269,20 +202,20 @@ class LineDetect(Node):
 			if self.Start_state == True:
 				#self.pub_cmdVel.publish(Twist())
 				self.Start_state = False
-		return rgb_img,detect_img, binary #added detect_img
+		return rgb_img, binary
 
 
 	def on_timer(self):
 		self.get_param()
 		ret, frame = self.capture.read()
 		action = cv.waitKey(10) & 0xFF
-		frame,detect, binary =self.process(frame, action)
+		frame, binary =self.process(frame, action)
 		start = time.time()
 		end = time.time()
-		fps = 1 / (end - start+1)  #added +1 to stop div/0 errors
+		fps = 1 / (end - start)
 		text = "FPS : " + str(int(fps))
 		cv.putText(frame, text, (30, 30), cv.FONT_HERSHEY_SIMPLEX, 0.6, (100, 200, 200), 1)
-		if len(binary) != 0: cv.imshow('frame', ManyImgs(1, ([detect, binary]))) #switched from frame to detect
+		if len(binary) != 0: cv.imshow('frame', ManyImgs(1, ([frame, binary])))
 		else:cv.imshow('frame', frame)
 		if action == ord('q') or action == 113:
 			self.capture.release()
@@ -308,7 +241,7 @@ class LineDetect(Node):
 			angle = (scan_data.angle_min + scan_data.angle_increment * i) * RAD2DEG
             # if angle > 90: print "i: {},angle: {},dist: {}".format(i, angle, scan_data.ranges[i])
             # 通过清除不需要的扇区的数据来保留有效的数据
-			if abs(angle) < self.LaserAngle:
+			if abs(angle) > (180 - self.LaserAngle):
 				if ranges[i] < self.ResponseDist: self.warning += 1
 
 	def Reset(self):
@@ -332,6 +265,7 @@ class LineDetect(Node):
 		self.Kd = self.get_parameter('Kd').get_parameter_value().integer_value
 		self.Ki = self.get_parameter('Ki').get_parameter_value().integer_value
 		self.Kp = self.get_parameter('Kp').get_parameter_value().integer_value
+		self.FollowLinePID = (self.Kp,self.Ki,self.Kd)
 		#
 		self.scale = self.get_parameter('scale').get_parameter_value().integer_value
 		self.LaserAngle = self.get_parameter('LaserAngle').get_parameter_value().integer_value
@@ -344,4 +278,16 @@ def main():
 	rclpy.init()
 	linedetect = LineDetect("follow_line")
 	print("start it")
-	rclpy.spin(linedetect)
+	try:
+		rclpy.spin(linedetect)
+	except KeyboardInterrupt:
+		pass
+	finally:
+		linedetect.pub_cmdVel.publish(Twist())
+		linedetect.destroy_node()
+		rclpy.shutdown()
+	
+
+	
+	
+	
