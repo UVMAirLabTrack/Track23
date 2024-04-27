@@ -12,13 +12,22 @@ sudo systemctl set-default graphical.target
 to boot the gui on a monitor
 sudo systemctl start gdm3
 
-note: by defualt access to the ttyusb is denied.
+note: by default access to the ttyusb is denied.
 To rectify this
 
 sudo usermod -a -G tty yourname
 sudo usermod -a -G dialout yourname
+
+sudo usermod -a -G tty ian
+sudo usermod -a -G dialout ian 
+
 where yourname is dev
 
 sudo nano ~/.bashrc
 paste this line at the bottom, saves a lot of menace with the ros2 sourcing.
 source /home/dev/RaspberryCore/CoreRaspberry/install/local_setup.bash
+
+And this line to set the ros domain ID
+
+export ROS_DOMAIN_ID=32
+echo -e "ROS_DOMAIN_ID: \033[32m$ROS_DOMAIN_ID\033[0m"

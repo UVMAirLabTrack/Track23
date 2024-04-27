@@ -10,6 +10,8 @@ import tf2_ros
 import math
 import subprocess
 import multiprocessing
+import numpy as np
+from math import cos, sin, radians
 #import pynput as keyboard
 
 class OdomTransformer(Node):
@@ -48,7 +50,7 @@ class OdomTransformer(Node):
         self.marker_pose = pose_strip.strip_marker_pose(self.marker_data)
         
         # Create publisher for the marker
-        self.publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
+        self.box_publisher = self.create_publisher(Marker, self.node_title + marker_name, 10)
 
         # Create subscription to the 4_way_state topic
         #self.subscription = self.create_subscription(Int32MultiArray, 'four_way_state', self.color_callback, 10)
@@ -116,7 +118,52 @@ class OdomTransformer(Node):
             self.publish_car_mesh(transformed_odom)
 
     def transform_odom(self, odom_msg):
-        world_z = 0
+       
+        world_yaw = 0.0  #no X and Y angles.  Need to pull these frames from the custom pose stuff
+        world_x = self.pose.position.x
+        world_y = self.pose.position.y
+        world_z = self.pose.position.z
+        
+
+        car_y_shift = math.pi/2
+
+        car_x = odom_msg.pose.pose.position.x
+        car_y = odom_msg.pose.pose.position.y
+        car_z = odom_msg.pose.pose.position.z
+        car_euler = pose_strip.strip_return_euler_odom(odom_msg)
+
+        ref_x = self.saved_odom.pose.pose.position.x
+        ref_y = self.saved_odom.pose.pose.position.y
+        ref_z = self.saved_odom.pose.pose.position.z
+        ref_euler = pose_strip.strip_return_euler_odom(self.saved_odom)
+
+        translation_vector = np.array([world_x + (car_x-ref_x), world_y + (car_y-ref_y)]) #+ car or - car?
+
+        theta = radians(world_yaw+(car_euler[2]-ref_euler[2]))
+
+        rotation_matrix = np.array([[cos(theta), -sin(theta)],
+                                     [sin(theta), cos(theta)]])
+        
+        transform = np.dot(rotation_matrix, translation_vector)
+
+        car_coord_x = transform[0]#+ world_x
+        car_coord_y = transform[1] #+ world_y
+        car_coord_z = 0 
+
+        E=[0,0,0]
+
+        E[0] = car_euler[0]#-ref_euler[0]
+        E[1] = car_euler[1]#-ref_euler[1]
+        E[2] = car_euler[2] + car_y_shift#-ref_euler[2]
+
+        print(f'World: {world_x} {world_y} {world_z} {world_yaw}')
+        print(f'Car:   {car_x} {car_y} {car_z} {car_euler}')
+        print(f'Ref:   {ref_x} {ref_y} {ref_z} {ref_euler}')
+        print(f'Coord:   {car_coord_x} {car_coord_y} {car_coord_z} {E}')
+
+        car_quat = pose_strip.compute_quat(E)
+        Q= car_quat
+
 
         transformed_odom = Odometry()
         transformed_odom.header = odom_msg.header
@@ -128,34 +175,61 @@ class OdomTransformer(Node):
         transform.header.frame_id = 'map'
         transform.child_frame_id = 'base_footprint'
 
-        # Set the translation
-        
-        transform.transform.translation.x = odom_msg.pose.pose.position.x - self.saved_odom.pose.pose.position.x
-        transform.transform.translation.y = odom_msg.pose.pose.position.y - self.saved_odom.pose.pose.position.y
-        transform.transform.translation.z = odom_msg.pose.pose.position.z - self.saved_odom.pose.pose.position.z
+
+        transform.transform.translation.x = car_coord_x
+        transform.transform.translation.y = car_coord_y
+        transform.transform.translation.z = world_z
         
         # Publish the transform
         self.transform_broadcaster.sendTransform(transform)
 
         # Transform the odometry data
-        transformed_odom.pose.pose.position.x = transform.transform.translation.x
-        transformed_odom.pose.pose.position.y = transform.transform.translation.y
-        transformed_odom.pose.pose.position.z = transform.transform.translation.z
+        transformed_odom.pose.pose.position.x = car_coord_x
+        transformed_odom.pose.pose.position.y = car_coord_y
+        transformed_odom.pose.pose.position.z = world_z
 
-        Q,a,b,c = pose_strip.odom_z_rotation(odom_msg,self.saved_odom,world_z)
+        
+
         transformed_odom.pose.pose.orientation.x = Q[0]
         transformed_odom.pose.pose.orientation.y = Q[1]
         transformed_odom.pose.pose.orientation.z = Q[2]
         transformed_odom.pose.pose.orientation.w = Q[3]
-        print(f'Euler Ref: {a}')
-        print(f'Euler CT: {b}')
-        print(f'Euler Comb: {c}')
 
-        print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
+        #print(f'Euler Ref: {a}')
+        #print(f'Euler CT: {b}')
+        #print(f'Euler Comb: {c}')
+        #print(f'Quaternion: {Q[0]} {Q[1]} {Q[2]} {Q[3]}')
 
         return transformed_odom
 
-    
+    def publish_marker(self):
+        marker_msg = Marker()
+        marker_msg.header.frame_id = 'map'  # Set the frame ID as needed
+        marker_msg.header.stamp = self.get_clock().now().to_msg()
+        marker_msg.id = 0
+        marker_msg.type = Marker.MESH_RESOURCE
+        marker_msg.action = Marker.ADD
+        marker_msg.pose = self.pose
+        marker_msg.scale.x = 1.0
+        marker_msg.scale.y = 1.0
+        marker_msg.scale.z = 1.0
+
+        #color_name = self.light_colors[self.node_title + self.marker_name]
+
+    # Use the color_mapping dictionary to get the RGBA values
+        rgba_values =  [1.0, 255.0, 1.0, 1.0]
+
+    # Assign RGBA values to the marker message
+        marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = rgba_values
+       # marker_msg.color.r, marker_msg.color.g, marker_msg.color.b, marker_msg.color.a = self.current_color
+       # print(rgba_values)
+
+
+        marker_msg.mesh_resource = self.marker_path#os.path.join(get_package_share_directory(self.package_name),  'markers', 'light.dae')
+
+        self.box_publisher.publish(marker_msg)   
+
+
     def publish_car_mesh(self, odom_msg):
         # Publish the car model mesh in the transformed frame
         car_mesh = Marker()

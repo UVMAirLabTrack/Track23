@@ -53,6 +53,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.print(macStr);
   Serial.print(" send status:\t");
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+
 }
 
 void setup() {
@@ -124,7 +125,7 @@ void loop() {
 
 esp_err_t result = esp_now_send(0, (uint8_t *) &Data, sizeof(DataStruct));
 
-      
+//printDataStructure(Data);
 
   if (result == ESP_OK) {
     Serial.println("Sent with success");
@@ -135,6 +136,28 @@ esp_err_t result = esp_now_send(0, (uint8_t *) &Data, sizeof(DataStruct));
 
 }
 
+void printDataStructure(const DataStruct &data) {
+    char lines[4][50], dataArray[50];
+
+    // Format lines with message and variables
+    sprintf(lines[0], "4_way:------[ %d,  %d,  %d, %d]", data.Pair1, data.Pair2, data.Pair3, data.Pair4);
+    sprintf(lines[1], "3_way:----- [ %d,  %d,  %d, %d]", data.Pair5, data.Pair6, data.Pair7, data.Pair8);
+    sprintf(lines[2], "Train_Xing:-[ %d,  %d,  %d, %d]", data.Pair9, data.Pair10, data.Pair11, data.Pair12);
+    sprintf(lines[3], "Aux:------- [ %d,  %d,  %d, %d]", data.Pair13, data.Pair14, data.Pair15, data.Pair16);
+
+    // Format the array at the end
+    sprintf(dataArray, "Data array: [%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d]", 
+            data.Pair1, data.Pair2, data.Pair3, data.Pair4,
+            data.Pair5, data.Pair6, data.Pair7, data.Pair8,
+            data.Pair9, data.Pair10, data.Pair11, data.Pair12,
+            data.Pair13, data.Pair14, data.Pair15, data.Pair16);
+
+    // Print the lines to serial
+    for (int i = 0; i < 4; ++i) {
+        Serial.println(lines[i]);
+    }
+    Serial.println(dataArray);
+}
 
 /*//Broadcasd Addresses to the Peers
 uint8_t broadcastAddress1[] = {0xEC, 0x62, 0x60, 0x76, 0xD0, 0x04}; // Light Test Esp

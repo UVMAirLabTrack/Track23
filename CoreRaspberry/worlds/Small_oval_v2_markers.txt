@@ -1,6 +1,7 @@
-fourway_2 3way A
-fourway_3 3way B
-fourway_1 3way C
+fourway_1 3way A
+stop_1 3way B
+yield_1 3way C
 train_1 3way D
 threeway_1 Park A
+startbox_1 Start A
 dragon_1 Park B

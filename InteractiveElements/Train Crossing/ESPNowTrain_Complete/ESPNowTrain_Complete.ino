@@ -13,6 +13,14 @@ typedef struct DataStruct {
   int Pair6;
   int Pair7;
   int Pair8;
+  int Pair9;
+  int Pair10;
+  int Pair11;
+  int Pair12;
+  int Pair13;
+  int Pair14;
+  int Pair15;
+  int Pair16;
 }DataStruct;
 DataStruct Data;
 
@@ -33,6 +41,13 @@ Servo 1 33            19              17                23
 Servo 2 27            5              16                22
 */
 
+/* Servo Pinouts per connector.
+        J1    J2   LED1    LED2
+Conn1   33    27   
+Conn2   19    5
+Conn3   17    16
+Conn4   23    22
+*/
 Servo servo1, servo2, servo3, servo4;
 #define CHANNEL 1
 #define led1 12
@@ -40,9 +55,9 @@ Servo servo1, servo2, servo3, servo4;
 #define led3 32
 #define led4 4
 #define servopin1 33
-#define servopin2 27
-#define servopin3 19
-#define servopin4 5
+#define servopin2 19
+#define servopin3 17
+#define servopin4 23
 #define maxangle 150
 #define minangle 0
 #define timestep 40
@@ -50,6 +65,8 @@ Servo servo1, servo2, servo3, servo4;
 
 int angle1 = 0;
 int angle2 = 0;
+int angle3 = 0;
+int angle4 = 0;
 
 
 void setup() {
@@ -58,11 +75,12 @@ void setup() {
   servo2.attach(servopin2);
   servo3.attach(servopin3);
   servo4.attach(servopin4);
+  
   delay(100);
   servo1.write(angle1);
-  servo2.write(angle2);
-  servo3.write(angle1);
-  servo4.write(angle2);
+  servo2.write(180-angle2);
+  servo3.write(angle3);
+  servo4.write(180-angle4);
   WiFi.mode(WIFI_STA);
 
   //Init ESP-NOW
@@ -76,8 +94,10 @@ void setup() {
 
 
 void loop() {
-  angle1 = servoangle(Data.Pair5,servo1,servo2,angle1,led1,led2);
-  angle2 = servoangle(Data.Pair6,servo3,servo4,angle2,led3,led4);
+  angle1 = servoangle(Data.Pair9,servo1,servo2,angle1,led1,led2);
+  angle2 = servoangle(Data.Pair11,servo3,servo4,angle2,led3,led4);
+  //#angle3 = servoangle(Data.Pair11,servo3,servo4,angle3,led3,led4);
+  //angle4 = servoangle(Data.Pair12,servo3,servo4,angle4,led3,led4);
   delay(100);
   analogWrite(led1, 0);
   analogWrite(led2, 0);
@@ -98,7 +118,7 @@ int servoangle(int dest, Servo &obj, Servo &obj2, int angle, int l1, int l2) {
     for (int i = angle; i <= dest; i++) {
       angle = i;
       obj.write(angle);
-      obj2.write(angle);
+      obj2.write(180-angle);
       delay(timestep);
       trainled(i, l1, l2);
     }
@@ -109,7 +129,7 @@ int servoangle(int dest, Servo &obj, Servo &obj2, int angle, int l1, int l2) {
     for (int i = angle; i >= dest; i--) {
       angle = i;
       obj.write(angle);
-      obj2.write(angle);
+      obj2.write(180-angle);
       delay(timestep);
       trainled(i, l1, l2);
     }
@@ -133,7 +153,11 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.print("Bytes received: ");
   Serial.println(len);
   Serial.print("Relevant Data: ");
-  Serial.print(Data.Pair5);
+  Serial.print(Data.Pair9);
   Serial.print(", ");
-  Serial.println(Data.Pair6);
+  Serial.print(Data.Pair10);
+  Serial.print(", ");
+  Serial.print(Data.Pair11);
+  Serial.print(", ");
+  Serial.println(Data.Pair12);
 }

@@ -163,7 +163,7 @@ class HSVAdjustmentApp:
             result = cv2.bitwise_and(frame, frame, mask=mask)
             
             # Convert image format
-            img = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
+            img = cv2.cvtColor(result, cv2.COLOR_BGR2HSV)
             img = cv2.resize(img, (640, 480))
             img = Image.fromarray(img)
             imgtk = ImageTk.PhotoImage(image=img)
