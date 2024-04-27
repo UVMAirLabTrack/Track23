@@ -1,0 +1,28 @@
+# YOLOv5 🚀 by Ultralytics, AGPL-3.0 license
+# COCO128 dataset https://www.kaggle.com/ultralytics/coco128 (first 128 images from COCO train2017) by Ultralytics
+# Example usage: python train.py --data coco128.yaml
+# parent
+# ├── yolov5
+# └── datasets
+#     └── coco128  ← downloads here (7 MB)
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+# path: ../datasets/coco128 # dataset root dir
+train: /home/ian/yolov5/data/train_dataSignsSeed1/images/train/ # train images (relative to 'path') 128 images
+val: /home/ian/yolov5/data/train_dataSignsSeed1/images/val/ # val images (relative to 'path') 128 images
+# test: # test images (optional)
+
+# Classes
+names:
+  0: Stop
+  1: Yield
+  2: Dragon
+  3: Caution
+  4: Go
+  5: Off_sig
+  6: Red
+  7: Xing
+  
+
+# Download script/URL (optional)
+#download: https://ultralytics.com/assets/coco128.zip
